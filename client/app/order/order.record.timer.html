@@ -1,0 +1,72 @@
+<order-record-timer>
+	<div class="progress">
+		<div class="progress-active" id="pro" aria-valuenow="{ countdown }" aria-valuemin="0" aria-valuemax="60" style="width: { progress ? progress : 0 }%;">
+		</div>
+	</div>
+	<span class="progress-time" id="second">{ countdown === 60 ? '&nbsp;' : (60 - countdown) + 'S' }</span>
+	<script>
+	
+		this.init = () => {
+			this.progress = 0;
+			this.countdown = 60;
+			this.maxtime = 60;
+			this.proRecorded = 0;
+			this.timeRecorded = 0;
+			this.startTime = 0;
+			this.endTime = 0;
+			this.interval && clearInterval(this.interval);
+			this.timeout && clearTimeout(this.timeout);
+		}
+
+		this.reset = () => {
+			clearInterval(this.interval);
+			clearTimeout(this.timeout);
+			this.interval = null;
+			this.timeout = null
+			this.progress = 0;
+			this.countdown = 60;
+		}
+
+		this.on('update', () => {
+			this.maxtime = parseInt(this.opts.maxtime, 10) || 60;
+			this.during = parseInt(this.opts.interval, 10) || 1000
+		})
+
+		this.on('timer:init', this.init.bind(this));
+
+		this.on('timer:start', () => {
+			this.reset();
+			this.startTime = new Date();
+			this.interval = setInterval(() => {
+				this.progress += (100 * this.during / 1000) / (this.maxtime)
+				this.countdown -= this.during / 1000;
+				this.update();
+			}, this.during)
+		})
+
+		this.on('timer:stop', () => {
+			clearInterval(this.interval);
+			this.endTime = new Date();
+			this.proRecorded = this.progress;
+			this.timeRecorded = this.endTime - this.startTime;
+			this.startTime = 0;
+			this.endTime = 0;
+		})
+
+		this.on('timer:play', () => {
+			this.reset();
+			this.startTime = new Date();
+			this.interval = setInterval(() => {
+				this.progress += (100 * this.during / 1000) / (this.countdown)
+				this.countdown -= this.during / 1000;
+				this.update();
+			}, this.during)
+			this.timeout = setTimeout(() => {
+				this.trigger('timer:stop');
+			}, this.timeRecorded)
+		})
+
+		this.init();
+
+	</script>
+</order-record-timer>

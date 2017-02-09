@@ -1,0 +1,127 @@
+.gift_detail{
+  background: $gray-bg;
+  .detail_cont{
+    .gift_img{
+      padding-top: 10px;
+      img{
+        display: block;
+        margin: 0 auto;
+        border: 4px solid #FFFFFF;
+        object-fit: cover;
+      }
+    }
+    .gift_info{
+      background: $white-bg;
+      margin: 0 10px;
+      padding: 20px;
+      p{margin: 0;}
+      .name{
+        color: $black-font;
+        font-size: 20px;
+      }
+      .lead{
+        color: $gray-font;
+        font-size: 14px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        line-height: 16px
+      }
+      .receivers{
+        .used{
+          color: $pink-font;
+          font-size: 14px;
+          span:first-child{
+            img{
+              width: 12px;
+              vertical-align: -2px;
+            }
+          }
+        }
+      }
+      .price{
+        font-size: 22px;
+        font-weight: bolder;
+        margin-top: 10px;
+        margin-left: -5px;
+      }
+    }
+    .detail_info{
+      position: relative;
+      margin-top: 30px;
+      .title_img{
+        display: block;
+        width: 33.33%; 
+        margin: 0 auto;
+        margin-bottom: 20px;
+      }
+      hr{
+        position: absolute;
+        width: 30%;
+        border-top: none;
+        border-bottom: 1px solid #999999;
+      }
+      .hr{top: -1px;right: 0;}
+      p{
+        font-size: 14px;
+        text-align: left;
+        line-height: 20px;
+        padding: 0 10px;
+        margin: 0;
+        img{width: 100%;}
+      }
+      p:last-child{
+        padding-bottom: 66px;
+      }
+    }
+  }
+  .btn_fixed{
+    width: 100%;
+    height: 65px;
+    background: #F2F2F2;
+    margin-top: 20px;
+  }
+  .btn_comm{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 640px;
+    height: 65px;
+    margin: 0 auto;
+  }
+  .btn_give{
+    @extend .btn_comm;
+    background: $white-bg;
+    border-top: 0.5px solid #DCDDDD;
+    a{
+      display: block;
+      width: 40%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      color: #FFFFFF; 
+      margin-top: 12px;
+      border-radius: 3px;
+    }
+    .btn_one{
+      background: $red-btn;
+      margin-left: 9%;
+    }
+    .btn_more{
+      background: $pink-btn;
+      margin-right: 9%;
+    }
+  }
+  .btn_online{
+    @extend .btn_comm;
+    background: $red-btn;
+    a{
+      display: block;
+      text-align: center;
+      line-height: 65px;
+      font-size: 16px;
+      color: #FFFFFF;
+    }
+  }
+}

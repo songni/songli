@@ -1,0 +1,38 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="送你">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no"/>
+</head>
+
+<body>
+	<div id="app"></div>
+	<alert></alert>
+	<!--<modal></modal>-->
+	<!-- build:css(dist/client) app/style.css -->
+	<!-- endbuild -->
+
+	<!-- build:js(dist/client) app/bundle.js -->
+    <script>
+			var body = document.getElementsByTagName('body')[0];
+			var script = document.createElement('script');
+			var domain = location.port ? location.origin.replace(/\:\d{4}/ig, '') + ':8090' : location.origin + ':8090'
+			script.src = domain + '/client/app/bundle.js';
+			body.appendChild(script);
+		</script>
+	<!-- endbuild -->
+	
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</body>
+
+</html>

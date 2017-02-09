@@ -1,0 +1,12 @@
+<raw>
+  <span>{opts.holder}</span>
+	<script>
+		const onUpdate = () => {
+			if(this.opts.content){
+				this.root.innerHTML = opts.content
+			}
+		}
+		this.on('update', onUpdate.bind(this))
+		this.on('mount', onUpdate.bind(this))
+	</script>
+</raw>
