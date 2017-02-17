@@ -1,0 +1,85 @@
+.received_guide{
+  background: $red-bg;
+  @extend .init-page;
+  .guide_wrap{
+    @extend .red_wrap;
+    .received_cont{
+      background: #FFFFFF;
+      border-radius: 4px;
+      margin: 0 5px;
+      .receiver_info{
+        @include receiveInfo;
+      }
+      .btn_continue{
+        padding-bottom: 50px;
+        a{
+          @include btn(50%, #FFFFFF, $red-bg, $red-bg);
+          margin: 0 auto;
+        }
+      }
+      // poi 
+      .user_intr{
+        margin-bottom: 25px;
+        text-align: center;
+        span{display: inline-block;}
+        span:first-child{
+          width: 14px;
+          height: 14px;
+          img{width: 100%;}
+        }
+        span:last-child{
+          vertical-align: 2px;
+          color: #B9BFCD;
+          font-size: 15px;
+        }
+      }
+      .btn_group{
+        height: 45px;
+        margin: 0 20px;
+        padding-bottom: 50px;
+        .btn_use{
+          @include btn(48%, #FFFFFF, $red-bg, $red-bg);
+          float: left;
+        }
+        .btn_send{
+          @include btn(48%, $red-bg, #FFFFFF, $red-bg);
+          float: right;
+        }
+      }
+    }
+  }
+}
+
+
+.pre_receive{
+  background: $red-bg;
+  @extend .init-page;
+  .pre_wrap{
+    @extend .red_wrap;
+    .pre_cont{
+      background: #FFFFFF;
+      border-radius: 4px;
+      margin: 0 5px;
+      .btn_group{
+        padding-bottom: 50px;
+        a{
+          display: block;
+          margin: 0 auto;
+        }
+        .btn_receive{
+          @include btn(50%, #FFFFFF, $red-bg, $red-bg);
+        }
+        .btn_send{
+          @include btn(50%, $red-bg, #FFFFFF, $red-bg);
+        }
+        span{
+          text-align: center;
+          font-size: 15px;
+          color: #B9BFCD;
+          display: block;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

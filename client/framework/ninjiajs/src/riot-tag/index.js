@@ -11,7 +11,7 @@ function extractPrototypes(s) {
 	return o;
 }
 
-export default function register(WrappedComponent) {
+export default function Component(WrappedComponent) {
 
 	if (!WrappedComponent.originName) {
 		throw new Error(`register decorator expected a origin name.`)

@@ -1,10 +1,10 @@
 import riot from 'riot';
 import route from 'riot-route';
 import actions from './gift.actions';
-import { connect, view } from '../../framework/ninjiajs/src/index';
+import { Connect, View } from '../../framework/ninjiajs/src/index';
 
-@view
-@connect(state => ({
+@View
+@Connect(state => ({
 	gifts: state.gifts,
 	clientWidth: state.clientWidth
 }), dispatch => ({
@@ -17,7 +17,7 @@ export default class GiftList extends riot.Tag {
 		return 'gift-list'
 	}
 	get tmpl() {
-		return require('./gift.list.tag');
+		return require('./tmpl/gift.list.tag');
 	}
 	onCreate(opts) {
 		this.mixin('router');

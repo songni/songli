@@ -1,8 +1,8 @@
 import riot from 'riot';
 import actions from './app.actions';
-import { connect } from '../../framework/ninjiajs/src/index';
+import { Connect } from '../../framework/ninjiajs/src/index';
 
-@connect(state => ({
+@Connect(state => ({
 	clientWidth: state.clientWidth
 }), dispatch => ({
 	setClientWidth: () => dispatch(actions.setClientWidth())

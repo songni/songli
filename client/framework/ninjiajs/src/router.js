@@ -26,7 +26,6 @@ import $ from './util';
 class Hub {
     constructor(emitter){
         this._root = null;
-        this._view = null;
         this._busy = false;
         this._routes = [];
         this._defaultRoute = null;
@@ -167,7 +166,6 @@ class Hub {
     match(rule, uri){
         let parts = Util.distinct(rule.split('/').map(r => Util.completePart(r)));
         let fragments = Util.distinct(uri.split('/').map(r => Util.completePart(r)));
-        
         if(
             !rule || 
             !uri || 
@@ -220,7 +218,6 @@ class Hub {
         if (!hint) {
             return { components, ctx };
         }
-
         for (let i=0, len= targetRoutes.length; i<len; i++) {
             let route = targetRoutes[i];
             let matchRes = this.match(Util.completePart(route.path), Util.completePart(hint));
@@ -237,6 +234,7 @@ class Hub {
                     ctx: Object.assign({}, ctx),
                     route
                 };
+                break;
             }
         }
 
@@ -257,7 +255,6 @@ class Hub {
         let context = { req };
         let { ctx, components } = this.recurMatch(context, this.root || {}, this.refinedRoutes, []);
         let lastComponent = components[components.length - 1];
-        
         // route to a abstract route, redirect to default route
         if (lastComponent && lastComponent.route.abstract) {
             console.warn(`cannot transition to a abstract state(${lastComponent.route.path})`);
@@ -294,15 +291,16 @@ class Hub {
                 if (tag.opts.show || tag.opts.$show) {
                     tag.opts.show = false;
                     tag.opts.hidden = true;
-                    if(this.handler){
-                        return this.handler('leave', tag);    
-                    }
                     tag.update();
                 }
             } else {
                 tag.unmount(true);
                 tag.parent.update();
                 delete leave.route['tag'];
+            }
+            
+            if(this.handler){
+                this.handler('leave', tag);    
             }
         }
     }
@@ -330,24 +328,25 @@ class Hub {
 
             function done(){
                 if (!tag || !tag.isMounted) {
-                    let outletEl = outlet.parent.root.querySelector(`div[data-tag-name="${component.displayName}"]`);
-                    if (route.branch) {
-                        let Constr = route.component(ctx)
-                        console.warn('constructor ...........');
-                        console.warn(Constr);
+                    let outletEl = null;
+                    if (route.components) {
+                        let componentName = ctx.req.query.component;
+                        let Constr = route.components[componentName];
+                        outletEl = outlet.parent.root.querySelector(`div[data-tag-name="${Constr.displayName}"]`);
                         tag = new Constr(outletEl, {parent: outlet.parent});
-                        if (!Component) {
+                        if (!Constr) {
                             console.warn(`component provider expected a component.`);
                             return this.routeToDefault(true);
                         }
                     } else {
+                        outletEl = outlet.parent.root.querySelector(`div[data-tag-name="${component.displayName}"]`);
                         tag = new route.component(outletEl, {parent: outlet.parent});
                     }
                     
                     if (tag) {
                         tag.$routePath = path;
                         route.tag = tag;
-                        outlet.trigger('childrenChanged')
+                        outlet.update();
                     }
                 }
 
@@ -559,13 +558,6 @@ class Hub {
     /**
      * getters and setters
      */
-    get view(){
-        return this._view;
-    }
-
-    set view(val){
-        this._view = val;
-    }
 
     get root(){
         return this._root;

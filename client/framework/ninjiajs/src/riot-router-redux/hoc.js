@@ -50,7 +50,7 @@ function hoistStatics(targetComponent, sourceComponent, customStatics) {
 
 const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-export default function view(WrappedComponent) {
+export default function View(WrappedComponent) {
 		const connectDisplayName = `View(${getDisplayName(WrappedComponent)})`;
 		class View extends WrappedComponent {
 			get name() {
@@ -68,6 +68,15 @@ export default function view(WrappedComponent) {
 				let provider = getProvider(this)
 				let state = provider.opts.store.getState()
 				super.onCreate(opts);
+				if (this.opts.force) {
+					Object.defineProperties(this.opts, {
+						$show: {
+							get: () => {
+								return true;
+							}
+						}
+					})
+				}
 				this.onInit();
 			}
 
@@ -111,4 +120,4 @@ export default function view(WrappedComponent) {
 		View.WrappedComponent = WrappedComponent;
 		hoistStatics(View, WrappedComponent)
 		return View;
-} 
+}

@@ -1,0 +1,97 @@
+.poi-address{
+  @extend .init-page;
+  background: #FFFFFF;
+  .address_list{
+    background: #FFFFFF;
+    .list-group-item{border: 0;}
+    .poiList:hover{background: #FFFFFF;}
+    .poiList:hover .distance{background: #FFFFFF;}
+    .poiList{
+      border-bottom: 1px solid #EFEFEF;
+      margin-top:1px;
+      padding: 10px 15px;
+      display: block;
+      h4{
+        color: #281E1B;
+        font-size: 17px;
+        margin-right: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-weight: normal;
+      }
+      p{
+        color: #BBBBBC;
+        font-size: 13px;
+        margin-right: 5px;
+        margin-top: 6px;
+        margin-bottom: 0;
+        span:nth-child(2),
+        span:nth-child(3){
+          margin-right: -5px;
+        }
+      }
+    }
+    .poi-com{
+      float: right;
+      border: 1px solid #F89775;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      margin-top: 20px;
+      margin-left: -2px;
+    }
+    .point{
+      margin-right:2%;
+    }
+    .point1{
+      margin-right: -18px;
+      background: url("https://img.91pintuan.com/songli/icon-herf/yyyyy.png");
+      background-size:contain;
+    }
+    .resLeft{
+      width: 88%;
+      margin-bottom: 6px;
+      border-right: 1px solid #EFEFEF;
+      .distance{
+        color: #F89775;
+        background: #FFFFFF;
+        font-weight: normal;
+        float: right;
+        font-size: 14px;
+        margin-right: 6px;
+      }
+    }
+  }
+}
+//您当前位置距离该商家门店过远 样式
+.beyWamp{
+  .beyond{
+    width: 100%;
+    height: 160px;
+    background: #FFFFFF;
+    position: absolute;
+    left: 0;bottom: 0;
+    span{
+      display: block;
+      text-align: center;
+      font-size: 16px;
+      color: #342B28;
+      padding-top: 40px;
+    }
+    .bey_back{
+      width: 320px;
+      height: 45px;
+      display: block;
+      color: #FFFFFF;
+      background: #F0373D;
+      font-size: 16px;
+      padding: 10px 0;
+      line-height: 15px;
+      text-align: center;
+      margin: 15px auto;
+      border-radius: 5px;
+      -webkit-appearance:none;
+      border: 0;
+    }
+  }
+}

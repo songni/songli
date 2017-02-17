@@ -1,8 +1,8 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { connect, view } from '../../framework/ninjiajs/src/index';
+import { View } from '../../framework/ninjiajs/src/index';
 
-@view
+@View
 export default class Order extends riot.Tag {
 	static originName = 'order'
 	get name() {
@@ -17,7 +17,6 @@ export default class Order extends riot.Tag {
 	}
 
 	async onUse(next) {
-		// await this.opts.enterGiftList();
 		next();
 	}
 }

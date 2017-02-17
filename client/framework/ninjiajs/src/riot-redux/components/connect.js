@@ -76,7 +76,7 @@ function hoistStatics(targetComponent, sourceComponent) {
 /**
  * A HOC for connect the tag to redux store. (react-redux like)
  */
-export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options={pure: true, withRef: false}) {
+export default function Connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options={pure: true, withRef: false}) {
     const shouldSubscribe = Boolean(mapStateToOpts)
     const mapState = mapStateToOpts || defaultMapStateToOpts;
 
@@ -200,6 +200,7 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
 
                 const storeState = this.store.getState()
                 const prevStoreState = this.state.storeState
+                
                 if (pure && prevStoreState === storeState) {
                     return
                 }
@@ -214,14 +215,15 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
                     }
                     this.haveStateOptsBeenPrecalculated = true
                 }
+                
 
                 this.hasStoreStateChanged = true
                 this.update({state: storeState})
             }
 
             componentDidMount() {
-                this.trySubscribe()
                 this.render()
+                this.trySubscribe()
             }
 
             componentWillUnmount() {
@@ -368,6 +370,11 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
                 this.renderedElement = true;
 
                 Object.assign(this.opts, {...this.mergedOpts});
+
+                setTimeout(() => {
+                    this.update();
+                }, 0)
+                
             }
         }
         

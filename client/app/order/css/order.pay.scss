@@ -1,0 +1,67 @@
+.order_pay{
+  @extend .init-page;
+  background: $gray-bg;
+  @mixin padding{
+    background: #FFFFFF;
+    margin-bottom: 5px;
+    padding: 30px 10px 15px 25px;
+  }
+  .payment{
+    margin: 15px 10px;
+    .pay_info{
+      @include padding;
+      .pay_nl{
+        span{
+          display: block;
+          &:first-child{
+            font-size: 20px;
+            color: #231815;
+          }
+          &:last-child{
+            font-size: 14px;
+            color: #B5B5B6;
+            margin: 8px 0;
+            line-height: 16px;
+            text-align: justify;
+          }
+        }
+      }
+      .pay_num{
+        span{
+          display: inline-block;
+          &:first-child{
+            font-size: 18px;
+            color: #231815;
+            font-weight: bolder;
+          }
+          &:last-child{
+            font-size: 16px;
+            color: #A6A6A7;
+            float: right;
+          }
+        }
+      }
+    }
+    .pay_total{
+      @include padding;
+      span{
+        display: inline-block;
+        &:first-child{
+          font-size: 15px;
+          color: #A6A6A7;
+          padding-top: 6px;
+        }
+        &:last-child{
+          font-size: 28px;
+          float: right;
+        }
+      }
+    }
+    .pay_now{
+      margin-top: 20px;
+      .pay_btn{
+        @include btn(100%, #FFFFFF, $red-bg, #F05B47);
+      }
+    }
+  }
+}

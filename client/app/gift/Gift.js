@@ -1,9 +1,9 @@
 import riot from 'riot';
 import route from 'riot-route';
 import actions from './gift.actions';
-import { view } from '../../framework/ninjiajs/src/index';
+import { View } from '../../framework/ninjiajs/src/index';
 
-@view
+@View
 export default class Gift extends riot.Tag {
 	static originName = 'gift'
 	get name() {

@@ -1,6 +1,6 @@
 import Cookies from '../framework/cookie';
 import originConfig from '../../server/config/environment/shared';
-import Wechat from './wechat/wechat.js'
+import Wechat from '../framework/wechat/index';
 
 const bootstrap = async (app, {origin}) => {
     let {env, store} = app;
@@ -62,11 +62,9 @@ const bootstrap = async (app, {origin}) => {
 		app.store.dispatch({type: 'merchant', payload: merchant})
 
 		Wechat.config();
-    Wechat.ready();
 
     wx.error(function(res){
       widgets.Alert.add('warn', res.errMsg);
-    //   Wechat.config();
     });
 
 }

@@ -5,7 +5,7 @@ import {} from '../framework/jquery';
 import Cookies from '../framework/cookie';
 import bootstrap from './bootstrap';
 import config from './constant';
-import { Ninjia, router, connect, provider } from '../framework/ninjiajs/src/index';
+import { Ninjia, router, Connect, provider } from '../framework/ninjiajs/src/index';
 import reducer from './registerReducers';
 import middlewares from './middlewares';
 import routes from './routes';
@@ -32,11 +32,6 @@ app.set('context', { store: app.store, hub: router.hub, tags: {}, util: {promisi
 
 router.hub.routes = routes;
 
-router.hub.setHandler(function handler(direction, tag){
-    let actionType =  direction === 'enter' ? '$enter' : '$leave';
-    app.store.dispatch({type: actionType, payload: tag})
-})
-
 app.router(router);
 
 riot.util.tmpl.errorHandler = e => {}
@@ -58,12 +53,13 @@ app.start(async () => {
     app.hub.subscribe('history-pending', (from, to, $location, { req }, next) => {
         if (req.body.authenticate && !Cookies.get('token')) {
             let query = req.query;
-            let referer = Object.keys(query).length ? `${$location}?${$.util.querystring.stringify(query)}` : `${$location}`;
+            let referer = location.pathname + location.search;
             referer = referer.startsWith('/') ? referer : '/' + referer;
             Cookies.set('referer', referer);
             $.get(`/wechat/client?referer=${referer}`)
                 .then(function(link) {
-                    // location.href = link.link;
+                    location.href = link.link;
+                    return;
                 });
         }
         next && next();
@@ -88,8 +84,26 @@ app.start(async () => {
     require('./commons/progressbar.html');
     require('./commons/radio-group.html');
     require('./commons/radio.html');
-    require('./commons/router-outlet.html');
-    require('./order/order.record.timer.html');
+    require('./commons/RouterOutlet.js');
+    require('./commons/IMarquee.js');
+
+    require('./app/IconHref.js');
+
+    require('./gift/GiftShareModal.js');
+    require('./gift/GiftPoiModal.js');
+    require('./order/MerchantInfo.js');
+
+    require('./order/OrderRecordTimer.js');
+    require('./order/OrderRecordVoice.js');
+    require('./order/OrderList.js');
+    require('./order/OrderReadyOne2One.js');
+    require('./order/OrderReadyOne2Many.js');
+    require('./order/OrderReceive.js');
+    require('./order/OrderReceivePoi.js');
+    require('./order/OrderReceiveLogistics.js');
+    require('./order/OrderReceivedGuide.js');
+    require('./order/OrderPreReceive.js');
+    
 
     /**
      * register widgets.

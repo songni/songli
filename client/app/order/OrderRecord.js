@@ -1,10 +1,11 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { connect, view, form } from '../../framework/ninjiajs/src/index';
-import Wechat from '../wechat/wechat'
+import { Connect, View, Form } from '../../framework/ninjiajs/src/index';
+import Wechat from '../../framework/wechat/index';
+import actions from './order.actions';
 
-@view
-@form({
+@View
+@Form({
 	name: {
 		required: true,
 		minlength: 2,
@@ -15,11 +16,14 @@ import Wechat from '../wechat/wechat'
 	  min: 2
 	}
 })
-@connect(
+@Connect(
 	state => ({
 		order: state.order,
 		recordState: state.record,
 		gift: state.gift
+	}),
+	dispatch => ({
+		enterOrderRecord: (next, ctx, tag) => dispatch(actions.enterOrderRecord(next, ctx, tag))
 	})
 )
 export default class OrderRecord extends riot.Tag {
@@ -28,30 +32,11 @@ export default class OrderRecord extends riot.Tag {
 		return 'order-record'
 	}
 	get tmpl() {
-		return require(`./order.record.tag`);
+		return require(`./tmpl/order.record.tag`);
 	}
 	onCreate(opts) {
 		this.mixin('router');
-		this.$use(this.onUse)
-	}
-
-	async onUse(next, ctx) {
-		let { dispatch, getState } = app.store;
-		let type = ctx.req.query['type'];
-		let order = getState().order;
-		let payload = { type }
-		dispatch({ type: 'record/reset' })
-		if (!order.id) {
-			if (type === 'one2one') {
-				payload.capacity = 1;
-			}	else {
-				payload.capacity = 2;
-			}
-			payload.gift = this.opts.gift.id;
-			dispatch({ type: 'order/update', payload });
-		}
-		next();
-		this.tags['order-record-timer'].trigger('timer:init');
+		this.$use((next, ctx) => this.opts.enterOrderRecord.apply(this, [next, ctx, this]))
 	}
   
   reduCapacity() {
@@ -60,7 +45,7 @@ export default class OrderRecord extends riot.Tag {
 		if (capacity > 2) {
 			dispatch({type: 'order/update', payload: {capacity: --capacity}})
 		} else if (capacity == 2) {
-				widgets.Alert.add('warning', '礼物份数至少是2份', 2000);
+				widgets.Alert.add('warning', app.config.messages.GIFT_REDUCE, 2000);
 		}
   }
   
@@ -70,44 +55,24 @@ export default class OrderRecord extends riot.Tag {
 		dispatch({type: 'order/update', payload: {capacity: ++capacity}})
   }
   
-	record() {
+	async record() {
 		let { dispatch } = app.store
-		let me = this;
-		Wechat.ready(async function() {
-			wx.startRecord({
-				success: function(res) {
-					me.tags['order-record-timer'].trigger('timer:start');
-					dispatch({type: 'record/update', payload: {
-						start: true,
-						stop: false,
-						record: false
-					}})
-				},
-				fail: function(res){
-					console.warn(res)
-				}
-			});
-		})
+		await Wechat.startRecord();
+		this.tags['order-record-timer'].trigger('timer:start');
+		dispatch({type: 'record/update', payload: {
+			start: true,
+			stop: false,
+			record: false
+		}})
 	}
 
-	stop() {
+	async stop() {
 		let { dispatch } = app.store
 		let me = this;
-		Wechat.ready(async function() {
-			wx.stopRecord({
-				success: function(res) {
-					me.tags['order-record-timer'].trigger('timer:stop');
-					dispatch({type: 'order/update', payload: { localId: res.localId }})
-					dispatch({type: 'record/update', payload: {
-						start: false,
-						record: true
-					}})
-				},
-				fail: function(res){
-					console.warn(res)
-				}
-			});
-		})
+		let res = await Wechat.stopRecord();
+		me.tags['order-record-timer'].trigger('timer:stop');
+		dispatch({type: 'order/update', payload: { localId: res.localId }})
+		dispatch({type: 'record/update', payload: { start: false, record: true }})
 	}
 
 	rerecord() {
@@ -119,15 +84,12 @@ export default class OrderRecord extends riot.Tag {
 	playVoice() {
 		let order = app.store.getState().order;
 		this.tags['order-record-timer'].trigger('timer:play');
-		Wechat.ready(async function() {
-			wx.playVoice({
-				localId: order.localId
-			});
-		})
+		Wechat.playVoice({ localId: order.localId});
 	}
 
 	async onSubmit(e) {
 		let { dispatch, getState } = app.store;
+		let me = this;
 		e.preventDefault()
 		this.opts.submit('orderRecordForm')
 		
@@ -136,14 +98,19 @@ export default class OrderRecord extends riot.Tag {
 		}
 		
 		let order = getState().order;
-		wx.uploadVoice({
+		let res = await Wechat.uploadVoice({
 			localId: order.localId,
-			isShowProgressTips: 1,
-			success: function(res) {
-				order.serverId = res.serverId;
-				dispatch({type: 'order/update', payload: { ...order }})
-				location.href = `/wepay?showwxpaytitle=1&component=OrderPay`;
-			}
+			isShowProgressTips: 1
 		});
+		order.serverId = res.serverId;
+		if (order.type === 'one2one') {
+			order.name = me.refs.name.value;
+		}
+		if (order.type === 'one2many') {
+			order.capacity = me.refs.capacity.value;
+		}
+		dispatch({type: 'order/update', payload: order})
+		localStorage.setItem("order:recorded", JSON.stringify(order));
+		location.href = `/wepay?showwxpaytitle=1&component=OrderPay`;
 	}
 }

@@ -124,7 +124,10 @@ const filter = {
     currency: (s, prefix = true) => {
         return (prefix ? '￥' : '') + (s.toFixed(2) || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,'); 
     },
-    date: function(date, fmt){
+    date: function(date, fmt = 'yyyy-MM-dd hh:mm:ss'){
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
         var o = {
             "M+" : date.getMonth()+1,
             "d+" : date.getDate(),

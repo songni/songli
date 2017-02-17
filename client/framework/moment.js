@@ -23,6 +23,10 @@ class Moment {
 		return this._d.getTime() < this.getDate(val)
 	}
 
+	isAfter(val){
+		return this._d.getTime() > this.getDate(val)
+	}
+
 	fromNow(){
 		return this._d.getTime() - this.getDate()
 	}

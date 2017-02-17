@@ -1,6 +1,5 @@
-<modal if="{show}">
-  <div class="my-modal-container">
-    
+<modal>
+  <div if="{ show }" class="my-modal-container">  
   </div>
   
   <style>
@@ -17,8 +16,6 @@
       bottom: 0px;
       margin: auto;
       background: rgba(0, 0, 0, 0.6);
-      border-radius: 5px;
-      border: 1px solid #ccc
     }
     .my-modal-header{
       background: red;
@@ -40,6 +37,7 @@
     this.open = ({tag, size, props}) => {
       this.content = {tag, props};
       this.show = true;
+      this.update();
       let root = this.root.querySelector('.my-modal-container');
       let modalInstance = riot.mount(root, tag, props)[0];
       modalInstance.on('dismiss', ()=>{

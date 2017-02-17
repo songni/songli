@@ -59,12 +59,14 @@ class Ninjia {
 
 	router(router){
 		this._router = router;
+		router.app = this;
 		riotRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
 		return this;
 	}
 
 	registerWidget({name, methods}){
-		let component = riot.mount(name)[0];
+		let components = riot.mount(name);
+		let component = components[0]
 		this._context.tags[name] = component;
 		let upperName = name.replace(/(\w)/, v => v.toUpperCase());
 		this._widgets[upperName] = {};

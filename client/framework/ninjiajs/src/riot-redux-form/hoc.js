@@ -6,7 +6,7 @@ import _ from '../util';
  * HOC: 
  * opts: forms, submit
  */
-export default function form(inputRulePairs) {
+export default function Form(inputRulePairs) {
 	return function wrapComponent (WrappedComponent) {
 		return class Form extends WrappedComponent {
 			get name() {
@@ -514,15 +514,16 @@ export default function form(inputRulePairs) {
 				this.subscribe = store.subscribe(() => {
 					let state =  store.getState();
 					let lastAction = state.lastAction
-					
 					if (
+						(lastAction.type === 'forms/add') ||
+						(lastAction.type === 'forms/inputs/add') ||
 						(lastAction.type === 'forms/inputs/update' && 
 						this.extractFormNamesFromRef().indexOf(lastAction.payload.form) >= 0) ||
 						(lastAction.type === 'form/submit' && 
 						this.extractFormNamesFromRef().indexOf(lastAction.payload) >= 0) ||
 						this.concernActions(lastAction.type, lastAction.payload)
 					) {
-						if (this.opts.$show) {
+						if (this.isMounted) {
 							this.opts.forms = state.forms
 							this.update();
 						}

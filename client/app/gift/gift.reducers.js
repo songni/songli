@@ -1,3 +1,24 @@
+const initPoi = {
+  loaded: false
+}
+const poi = (poi = initPoi, action) => {
+  switch (action.type) {
+    case 'poi/loaded':
+      return Object.assign({}, poi, { loaded: action.payload })
+    default:
+      return poi
+  }
+}
+
+const qrForSubscribe = (qrForSubscribe = null, action) => {
+	switch (action.type) {
+		case 'qrcode/subscribe/update':
+			return action.payload
+		default:
+			return qrForSubscribe
+	}
+}
+
 const initGifts = {
 	items: [],
   busy: false,
@@ -36,7 +57,29 @@ const gift = (gift = {}, action) => {
 	}
 }
 
+const suborders = (suborders = [], action) => {
+	switch (action.type) {
+		case '/gift/suborders/update':
+			return action.payload;
+		default:
+			return suborders
+	}
+}
+
+const pois = (pois = [], action) => {
+  switch(action.type){
+    case 'pois/update':
+      return [...action.payload]
+    default: 
+      return pois;
+  }
+}
+
 export default {
 	gifts,
-	gift
+	gift,
+	suborders,
+	pois,
+	poi,
+	qrForSubscribe
 }
