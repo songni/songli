@@ -31,7 +31,7 @@ export default class IMarquee extends riot.Tag {
 				</div>
 			</div>
 		`;
-	}
+	} 
 	
 	onCreate(opts) {
 		this.on('mount', this.componentDidMounted.bind(this));
@@ -43,6 +43,7 @@ export default class IMarquee extends riot.Tag {
 		this.height = this.opts.height;
 		this.speed = parseInt(this.opts.speed) || 3000;
 		this.index = 0;
+		this.count = 0;
 		this.capacity = Math.ceil(parseInt(this.height / this.gap, 10));
 
 		this.nextItem();
@@ -65,7 +66,10 @@ export default class IMarquee extends riot.Tag {
 			items = items.concat(this.opts.items.slice(0, overload))
 		}
 		this.items = items;
-		(overload > 0) && (this.index = 0) || this.index++
+		if (overload >= this.capacity) {
+			this.index = 0;
+		}
+		this.index++;
 		this.update();
 	}
 
@@ -82,7 +86,7 @@ export default class IMarquee extends riot.Tag {
 		marqueeBodyEl.style.marginTop = '0px';
 		setTimeout(() => {
 			this.initPoi();
-		}, 100)
+		}, 20)
 	}
 	
 	componentUnmounted() {

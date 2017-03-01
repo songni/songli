@@ -1,7 +1,8 @@
 import riot from 'riot';
 import route from 'riot-route';
 import actions from './order.actions';
-import { Connect, View, Component} from '../../framework/ninjiajs/src/index';
+import interruptors from '../interruptors';
+import { Connect, View, Component, onUse } from '../../framework/ninjiajs/src/index';
 
 const getScene = (gift, receive) => {
 	switch (gift.scene) {
@@ -29,7 +30,8 @@ const getScene = (gift, receive) => {
 		scene: getScene(state.order.gift, state.receive)
 	}),
 	dispatch => ({
-	  share: actions.shareOrder
+	  share: actions.shareOrder,
+		enterOrderReceive: (next, ctx) => dispatch(actions.enterOrderReceive(next, ctx))
 	})
 )
 export default class OrderReceive extends riot.Tag {
@@ -46,9 +48,7 @@ export default class OrderReceive extends riot.Tag {
 		`;
   }
 	
-  onCreate(opts) {
-		
-  }
-
+	@onUse([interruptors.isNotSender, 'enterOrderReceive'])
+  onCreate(opts) {}
 
 }

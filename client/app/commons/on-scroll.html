@@ -48,7 +48,9 @@
 		this.doCheck = () => {
 			setTimeout(() => {
 				if(this.isBottom() && !(!!this.opts.infiniteScrollDisabled)){
-					this.opts.infiniteScroll();
+					$.util.throttle(() => {
+						this.opts.infiniteScroll();
+					}, 50)
 				}
 			}, 0)
 		}

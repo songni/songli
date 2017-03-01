@@ -1,4 +1,4 @@
-import router from './router';
+import router, { onUse } from './riot-router/router';
 import Component from './riot-tag';
 import Application from './application';
 import { provider, Connect } from './riot-redux';
@@ -34,4 +34,13 @@ hub.setHandler(function handler(direction, tag){
 	router.app.store.dispatch({type: actionType, payload: tag})
 })
 
-export { Component, router, Application as Ninjia, provider, Connect, View, Form }
+export { 
+	Component, 
+	router, 
+	Application as Ninjia, 
+	provider, 
+	Connect, 
+	View, 
+	Form,
+	onUse
+}

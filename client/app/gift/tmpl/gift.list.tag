@@ -11,13 +11,8 @@
       >
       <div class="list_img" style="width: { parent.parent.opts.clientWidth/2}px; height: { parent.parent.opts.clientWidth/2  -12 }px;" >
         <img 
-          riot-src="{ 'http://' + config.phtUri + gift.info.cover }" 
+          riot-src="{ gift.info.cover ? 'http://' + config.phtUri + gift.info.cover : app.config.images.GIFT_DEF_COVER }" 
           if="{ gift.info.cover }" 
-          style="width: { parent.parent.opts.clientWidth/2 -12 }px; height: { parent.parent.opts.clientWidth/2  -12 }px;"
-        >
-        <img 
-          riot-src="{ 'https://img.91pintuan.com/songli/rose_demo.png' }" 
-          if="{ !gift.info.cover }"
           style="width: { parent.parent.opts.clientWidth/2 -12 }px; height: { parent.parent.opts.clientWidth/2  -12 }px;"
         >
       </div>

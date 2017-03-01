@@ -67,7 +67,7 @@ let transpileServer = lazypipe()
     });
 
 gulp.task("webpack:pro", cb => {
-    const config = require('../webpack.config');
+    const config = require('./webpack.config');
     webpack(config, (err, stats) => {
         if(err) throw new gutil.PluginError("webpack", err);
         plugins.util.log("[webpack]", stats.toString());

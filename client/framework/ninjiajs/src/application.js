@@ -1,7 +1,7 @@
 import riot from 'riot'; 
 import { configureStore } from './store';
 import riotRouterRedux from './riot-router-redux';
-import router from './router';
+import router from './riot-router/router';
 import { provide, connect } from './riot-redux';
 import formReducer from './riot-redux-form/reducer';
 

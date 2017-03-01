@@ -1,0 +1,131 @@
+.order_detail{
+  background: $gray-bg;
+  @extend .init-page;
+  .order_wrap{
+    display: block;
+    border-radius: 4px;
+    .order_cont{
+      background: #FFFFFF;
+      border-radius: 4px;
+      .order_head{
+        height: 85px;
+        border-bottom: 5px solid #F2F2F2;
+        span{
+          display: block;
+          &:first-child{
+            float: left;
+            width: 65px;
+            height: 65px;
+            padding: 10px;
+            img{
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+          &:last-child{
+            @include font-hidden(3);
+            float: right;
+            color: #231815;
+            vertical-align: top;
+            margin-left: 10px;
+            padding-top: 10px;
+          }
+        }
+      }
+      .order_main{
+        border: 5px solid #F2F2F2;
+        padding: 10px 15px;
+        ul{
+          li{
+            width: 100%;
+            height: 35px;
+            line-height: 35px;
+            font-size: 14px;
+            span{
+              &:nth-child(1){
+                color: #B5B5B6;
+              }
+              &:nth-child(2){
+                color: #231815;
+              }
+            }
+            em{
+              float: right;
+              margin-right: 10px;
+              font-style: normal;
+              color: #B5B5B6;
+            }
+          }
+        }
+      }
+      .order_state{
+        border: 5px solid #F2F2F2;
+        padding: 10px 0 10px 15px;
+        .title{
+          height: 45px;
+          border-bottom: 1px solid #F2F2F2;
+          span{
+            display: block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #B5B5B6;
+          }
+        }
+        ul{
+          li{
+            height: 50px;
+            line-height: 50px;
+            font-size: 14px;
+            span{
+              &:nth-child(1){
+                color: #231815;
+              }
+              &:nth-child(2){
+                color: $pink-btn;
+                float: right;
+                margin-right: 20px;
+                em{
+                  font-style: normal;
+                  display: inline-block;
+                  &:first-child{
+                    color: $pink-btn;
+                  }
+                  &:last-child{
+                    width: 7px;
+                    height: 18px;
+                    img{
+                      width: 100%;
+                      vertical-align: -1px;
+                    }
+                  }
+                }
+              }
+            }
+            a{
+              display: inline-block;
+              font-size: 14px;
+              float: right;
+              margin-right: 20px;
+              em{
+                font-style: normal;
+                display: inline-block;
+                &:first-child{
+                  color: $pink-btn;
+                }
+                &:last-child{
+                  width: 7px;
+                  height: 18px;
+                  img{
+                    width: 100%;
+                    vertical-align: -1px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

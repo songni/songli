@@ -91,14 +91,22 @@ const forms = (forms = initForm , action) => {
 					return Object.keys(errors).length > 0
 				}).length > 0
 			}
+
+			let inputsKeys = Object.keys(inputsMap);
 			
-			if (isInvalid()) {
-				formMeta.$invalid = true;
-				formMeta.$valid = false;
-			} else {
+			if (inputsKeys && inputsKeys.length <= 0) {
 				formMeta.$invalid = false;
 				formMeta.$valid = true;
+			} else {
+				if (isInvalid()) {
+					formMeta.$invalid = true;
+					formMeta.$valid = false;
+				} else {
+					formMeta.$invalid = false;
+					formMeta.$valid = true;
+				}
 			}
+			
 			let o = Object.assign({}, {[objArrToUpdate.form]: {}}, {[objArrToUpdate.form]: {...formMeta}})
 			return Object.assign({}, forms, o)
 
@@ -107,6 +115,11 @@ const forms = (forms = initForm , action) => {
 		
 			return Object.assign({}, forms, { [formName]:  {...forms[formName], ...{ $submitted: true }}})
 
+		case 'form/valid':
+			formName = action.payload;
+		
+			return Object.assign({}, forms, { [formName]:  {...forms[formName], ...{ $invalid: false, $valid: true }}})
+		
 		case 'form/unsubmit':
 			formName = action.payload;
 		

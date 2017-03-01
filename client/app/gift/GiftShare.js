@@ -1,15 +1,16 @@
 import riot from 'riot';
 import route from 'riot-route';
 import actions from './gift.actions';
-import { Connect, View } from '../../framework/ninjiajs/src/index';
+import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
 
 @View
 @Connect(state => ({
 	gift: state.gift,
 	clientWidth: state.clientWidth,
-	suborders: state.suborders
+	suborders: state.suborders,
+	receivedCount: state.suborders.length
 }), dispatch => ({
-	enterGiftShare: ctx => dispatch(actions.enterGiftShare(ctx))
+	enterGiftShare: (next, ctx) => dispatch(actions.enterGiftShare(next, ctx))
 }))
 export default class GiftShare extends riot.Tag {
 	static originName = 'gift-share'
@@ -19,13 +20,9 @@ export default class GiftShare extends riot.Tag {
 	get tmpl() {
 		return require('./tmpl/gift.share.tag');
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(async (next, ctx) => {
-			await this.opts.enterGiftShare(ctx);
-			next();
-		})
-	}
+
+	@onUse('enterGiftShare')
+	onCreate(opts) {}
 
 	getSuborderInfo(gift, suborder) {
 		if (gift && gift.info && gift.info.benedictory && gift.info.benedictory.content) {

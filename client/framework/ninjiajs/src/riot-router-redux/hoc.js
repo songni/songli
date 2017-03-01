@@ -98,10 +98,10 @@ export default function View(WrappedComponent) {
 			onSubscribe(s) {
 				let state = this.getStore().getState()
 				let action = state.lastAction;
-				
 				if(
 					View.concerns.some(a => action.type === a) && 
-					Object.keys(state.route.$views).length > 0 &&
+					// todo
+					// Object.keys(state.route.$views).length > 0 &&
 					action.payload === this
 				){
 					this.renderForView(state)

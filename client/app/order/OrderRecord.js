@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { Connect, View, Form } from '../../framework/ninjiajs/src/index';
+import { Connect, View, Form, onUse } from '../../framework/ninjiajs/src/index';
 import Wechat from '../../framework/wechat/index';
 import actions from './order.actions';
 
@@ -8,12 +8,13 @@ import actions from './order.actions';
 @Form({
 	name: {
 		required: true,
-		minlength: 2,
+		minlength: 1,
 		maxlength: 20
 	},
 	capacity: {
 	  required: true,
-	  min: 2
+	  min: 2,
+		max: 9999
 	}
 })
 @Connect(
@@ -34,10 +35,9 @@ export default class OrderRecord extends riot.Tag {
 	get tmpl() {
 		return require(`./tmpl/order.record.tag`);
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use((next, ctx) => this.opts.enterOrderRecord.apply(this, [next, ctx, this]))
-	}
+	
+	@onUse('enterOrderRecord')
+	onCreate(opts) {}
   
   reduCapacity() {
     let { dispatch, getState } = app.store;
@@ -54,38 +54,6 @@ export default class OrderRecord extends riot.Tag {
 		let capacity = getState().order.capacity;
 		dispatch({type: 'order/update', payload: {capacity: ++capacity}})
   }
-  
-	async record() {
-		let { dispatch } = app.store
-		await Wechat.startRecord();
-		this.tags['order-record-timer'].trigger('timer:start');
-		dispatch({type: 'record/update', payload: {
-			start: true,
-			stop: false,
-			record: false
-		}})
-	}
-
-	async stop() {
-		let { dispatch } = app.store
-		let me = this;
-		let res = await Wechat.stopRecord();
-		me.tags['order-record-timer'].trigger('timer:stop');
-		dispatch({type: 'order/update', payload: { localId: res.localId }})
-		dispatch({type: 'record/update', payload: { start: false, record: true }})
-	}
-
-	rerecord() {
-		let { dispatch } = app.store
-		this.tags['order-record-timer'].trigger('timer:init');
-		dispatch({ type: 'record/reset' });
-	}
-
-	playVoice() {
-		let order = app.store.getState().order;
-		this.tags['order-record-timer'].trigger('timer:play');
-		Wechat.playVoice({ localId: order.localId});
-	}
 
 	async onSubmit(e) {
 		let { dispatch, getState } = app.store;
@@ -111,6 +79,6 @@ export default class OrderRecord extends riot.Tag {
 		}
 		dispatch({type: 'order/update', payload: order})
 		localStorage.setItem("order:recorded", JSON.stringify(order));
-		location.href = `/wepay?showwxpaytitle=1&component=OrderPay`;
+		location.href = `/wepay/?showwxpaytitle=1&component=OrderPay`;
 	}
 }

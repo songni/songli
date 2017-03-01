@@ -29,6 +29,8 @@ const initGifts = {
 }
 const gifts = (gifts = initGifts, action) => {
 	switch (action.type) {
+		case 'gifts/reset':
+		 	return initGifts;
 		case 'gifts/init': 
 			return Object.assign({}, gifts, action.payload);
 		case 'gifts/params/update':

@@ -41,9 +41,7 @@ export default class MerchantInfo extends riot.Tag {
     `;
   }
   
-  onCreate(opts) {
-    
-  }
+  onCreate(opts) {}
   
   
   dismiss() {

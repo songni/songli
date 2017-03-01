@@ -71,7 +71,7 @@ export default class RouterOutlet extends riot.Tag {
 						if (res.filter(r => r.component.displayName === c.displayName).length <= 0) {
 							route.component = c;
 							res.push(route);
-						}	
+						}
 					})
 				} else {
 					if (res.filter(r => r.component.displayName === route.component.displayName).length <= 0) {

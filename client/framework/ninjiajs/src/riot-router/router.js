@@ -1,8 +1,9 @@
 "use strict";
-import riot from 'riot';
-import route from 'riot-route';
-import $ from './util';
-
+import riot from 'riot'
+import route from 'riot-route'
+import $ from '../util'
+import invariant from './invariant'
+import Util from './util'
 /**
  * Riot router version 4.
  * updates v2:
@@ -164,8 +165,10 @@ class Hub {
      * @return lean req {Request|Boolean}
      */
     match(rule, uri){
-        let parts = Util.distinct(rule.split('/').map(r => Util.completePart(r)));
-        let fragments = Util.distinct(uri.split('/').map(r => Util.completePart(r)));
+        // let parts = Util.distinct(rule.split('/').map(r => Util.completePart(r)));
+        // let fragments = Util.distinct(uri.split('/').map(r => Util.completePart(r)));
+        let parts = rule.split('/').map(r => Util.completePart(r));
+        let fragments = uri.split('/').map(r => Util.completePart(r));
         if(
             !rule || 
             !uri || 
@@ -229,12 +232,12 @@ class Hub {
                 !ctx.req.body && (ctx.req.body = {});
                 Object.assign(ctx.req.body, Util.omit(route, "resolve", "redirectTo", "tag", "path", "name") || {});
                 route.location = Util.completePart(hint);
-                components[index] = {
+                components.push({
                     param: { ...matchRes },
                     ctx: Object.assign({}, ctx),
                     route
-                };
-                break;
+                })
+                break
             }
         }
 
@@ -257,15 +260,14 @@ class Hub {
         let lastComponent = components[components.length - 1];
         // route to a abstract route, redirect to default route
         if (lastComponent && lastComponent.route.abstract) {
-            console.warn(`cannot transition to a abstract state(${lastComponent.route.path})`);
-            return this.routeToDefault();
+            invariant(`cannot transition to a abstract state(${lastComponent.route.path})`);
+            return this.routeToDefault()
         }
-
         // set currently state
-        this.currHints = components;
+        this.currHints = components
         this.recurResolveRoutes(ctx, this.currHints, this.prevHints, [], [], this.loopRouteTo.bind(this));
         // set previously state
-        this.prevHints = components;
+        this.prevHints = components
     }
 
     routeToDefault(refresh) {
@@ -278,8 +280,15 @@ class Hub {
 
     leaveTags(leaves, to){
         for (let i=leaves.length-1, len=leaves.length; i>=0; i--) {
-            let leave = leaves[i];
-            let tag = leave.route.tag;
+            let leave = leaves[i]
+            let tag = leave.route.tag
+            if (!leave) {
+                break
+            }
+            if (!tag) {
+                invariant(`failed to leave tag with route, [path]=${leave.route.path}`);
+                break
+            }
             if (!to) {
                 let toRoute = this.refinedRoutes.filter(r => r.id === leave.route.parent)[0]
                 if (toRoute) {
@@ -294,9 +303,9 @@ class Hub {
                     tag.update();
                 }
             } else {
-                tag.unmount(true);
-                tag.parent.update();
-                delete leave.route['tag'];
+                tag.unmount(true)
+                tag.parent.update()
+                delete leave.route['tag']
             }
             
             if(this.handler){
@@ -310,11 +319,15 @@ class Hub {
             return;
         }
         let enter = enters[0];
+        // for path define inline like ('/foo/bar')
+        if (!enter) {
+            return this.recurEnterTags(enters.slice(1), ++index)
+        }
         let { route, ctx } = enter;
         let { tag, path, component } = route;
         
         if (!enter) {
-            console.info('404');
+            invariant('404')
             recurEnter(enters.slice(1));
         } else {
             this.state.hint = path; 
@@ -335,7 +348,7 @@ class Hub {
                         outletEl = outlet.parent.root.querySelector(`div[data-tag-name="${Constr.displayName}"]`);
                         tag = new Constr(outletEl, {parent: outlet.parent});
                         if (!Constr) {
-                            console.warn(`component provider expected a component.`);
+                            invariant(`component provider expected a component.`);
                             return this.routeToDefault(true);
                         }
                     } else {
@@ -389,8 +402,8 @@ class Hub {
      * @param index {Number}
      */
     recurResolveRoutes(ctx, remainCurrHints, remainPrevHints, enters, leaves, callback, index = 0){
-        let currHint = remainCurrHints[0];
-        let prevHint = remainPrevHints[0];
+        let currHint = remainCurrHints[0]
+        let prevHint = remainPrevHints[0]
         // end of the curr hints ?
         if (!remainCurrHints.length) {
             if (remainPrevHints.length) {
@@ -649,140 +662,54 @@ class Hub {
     }
 }
 
-class Util {
-    static distinct(arr){
-        let res = [];
-        for(let i=0, len=arr.length; i<len; i++){
-            let o = arr[i];
-            if(res.indexOf(o) < 0){
-                res.push(o);
-            }
-        }
-        return res;
-    }
-
-    static flatAndComposePrefix = (node, res) => {
-        var arr = node.children;
-        if(!arr){
-            return;
-        }
-        for (var i=0, len=arr.length; i<len; i++) {
-            let route = arr[i];
-            route.path = (node.path || '') + route.path;
-            route.parent = node.id || '';
-            route.id = Util.genId(8);
-            res.push(route);
-            Util.flatAndComposePrefix(route, res)
-        }
-    }
-
-    static genId(n){
-        let chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-        let res = "";
-        for(let i = 0; i < n ; i ++) {
-                let id = Math.ceil(Math.random()*35);
-                res += chars[id];
-        }
-        return res;
-    }
-
-    static completePart(uri){
-        return uri.startsWith('/') ? uri : ('/' + uri);
-    }
-
-    static assert(val, msg){
-        if(!val){
-            throw new Error(msg);
-        }
-    }
-    
-    static omit(o, ...params){
-        var res = {};
-        for(var p in o){
-            if(params.indexOf(p) < 0){
-                res[p] = o[p]
-            }
-        }
-        return res;
-    }
-
-    static compareUrl(u1, u2){
-        var r = [];
-        var arr1 = u1.split('/');
-        var arr2 = u2.split('/');
-        for(var i = 0, len = arr1.length; i<len; i++){
-            if(arr1[i] === arr2[i]){
-                r.push(arr1[i]);
-            }else{
-                break;
-            }
-        }
-        return r.join('/')
-    }
-
-    static isEqual(o1, o2){
-        let len = Object.keys(o1).length;
-        let res = 0;
-        if (len != Object.keys(o2).length) {
-            return false;
-        }
-        for (let prop in o1) {
-            if (o1[prop] === o2[prop]) {
-                res++;
-            }
-        }
-        return res === len;
-    }
-
-    static combineUriParts(parts, i, combined){
-        if(!parts.length || i<=0){
-            return combined;
-        }
-        let uri = parts[i-1] + '/' + combined;
-        return Util.combineUriParts(parts, --i, uri);
-    }
-
-    static composeObject(ks, vs){
-        var o = {};
-        if(!Array.isArray(ks) || !Array.isArray(vs) || ks.length != vs.length){
-            return o;
-        }
-        ks.forEach((k, index) => {
-            o[k] = vs[index]
-        });
-        return o;
-    }
-
-    static getParams(fn){
-        if(typeof fn != 'function') throw new Error('Failed to get Param on ' + typeof fn);
-        var argO = fn.toString().match(/\(.*\)/).toString();
-        if(argO.length<=2) return null;
-        var argArr = argO.substr(1, argO.length-2).split(',');
-        return argArr.map(function(a){
-            return a.trim();
-        });
-    };
-
-    static extractParams(path){ 
-        return path.match(/_[a-zA-Z0-9:]+/g)
-    }
-
-    static toPattern(route){
-        return route.replace(/_[a-zA-Z0-9:]+/g, "*");   
-    }
-
-    static nextTick(fn){
-        return setTimeout(fn, 0);
-    }
-
-}
-
 var hub = new Hub(riot.observable());
 
 export default { 
-	hub: hub,
-	$use: function(fn){
-        !this.$mws && (this.$mws = []);
-        this.$mws.push(fn);
-	}
+  hub: hub,
+  $use: function(fn){
+    !this.$mws && (this.$mws = []);
+    this.$mws.push(fn);
+  }
 };
+
+export function onUse(fnArray) {
+  return function(target, key, descriptor) {
+    let originOnCreate = descriptor.value;
+    if (!descriptor.$originOnCreate) {
+      descriptor.$originOnCreate = originOnCreate;
+    }
+    descriptor.value = function(opts) {
+      if (
+        descriptor.$originOnCreate &&
+        !descriptor.$originOnCreateInvocated
+      ) {
+        descriptor.$originOnCreate.apply(this, [opts])
+        descriptor.$originOnCreateInvocated = true;
+      }
+      if (!this.$mws || !this.$mws.length) {
+        this.mixin('router');
+      }
+      this.one('leave', () => {
+        descriptor.$originOnCreateInvocated = false;
+      })
+      this.one('unmount', () => {
+        descriptor.$originOnCreateInvocated = false;
+      })
+      if (!Array.isArray(fnArray)) {
+        fnArray = [fnArray]
+      }
+      fnArray.forEach(fn => {
+        this.$use((next, ctx) => {
+          if (typeof fn === 'string') {
+            fn = this.opts[fn];
+            if (!fnArray) {
+              invariant(`[onUse]: Error not such a ${fnArray} in opts`)
+            }
+          }
+          return fn.apply(this, [next, ctx, this])
+        });
+      })
+    }
+    return descriptor;
+  }
+}

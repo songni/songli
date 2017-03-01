@@ -1,0 +1,75 @@
+// bigpack commons style
+.pack_title{
+  width: 100%;
+  height: 60px;
+  background: #f7f7f7;
+  border-radius: 4px 4px 0 0;
+  span{
+    display: block;
+    float: left;
+  }
+  span:first-child{
+    width: 45px;
+    height: 60px;
+    vertical-align: top;
+    img{
+      width: 30px;
+      height: 30px;
+      margin-left: 15px;
+      margin-top: 15px;
+    }
+  }
+  span:last-child{
+    color: #898989;
+    font-size: 14px;
+    margin-top: 20px;
+    margin-left: 7px;
+  }
+}
+
+.bigpack_subscribe{
+  background: $red-bg;
+  @extend .init-page;
+  .subscribe_wrap{
+    margin: 12px 12px 0 12px;
+    border-radius: 4px;
+    .subscribe_cont{
+      background: #FFFFFF;
+      border-radius: 4px;
+      .mer_code{
+        padding-bottom: 50px;
+        .explain{
+          text-align: center;
+          span{
+            display: block;
+            color: #f05b47;
+          }
+          span:first-child{
+            margin-top: 75px;
+          }
+          span:last-child{
+            margin-bottom: 30px;
+          }
+        }
+        .merchant_name{
+          text-align: center;
+          color: #b7bdcb;
+          font-size: 18px;
+        }
+        .merchant_code{
+          position: relative;
+          margin: 0 auto;
+          margin-top: 10px;
+          img{width: 100%;}
+        }
+        .radius{
+          img{width: 10px;position: absolute;}
+          img:nth-child(1){top: 0;left: 0;}
+          img:nth-child(2){top: 0;right: 0;}
+          img:nth-child(3){bottom: 0;right: 0;}
+          img:nth-child(4){bottom: 0;left: 0;}
+        }
+      }
+    }
+  }
+}

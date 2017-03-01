@@ -99,6 +99,9 @@ export default function Form(inputRulePairs) {
 						inputs.forEach(input => {
 							this.validate(input, input.value)
 						})
+						if (!inputs || !inputs.length) {
+							store.dispatch({type: 'form/valid', payload: formName})		
+						}
 					})
 					
 					store.dispatch({type: 'form/submit', payload: formName})

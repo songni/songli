@@ -11,12 +11,5 @@ export default class Bigpack extends riot.Tag {
 	get tmpl() {
 		return `<router-outlet></router-outlet>`;
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(this.onUse)
-	}
-
-	async onUse(next) {
-		next();
-	}
+	onCreate(opts) {}
 }

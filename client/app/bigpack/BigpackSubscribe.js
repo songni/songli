@@ -6,7 +6,8 @@ import { View, Connect } from '../../framework/ninjiajs/src/index';
 @Connect(
 	state => ({
 		merchant: state.merchant,
-		order: state.bigpack
+		order: state.bigpack,
+		clientWidth: state.clientWidth,
 	})
 )
 export default class BigpackSubscribe extends riot.Tag {

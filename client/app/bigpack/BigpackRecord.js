@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View, Connect, Form } from '../../framework/ninjiajs/src/index';
+import { View, Connect, Form, onUse } from '../../framework/ninjiajs/src/index';
 import Wechat from '../../framework/wechat/index';
 import actions from './bigpack.actions';
 
@@ -14,7 +14,9 @@ import actions from './bigpack.actions';
 @Connect(
 	state => ({
 		merchant: state.merchant,
-		order: state.order
+		order: state.bigpack,
+		user: state.user,
+		recordState: state.record
 	}),
 	dispatch => ({
 		enterBigpackRecord: (next, ctx) => dispatch(actions.enterBigpackRecord(next, ctx))
@@ -31,16 +33,15 @@ export default class BigpackRecord extends riot.Tag {
 		return require('./tmpl/bigpack.record.tag');
 	}
 
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use((next, ctx) => this.opts.enterBigpackRecord(next, ctx))
-	}
+	@onUse('enterBigpackRecord')
+	onCreate(opts) {}
 
 	async onSubmit(e) {
 		e.preventDefault()
 		let { dispatch, getState } = app.store;
-		let { bigpack } = getState();
+		let { bigpack, user } = getState();
 		this.opts.submit('bigpackRecordForm')
+
 		if (this.opts.forms.bigpackRecordForm.$invalid) {
 			return;
 		}
@@ -50,9 +51,11 @@ export default class BigpackRecord extends riot.Tag {
 			isShowProgressTips: 1
 		});
 		bigpack.serverId = res.serverId;
-		dispatch({type: 'bigpack/update', payload: bigpack})
-		
+		bigpack.name = this.refs['name'].value;
 		await $.post(`/gift/order/${ bigpack.id }/complete`, bigpack)
+		bigpack.sender = user;
+		dispatch({type: 'order/update', payload: bigpack})
+		let { order } = getState();
 		route(`/order/${ bigpack.id }/ready`);
 	}
 }

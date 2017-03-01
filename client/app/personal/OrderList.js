@@ -13,12 +13,6 @@ export default class PersonalOrderList extends riot.Tag {
 			<order-list force="true" personal="true"></order-list>
 		`;
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(this.onUse)
-	}
 
-	async onUse(next) {
-		next();
-	}
+	onCreate(opts) {}
 }

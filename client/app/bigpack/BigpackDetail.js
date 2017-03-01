@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View, Connect } from '../../framework/ninjiajs/src/index';
+import { View, Connect, onUse } from '../../framework/ninjiajs/src/index';
 import actions from './bigpack.actions';
 
 @View
@@ -8,6 +8,7 @@ import actions from './bigpack.actions';
 	state => ({
 		merchant: state.merchant,
 		order: state.bigpack,
+		clientWidth: state.clientWidth,
 		isUnavailable: state.bigpack && state.bigpack.sender && state.bigpack.sender.id
 	}),
 	dispatch => ({
@@ -22,8 +23,6 @@ export default class BigpackDetail extends riot.Tag {
 	get tmpl() {
 		return require('./tmpl/bigpack.detail.tag');
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use((next, ctx) => this.opts.enterBigpackDetail(next, ctx))
-	}
+	@onUse('enterBigpackDetail')
+	onCreate(opts) {}
 }

@@ -6,7 +6,8 @@ import Wechat from '../../framework/wechat/index';
 @Component
 @Connect(
 	state => ({
-		recordState: state.record
+		recordState: state.record,
+		order: state.order
 	})
 )
 export default class OrderRecordVoice extends riot.Tag {

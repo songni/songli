@@ -60,9 +60,9 @@ export default class OrderReadyOne2Many extends riot.Tag {
                 if="{ opts.order.receivers && opts.order.receivers.length && opts.order.receivers.length === opts.order.capacity }">继续送礼
               </a>
             </div>
-            <!--receive gifts interact information-->
-            <order-interact order="{ opts.order }"></order-interact>
           </div>
+          <!--receive gifts interact information-->
+          <order-interact></order-interact>
         </div>
         <!--Bottom mark-->
         <icon-href theme="{ white }"></icon-href'>

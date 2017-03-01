@@ -40,26 +40,32 @@ class WechatJsApiProxy {
 		'openProductSpecificView',
 		'addCard',
 		'chooseCard',
-		'openCard'
+		'openCard',
+		'editAddress'
 	]
 
 	constructor() {
 		this.cmdQueue = new CmdQueue();
-
+		this.configList = WechatJsApiProxy.methods;
+		this.init();
 		WechatJsApiProxy.methods.forEach(m => {
 			let me = this;
 			me[m] = (...args) => {
 				let promise = new Promise((resolve, reject) => {
 					me.cmdQueue.enqueue({
+						$location: window.location.href,
 						method: m,
 						args,
 						ctx: me,
+						resolve,
+						reject,
 						done: o => {
 							if (o.type === 'fail' || o.type === 'cancel') {
 								let errMsg = `[wx:jssdk] Reject action. [method]: ${m}, [type]: ${o.type}, [reason]: ${o.payload && o.payload.errMsg}`;
 								let err  = new Error(errMsg);
 								err.type = o.type;
-								return reject(err);
+								err.originMsg = o.payload && o.payload.errMsg || null;
+								return reject(err.originMsg);
 							}
 							resolve(o.payload);
 						}
@@ -75,20 +81,34 @@ class WechatJsApiProxy {
 		})
 	}
 
-	async config(apiList = WechatJsApiProxy.methods) {
-		let absUrl = location.href;
+	async init () {
+		await this.waitForWxJsApi(1000);
+		wx.error(function(res){
+			// alert(JSON.stringify(res));
+			// this.config();
+		});
+	}
+
+	async waitForWxJsApi(time = 50) {
+		if (typeof wx === 'undefined') {
+			setTimeout(async () => {
+				await this.waitForWxJsApi(time);
+			}, time)
+		}
+		console.info('[wx:jssdk]: wx is ready.')
+	}
+
+	async config(apiList) {
+		let absUrl = location.href; 
 		let data = await $.get('/wechat/sign/jssdk?type=jsapi&url=' + encodeURIComponent(absUrl).replace('%3A', ':'));
+		if (!apiList) {
+			apiList = WechatJsApiProxy.methods;
+		}
 		if (!Array.isArray(apiList)) {
-			console.warn(`[wx:jssdk]: wx config expected a array, but ${typeof apiList}`);
+			alert(`[wx:jssdk]: wx config expected a array, but ${typeof apiList}`);
 			return;
 		}
-		for (let i=0, len=apiList.length; i<len; i++) {
-			let curr = apiList[i];
-			if (WechatJsApiProxy.methods.indexOf(curr) < 0) {
-				console.warn(`[wx:jssdk]: [config] invalid js api, ${curr}`);
-				return;
-			}
-		}
+
 		let config = {
 			debug: false,
 			appId: data.appId,
@@ -97,38 +117,38 @@ class WechatJsApiProxy {
 			signature: data.signature,
 			jsApiList: apiList
 		};
+		this.configList = apiList;
+
 		wx.config(config);
 	}
 
-	async ready() {
-		let promise = new Promise((resolve, reject) => {
+	async ready($location) {
+		let promise = new Promise(async (resolve, reject) => {
 			let timeout = setTimeout(() => {
-				reject(new Error('wx js sdk timeout.'));
-			}, 5000)
+				reject(`wx js api is timeout.`)
+			}, 5000);
 			if (UserAgent.isiOS) {
+				done();
+			} else {
+				this.config().then(done)
+			}
+			function done () {
+				
 				wx.ready(function() {
 					resolve()
 					clearTimeout(timeout)
 					return;
-				})
-			} else {
-				this.config().then(() => {
-					wx.ready(() => {
-						resolve()
-						clearTimeout(timeout)
-						return;
-					})
 				})
 			}
 		})
 		await promise;
 	}
 
-	async exec({ method, args, done }) {
+	async exec({ method, args, done, $location, resolve, reject }) {
 		try {
-			await this.ready();
+			await this.ready($location);
 		} catch(e) {
-			throw e;
+			return;
 		}
 		let [ arg = {}, successCb, failCb, cancelCb, completeCb ] = args;
 		let originSuccess = arg.success
@@ -142,17 +162,17 @@ class WechatJsApiProxy {
 		function cancel(res) {
 			originCancel && originCancel();
 			cancelCb && cancelCb()
-			done({ type: 'cancel', payload: res});
+			done({ type: 'cancel', payload: res });
 		}
 		function fail(res) {
 			originFail && originFail();
 			failCb && failCb()
-			done({ type: 'fail', payload: res});
+			done({ type: 'fail', payload: res });
 		}
 		arg.success = success;
 		arg.fail = fail
 		arg.cancel = cancel
-		
+
 		wx[method].apply(wx, [arg])
 	}
 }
@@ -172,7 +192,7 @@ class CmdQueue {
 			}, time)
 		}
 		this.ready = true;
-		console.warn('[wx:jssdk]: wx is ready.')
+		console.info('[wx:jssdk]: wx is ready.')
 	}
 
 	enqueue(cmd) {

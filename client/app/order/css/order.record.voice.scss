@@ -1,0 +1,70 @@
+.voice-box{
+  padding: 25px 5%; 
+  .voice-process{
+    margin-bottom: 30px;
+    img{
+      height: 20px;
+      margin-bottom: 6px;
+    }
+    .progress{
+      width: 100%;
+      height: 42px;
+      -webkit-background-size: 3px 3px;
+      -moz-background-size: 3px 3px;
+      background-size: 3px 3px;
+      background-color: #FFFFFF;
+      background-image: -webkit-gradient(linear, 0 0, 100% 0, color-stop(.5, #DCDDDD), color-stop(.5, transparent), to(transparent));
+      background-image: -moz-linear-gradient(90deg, #DCDDDD 50%, transparent 50%, transparent);
+      background-image: -o-linear-gradient(90deg, #DCDDDD 50%, transparent 50%, transparent);
+      background-image: linear-gradient(90deg, #DCDDDD 50%, transparent 50%, transparent);
+      .progress-active{
+        height: 42px;
+        -webkit-background-size: 3px 3px;
+        -moz-background-size: 3px 3px;
+        background-size: 3px 3px;
+        background-color: #FFFFFF;
+        background-image: -webkit-gradient(linear, 0 0, 100% 0, color-stop(.5, #f05b47), color-stop(.6, transparent), to(transparent));
+        background-image: -moz-linear-gradient(90deg, #f05b47 60%, transparent 60%, transparent);
+        background-image: -o-linear-gradient(90deg, #f05b47 60%, transparent 60%, transparent);
+        background-image: linear-gradient(90deg, #f05b47 60%, transparent 60%, transparent);
+      }
+    }
+    .progress-time{
+      display: block;
+      color: #B5B5B5;
+      font-size: 18px;
+      font-weight: normal;
+      text-align: right;
+    }
+  }
+  .hint{
+    display: block;
+    font-size: 12px;
+    color: #AAAAAA;
+    margin-top: 10px;
+  }
+  .record-before{
+    text-align: center;
+    img{
+      display: block;
+      width: 30%;
+      margin: 0 auto;
+    }
+  }
+  .record-after{
+    img{width: 100%;}
+    .left-button{
+      width: 24%;
+      margin-right: 10px;
+      display: inline-block;
+      text-align: center;
+    }
+    .right-button{ 
+      width: 30%;
+      float: right;
+      margin-top: -15px;
+      text-align: center;
+      display: inline-block;
+    }
+  }
+}

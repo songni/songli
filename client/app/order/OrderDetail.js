@@ -1,9 +1,14 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View } from '../../framework/ninjiajs/src/index';
+import { Connect, onUse, View } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
 
 @View
+@Connect(null, 
+  dispatch => ({
+    enterOrderDetail: (next, ctx) => dispatch(actions.enterOrderDetail(next, ctx))
+  })
+)
 export default class OrderDetail extends riot.Tag {
   static originName = 'order-detail'
   get name() {
@@ -15,13 +20,6 @@ export default class OrderDetail extends riot.Tag {
 		`;
   }
   
-  onCreate(opts) {
-		this.mixin('router');
-		this.$use(this.onUse.bind(this))
-  }
-
-	async onUse(next, ctx) {
-		await app.store.dispatch(actions.getOrderById(ctx.req.params.id));
-		next();
-	}
+  @onUse('enterOrderDetail')
+  onCreate(opts) {}
 }

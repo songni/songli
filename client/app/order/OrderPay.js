@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { Connect, View } from '../../framework/ninjiajs/src/index';
+import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
 
 @View
@@ -10,20 +10,27 @@ import actions from './order.actions';
 		gift: state.gift
 	}),
 	dispatch => ({
-		enterOrderPay: (next, ctx, tag) => dispatch(actions.enterOrderPay(next, ctx, tag)),
+		enterOrderPay: (next, ctx) => dispatch(actions.enterOrderPay(next, ctx)),
 		wxPay: function(e){ return dispatch(actions.wxPay.apply(this))}
 	})
 )
 export default class OrderPay extends riot.Tag {
 	static originName = 'order-pay'
+
 	get name() {
 		return 'order-pay'
 	}
+
 	get tmpl() {
 		return require(`./tmpl/order.pay.tag`);
 	}
+
+	@onUse('enterOrderPay')
 	onCreate(opts) {
-		this.mixin('router');
-		this.$use((next, ctx) => this.opts.enterOrderPay(next, ctx, this))
+		this.on('mount', () => {
+			setTimeout(() => {
+				
+			}, 3000)
+		})
 	}
 }

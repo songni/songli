@@ -33,7 +33,7 @@ export default {
 			defaultRoute: true
 		},
 		{
-			path: '/wepay',
+			path: '/wepay/',
 			components: { OrderPay }
 		},
 		{

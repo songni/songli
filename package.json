@@ -14,6 +14,7 @@
   },
   "homepage": "https://github.com/songni/songli#readme",
   "dependencies": {
+    "alloylever": "^0.1.9",
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "composable-middleware": "^0.3.0",
@@ -41,6 +42,7 @@
     "riot-mixin-pack": "^0.2.0",
     "riot-route": "^3.0.2",
     "serve-favicon": "^2.3.2",
+    "weixin-js-sdk": "^1.2.0",
     "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {

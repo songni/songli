@@ -5,18 +5,15 @@ import { View } from '../../framework/ninjiajs/src/index';
 @View
 export default class Order extends riot.Tag {
 	static originName = 'order'
+	
 	get name() {
 		return 'order'
 	}
+
 	get tmpl() {
 		return `<router-outlet></router-outlet>`;
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(this.onUse)
-	}
 
-	async onUse(next) {
-		next();
+	onCreate(opts) {
 	}
 }

@@ -45,6 +45,7 @@ export default class OrderReceiveLogistics extends riot.Tag {
   }
   
   async onSubmit(e) {
+
     e.preventDefault();
     let { dispatch, getState } = app.store;
     let me = this;
@@ -53,7 +54,6 @@ export default class OrderReceiveLogistics extends riot.Tag {
     if (this.opts.forms.orderReceiveLogisticsForm.$invalid) {
       return;
     }
-
     let address = {
       consignee: this.refs['consignee'].value,
       telephone: this.refs['telephone'].value,

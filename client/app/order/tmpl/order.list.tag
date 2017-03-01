@@ -19,7 +19,7 @@
           <ul>
             <li>
               <span>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：</span>
-              <span>{ $.util.currency(order.gift.info.price) }</span>
+              <span>{ $.util.filter.currency(order.gift.info.price) }</span>
               <em>x{ order.capacity }</em>
             </li>
             <li>

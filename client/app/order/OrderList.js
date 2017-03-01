@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { Connect, View, Component } from '../../framework/ninjiajs/src/index';
+import { Connect, View, Component, onUse } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
 
 @Component
@@ -17,14 +17,15 @@ import actions from './order.actions';
 )
 export default class OrderList extends riot.Tag {
   static originName = 'order-list'
+  
   get name() {
     return 'order-list'
   }
+
   get tmpl() {
     return require('./tmpl/order.list.tag');
   }
-  onCreate(opts) {
-    this.mixin('router');
-    this.$use((next, ctx) => this.opts.enterOrderList(next, ctx));
-  }
+
+  @onUse('enterOrderList')
+  onCreate(opts) {}
 }

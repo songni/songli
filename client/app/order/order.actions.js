@@ -2,7 +2,11 @@ import Wechat from '../../framework/wechat/index';
 import route from 'riot-route';
 import giftActions from '../gift/gift.actions';
 
-const enterOrderPay = async (next, ctx, tag) => async (dispatch, getState) => {
+const enterOrderReceive = async (next, ctx) => async (dispatch, getState) => {
+  next();
+}
+
+const enterOrderPay = async (next, ctx) => async (dispatch, getState) => {
   let orderRaw = localStorage.getItem("order:recorded");
   if (!orderRaw) {
     widgets.Alert.add('warning', '当前订单已过期', 2000);
@@ -36,7 +40,7 @@ const wxPay = async function (tag) {
     }
     let data = await $.post(`/gift/${order.gift}/preorder`, order)
     try {
-      let res = await Wechat.chooseWXPay({
+      await Wechat.chooseWXPay({
         timestamp: data.timestamp,
         nonceStr: data.nonceStr,
         package: data.package,
@@ -45,16 +49,14 @@ const wxPay = async function (tag) {
       });
     } catch(e) {
       me.submitted = false;
-      if (o.type === 'cancel') {
+      if (e.type === 'cancel') {
         widgets.Alert.add('warning', app.config.errors.PAY_CANCEL.message, 2000);
       } else {
-        widgets.Alert.add('warning', app.config.errors.NETWORK_ERR.message, 2000);
+        widgets.Alert.add('warning', app.config.errors.PAY_FAIL.message, 2000);
       }
       return;
     }
-    
-    let url = `/gift/${order.gift}/order/${order.id}/ready`;
-    route(url);
+    route(`/order/${data.id}/ready`)
   }
 }
 
@@ -73,18 +75,15 @@ const enterOrderRecord = async (next, ctx, tag) => async (dispatch, getState) =>
   next();
 }
 
-const enterOrderState = async ctx => async (dispatch, getState) => {
+const enterOrderState = async (next, ctx) => async (dispatch, getState) => {
   let { order, user } = getState();
   if (order.sender.id === user.id) {
     return route(`/order/${order.id}/ready`);
   }
-  
+  next();
 }
 
 const enterOrderList = async (next, ctx, my) => async (dispatch, getState) => {
-  $scope.gifts = new GiftOrder({
-    my: true
-  });
   let orders = await $.get('/gift/order?my=true');
   dispatch({type: 'orders/update', })
   
@@ -113,30 +112,27 @@ const nextPage = async my => async (dispatch, getState) => {
 	dispatch({type: 'orders/unbusy', payload: true});
 }
 
-const enterOrderReady = async () => async (dispatch, getState) => {
-  let { order, user } = getState();
-
-  if (order.sender.id != user.id) {
-		widgets.Alert.add('danger', app.config.errors.NORIGHT_OPEN_PAGE.message, 2000);
-		return route('/');
-	}
-
+const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
+  let { order, user } = getState(); 
   let iconLiImgUrl = order.gift.info.cover ? app.config.phtUri + order.gift.info.cover : app.config.images.SHARE_DEF_COVER;
+  let link = location.origin + `/order/${ order.id }/state`
   let leanOptions = {
     title: order.sender.name + app.config.messages.SHARE_INFO + order.gift.info.name,
-    link: location.href,
+    link,
     imgUrl: iconLiImgUrl 
   };
   let options = {
     title: order.sender.name + app.config.messages.SHARE_INFO,
     desc: order.gift.info.name,
-    link: location.href,
+    link,
     imgUrl: iconLiImgUrl
   };
   Wechat.onMenuShareTimeline(leanOptions);
   Wechat.onMenuShareAppMessage(options);
   Wechat.onMenuShareQQ(options);
   Wechat.onMenuShareWeibo(options);
+  
+  next();
 }
 
 const enterOrderReadyOne2One = async () => async (dispatch, getState) => {
@@ -149,6 +145,11 @@ const enterOrderReadyOne2One = async () => async (dispatch, getState) => {
 	if (!isReceived(order) && order.gift.scene === 'logistics') {
 		dispatch({ type: 'order/receive/collection', payload: true });
 	}
+}
+
+const enterOrderDetail = async (next, ctx) => async (dispatch, getState) => {
+  await dispatch(getOrderById(ctx.req.params.id))
+  next();
 }
 
 const getOrderById = async id => async (dispatch, getState) => {
@@ -172,41 +173,46 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
     address.scene = 'logistics'; 
   }
   
-  let data = await $.post(`/gift/order/${ order.id }/address`, address);
+  try {
+    let data = await $.post(`/gift/order/${ order.id }/address`, address);
+    if (!data.rc) console.error('saveAddr', app.config.errors.NO_RES_CODE.message);
 
-  if (!data.rc) console.error('saveAddr', app.config.errors.NO_RES_CODE.message);
-
-  switch (data.rc) {
-    case 1: 
-      widgets.Alert.add('success', app.config.messages.GIFT_SAVED, 2000);
-      break;
-    case 2:
-      widgets.Alert.add('success', app.config.messages.NO_GIFT_LEFT, 2000);
-      break;
-    case 3:
-      widgets.Alert.add('success', app.config.messages.INFO_INCOMPLETE, 2000);
-      break;
-    case 4:
-      if(address.scene === 'logistics'){
-        return route(`/gift/${ order.gift.id }/share`)
-      }
-      if(address.scene === 'poi'){
-        if(user.subscribe){
-          return location.reload();	
+    switch (data.rc) {
+      case 1: 
+        widgets.Alert.add('warning', app.config.messages.GIFT_SAVED, 2000);
+        break;
+      case 2:
+        widgets.Alert.add('warning', app.config.messages.NO_GIFT_LEFT, 2000);
+        break;
+      case 3:
+        widgets.Alert.add('warning', app.config.messages.INFO_INCOMPLETE, 2000);
+        break;
+      case 4:
+        if(address.scene === 'logistics'){
+          return route(`/gift/${ order.gift.id }/share`)
         }
-        return route(`/order/${ order.id }/subscribe`)
-      }
-      break;
-    default:
-      widgets.Alert.add('warning', app.config.errors.SERVER_ERROR.message, 2000);
-      break;
+        if(address.scene === 'poi'){
+          if(user.subscribe){
+            return location.reload();	
+          }
+          return route(`/order/${ order.id }/subscribe`)
+        }
+        break;
+      default:
+        widgets.Alert.add('warning', app.config.errors.SERVER_ERROR.message, 2000);
+        break;
+    }
+  } catch (e) {
+    widgets.Alert.add('warning', app.config.errors.SERVER_ERROR.message, 2000);
   }
+  
 }
 
 
 
 
 export default {
+  enterOrderReceive,
   enterOrderPay,
   enterOrderRecord,
   enterOrderSubscribe,
@@ -214,6 +220,7 @@ export default {
 	enterOrderReadyOne2One,
   enterOrderState,
   enterOrderList,
+  enterOrderDetail,
   nextPage,
 	getOrderById,
 	shareOrder,

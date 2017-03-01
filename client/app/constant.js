@@ -20,10 +20,11 @@ let properties = {
   phtStl500: '@0o_1l_500w_90q.src',
   images: {
     SHARE_DEF_COVER: 'https://img.91pintuan.com/songli/icon-herf/default-img.png',
-    GIFTSHRAE_DEF_COVER: 'https://img.91pintuan.com/songli/icon-herf/present_sent_demo.png'
+    GIFTSHRAE_DEF_COVER: 'https://img.91pintuan.com/songli/icon-herf/present_sent_demo.png',
+    GIFT_DEF_COVER: 'https://img.91pintuan.com/songli/rose_demo.png'
   },
   messages: {
-    GIFT_SAVED: '你已经保存该礼物了',
+    GIFT_SAVED: '该礼物已被领取',
     NO_GIFT_LEFT: '手慢了，没有礼物了',
     INFO_INCOMPLETE: '信息不全',
     SHARE_INFO: '送给你一份礼物，快快收礼吧～',
@@ -48,6 +49,10 @@ let properties = {
     PAY_CANCEL: {
       code: 503,
       message: '您取消了支付'
+    },
+    PAY_FAIL: {
+      code: 504,
+      message: '支付错误'
     },
     NETWORK_ERR: {
       code: 502,

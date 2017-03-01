@@ -1,8 +1,9 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View, Connect } from '../../framework/ninjiajs/src/index';
+import { View, Connect, onUse } from '../../framework/ninjiajs/src/index';
 import moment from '../../framework/moment';
 import actions from './personal.actions';
+import interruptors from '../interruptors';
 
 const receivedNum = receivers => receivers && receivers.length || 0;
 const shippedNum = receivers => receivers && receivers.filter(r => r.status.shipping).length || 0;
@@ -75,7 +76,8 @@ const readTime = receivers => {
 		listenedNum: listenedNum(state.order.receivers),
 		receivedTime: receivedTime(state.order.receivers),
 		shippedTime: shippedTime(state.order.receivers),
-		readTime: readTime(state.order.receivers)
+		readTime: readTime(state.order.receivers),
+		clientWidth: state.clientWidth
 	}),
 	dispatch => ({
 		enterPersonalOrderInfo: (next, ctx) => dispatch(actions.enterPersonalOrderInfo(next, ctx))
@@ -83,20 +85,17 @@ const readTime = receivers => {
 )
 export default class PersonalOrderInfo extends riot.Tag {
 	static originName = 'personal-order-info'
+
 	get name() {
 		return 'personal-order-info'
 	}
+
 	get tmpl() {
 		return require('./tmpl/order.info.tag');
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use((next, ctx) => this.opts.enterPersonalOrderInfo(next, ctx))
-	}
 
-	async onUse(next) {
-		next();
-	}
+	@onUse([interruptors.isSender, 'enterPersonalOrderInfo'])
+	onCreate(opts) {}
 
 	received() {
 		if (this.opts.receivedNum) {

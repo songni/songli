@@ -9,7 +9,7 @@
         <span>{ opts.order.sender.info.nickname }的礼物</span>
       </div>
       <div class="receive_status">
-        <span class="gift_num">礼物已被领取</span>
+        <span class="gift_num">礼物已被领取</span> 
         <span class="receive_num">等待商家发货</span>
       </div>
       <div class="receiver_info">

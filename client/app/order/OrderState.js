@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { Connect, View } from '../../framework/ninjiajs/src/index';
+import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
 
 const isReceived = (order, user) => {
@@ -20,7 +20,7 @@ const isReceived = (order, user) => {
 		isReceived: isReceived(state.order, state.user)
 	}),
 	dispatch => ({
-		enterOrderState: ctx => dispatch(actions.enterOrderState(ctx))
+		enterOrderState: (next, ctx) => dispatch(actions.enterOrderState(next, ctx))
 	})
 )
 export default class OrderState extends riot.Tag {
@@ -34,12 +34,8 @@ export default class OrderState extends riot.Tag {
 			<order-pre-receive if="{ !opts.isReceived }"></order-pre-receive>
 		`;
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(async (next, ctx) => {
-			await this.opts.enterOrderState(ctx);
-			next();
-		})
-	}
+
+	@onUse('enterOrderState')
+	onCreate(opts) {}
 
 }

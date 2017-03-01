@@ -1,7 +1,7 @@
 import riot from 'riot';
 import route from 'riot-route';
 import actions from './gift.actions';
-import { Connect, View } from '../../framework/ninjiajs/src/index';
+import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
 
 @View
 @Connect(state => ({
@@ -9,7 +9,7 @@ import { Connect, View } from '../../framework/ninjiajs/src/index';
 	clientWidth: state.clientWidth
 }), dispatch => ({
 	nextPage: () => dispatch(actions.nextPage()),
-	enterGiftList: () => dispatch(actions.enterGiftList())
+	enterGiftList: (next, ctx) => dispatch(actions.enterGiftList(next, ctx))
 }))
 export default class GiftList extends riot.Tag {
 	static originName = 'gift-list'
@@ -19,14 +19,9 @@ export default class GiftList extends riot.Tag {
 	get tmpl() {
 		return require('./tmpl/gift.list.tag');
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(this.onUse)
-	}
 
-	async onUse(next) {
-		await this.opts.enterGiftList();
-		next();
+	@onUse('enterGiftList')
+	onCreate(opts) {
 	}
 
 	async onLink(e) {

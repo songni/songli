@@ -1,6 +1,6 @@
 import Wechat from '../../framework/wechat/index';
 
-const enterGiftShare = async ctx => async (dispatch, getState) => {
+const enterGiftShare = async (next, ctx) => async (dispatch, getState) => {
 	let limit = 20;
 	let id = ctx.req.params.id;
 	let orders = await $.get(`/gift/order/list/s?limit=${limit}&id=${id}`);
@@ -18,11 +18,11 @@ const enterGiftShare = async ctx => async (dispatch, getState) => {
 			}
 			dispatch({ type: '/gift/suborders/update', payload: suborders })
 	}
+	next();
 }
 
-const enterGiftList = async () => async (dispatch, getState) => {
-	await dispatch(nextPage());
-	
+const enterGiftList = async (next, ctx) => async (dispatch, getState) => {
+	dispatch({type: 'gifts/reset'});
 	let merchant = getState().merchant;
 	let leanOptions = {
 		title: merchant.info.name + app.config.messages.SHARE_DESC,
@@ -40,6 +40,8 @@ const enterGiftList = async () => async (dispatch, getState) => {
 	Wechat.onMenuShareAppMessage(options);
 	Wechat.onMenuShareQQ(options);
 	Wechat.onMenuShareWeibo(options);
+
+	next();
 }
 
 const nextPage = async () => async (dispatch, getState) => {
@@ -59,6 +61,27 @@ const nextPage = async () => async (dispatch, getState) => {
 			return;
 	}
 	dispatch({type: 'gifts/unbusy', payload: true});
+}
+
+const enterGiftDetail = async (next, ctx) => async (dispatch, getState) => {
+	let id = ctx.req.params.id;
+	await dispatch(getGiftById(id));
+	let { gift } = getState();
+	let iconLiImgUrl = gift.info.cover ? app.config.phtUri + gift.info.cover : app.config.images.SHARE_DEF_COVER;
+	let leanOptions = {
+		title: gift.info.name,
+		imgUrl: iconLiImgUrl 
+	};
+	let options = {
+		title: app.config.messages.SHARE_TITLE,
+		desc: gift.info.name,
+		imgUrl: iconLiImgUrl 
+	};
+	Wechat.onMenuShareTimeline(leanOptions);
+	Wechat.onMenuShareAppMessage(options);
+	Wechat.onMenuShareQQ(options);
+	Wechat.onMenuShareWeibo(options);
+	next();
 }
 
 const getGiftById = async id => async (dispatch, getState) => {
@@ -81,10 +104,9 @@ const getPois = async () => async (dispatch, getState) => {
 			latitude: res.latitude || 0,
 			longitude: res.longitude || 0
 		}); 
-		$.get('/wechat/poi?' + query).then(pois => {
-			dispatch({type: 'pois/update', payload: pois});
-			dispatch({type: 'poi/loaded', payload: true})
-		})
+		let pois = await $.get('/wechat/poi?' + query);
+		dispatch({type: 'pois/update', payload: pois});
+		dispatch({type: 'poi/loaded', payload: true});
   } else {
     const url = gift.poitag ? '/wechat/poi?tag=' + gift.poitag : '/wechat/poi';
     let pois = await $.get(url);
@@ -98,8 +120,9 @@ const selectPoi = poi => ({type: 'suborder/update', payload: { poi }})
 export default {
 	enterGiftList,
 	enterGiftShare,
+	enterGiftDetail,
 	nextPage,
-	getGiftById,
 	getPois,
-	selectPoi
+	selectPoi,
+	getGiftById
 }

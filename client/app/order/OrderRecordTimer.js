@@ -17,36 +17,36 @@ export default class OrderRecordTimer extends riot.Tag {
 			<span class="progress-time" id="second">{ countdown === 60 ? '&nbsp;' : (60 - countdown) + 'S' }</span>
 		`;
 	}
+	onInit() {
+		this.progress = 0;
+		this.countdown = 60;
+		this.maxtime = 60;
+		this.proRecorded = 0;
+		this.timeRecorded = 0;
+		this.startTime = 0;
+		this.endTime = 0;
+		this.interval && clearInterval(this.interval);
+		this.timeout && clearTimeout(this.timeout);
+	}
+
+	reset() {
+		clearInterval(this.interval);
+		clearTimeout(this.timeout);
+		this.interval = null;
+		this.timeout = null
+		this.progress = 0;
+		this.countdown = 60;
+	}
+
 	onCreate(opts) {
-		this.init = () => {
-			this.progress = 0;
-			this.countdown = 60;
-			this.maxtime = 60;
-			this.proRecorded = 0;
-			this.timeRecorded = 0;
-			this.startTime = 0;
-			this.endTime = 0;
-			this.interval && clearInterval(this.interval);
-			this.timeout && clearTimeout(this.timeout);
-		}
-
 		this.on('unmount', this.reset)
-
-		this.reset = () => {
-			clearInterval(this.interval);
-			clearTimeout(this.timeout);
-			this.interval = null;
-			this.timeout = null
-			this.progress = 0;
-			this.countdown = 60;
-		}
 
 		this.on('update', () => {
 			this.maxtime = parseInt(this.opts.maxtime, 10) || 60;
 			this.during = parseInt(this.opts.interval, 10) || 1000
 		})
 
-		this.on('timer:init', this.init.bind(this));
+		this.on('timer:init', this.onInit.bind(this));
 
 		this.on('timer:start', () => {
 			this.reset();
@@ -80,6 +80,7 @@ export default class OrderRecordTimer extends riot.Tag {
 			}, this.timeRecorded)
 		})
 
-		this.init();
+		this.onInit();
 	}
+
 }

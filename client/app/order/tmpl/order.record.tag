@@ -32,7 +32,9 @@
             <span> + </span>
           </button>
         </span>
+        <p if="{ opts.forms.orderRecordForm.$submitted && opts.forms.orderRecordForm.capacity.$error.required }" class="help-block">礼物份数至少是2份</p>
         <p if="{ opts.forms.orderRecordForm.$submitted && opts.forms.orderRecordForm.capacity.$error.min }" class="help-block">礼物份数至少是2份</p>
+        <p if="{ opts.forms.orderRecordForm.$submitted && opts.forms.orderRecordForm.capacity.$error.max }" class="help-block">礼物份数至多9999份</p>
       </div>
     </div>
     

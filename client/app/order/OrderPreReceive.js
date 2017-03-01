@@ -38,8 +38,6 @@ export default class OrderPreReceive extends riot.Tag {
 		return require(`./tmpl/order.pre.receive.tag`);
   }
 	
-  onCreate(opts) {
-    
-  }
+  onCreate(opts) {}
   
 }

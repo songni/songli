@@ -1,5 +1,6 @@
 <div class="voice-box">
 	<div class="voice-process">
+	  <!--{JSON.stringify(opts)}-->
 		<div if="{ opts.order.type === 'one2one' }"><img src="https://img.91pintuan.com/songli/word_say_to.png" /></div>
 		<div if="{ opts.order.type === 'one2many' }"><img src="https://img.91pintuan.com/songli/word-zhufu_newyear.png" /></div>
 		<order-record-timer interval="1000" countdown="60" autostart="false">

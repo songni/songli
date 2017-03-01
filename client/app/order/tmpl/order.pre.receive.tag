@@ -39,13 +39,11 @@
         <a if="{ !opts.isAvailable }" href="/gift/{ opts.order.gift.id }" class="btn_send">我也要送礼</a>
         <span if="{ opts.type === 'one2many' && opts.order.gift.scene === 'poi' }">领取后到店使用</span>
       </div>
-      
-      <order-interact
+    </div>
+    <order-interact
         if="{ opts.isInteract }"
         order="{ order }"
-      ></order-interact>
-      
-    </div>
+    ></order-interact>
   </div>
   <icon-href theme="white"></icon-href>
 </div>

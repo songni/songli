@@ -4,6 +4,9 @@
 @import 'order.ready';
 @import 'order.state';
 @import 'order.list';
-@import 'order.receive.poi.scss';
-@import 'order.received.scss';
-@import 'order.subscribe.scss';
+@import 'order.receive.poi';
+@import 'order.received';
+@import 'order.subscribe';
+@import 'order.record.voice';
+@import 'order.interact';
+

@@ -15,7 +15,7 @@
       <div class="main_top">
         <span><img src="https://img.91pintuan.com/songli/icon-herf/gift-box.png" /></span>
         <span>{ (opts.gift.info && opts.gift.info.benedictory && opts.gift.info.benedictory.title) ? 
-          opts.gift.info.benedictory.title.replace('{NUM}', opts.gift.num.receivers) : '已有' + opts.gift.num.receivers + '人收到了礼物' }
+          opts.gift.info.benedictory.title.replace('{NUM}', opts.receivedCount) : '已有' + opts.receivedCount + '人收到了礼物' }
         </span>
       </div>
       
@@ -23,7 +23,7 @@
         <imarquee direction="down" height="200" gap="40" speed="3000" items="{ opts.suborders }">
           <ul class="scroll_box" id="marquee_content">
             <li each="{ suborder in items }">
-              <img src="{ suborder.headimgurl.replace('/0','/46') }" />
+              <img src="{ suborder.headimgurl }" />
               <span>{ parent.parent.getSuborderInfo(opts.gift, suborder) }</span>
             </li>
           </ul>
@@ -34,6 +34,6 @@
       <a href="/gift/{ opts.gift.id }">我也要送礼</a>
     </div>    
   </div>
-  <!--bottom icon-->
+  
   <icon-href theme="white"></icon-href>
 </div>
