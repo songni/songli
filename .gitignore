@@ -10,4 +10,4 @@ client/bower_components
 .vscode/
 e2e/
 /server/config/local.env.js
-gulpfile.babel.js
+/gulpfile.babel.js
