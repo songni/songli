@@ -16,6 +16,8 @@ if(process.env.NODE_ENV === 'development'){
   require('./main.scss')
 }
 
+console.warn('v2.0')
+
 window.libs = {
   riot,
   wx
