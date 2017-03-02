@@ -51,7 +51,8 @@ const initOrder = {
 	name: null,
 	capacity: null,
 	type: null,
-	gift: null
+	gift: null,
+	receivers: []
 }
 const order = (order = initOrder, action) => {
 	switch (action.type) {
@@ -59,6 +60,8 @@ const order = (order = initOrder, action) => {
 			return initOrder;
 		case 'order/update':
 			return Object.assign({}, order, action.payload);
+		case 'order/suborders/add':
+			return Object.assign({}, order, { receivers: [...order.receivers, action.payload] })
 		default: 
 			return order;
 	}

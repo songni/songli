@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div if="{ !opts.pois.length }" class="beyWamp" >
+<div if="{ !opts.pois.length && !opts.poiLoaded}" class="beyWamp" >
   <div class="beyond">
     <span>:( 您当前位置距离该商家门店过远</span><br />
     <button class="bey_back"  onclick="{ dismiss }">返回</button>

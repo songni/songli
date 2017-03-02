@@ -35,23 +35,14 @@ export default class OrderReadyOne2One extends riot.Tag {
               <span>{ opts.order.sender.info.nickname }的礼物</span>
             </div>
             <div class="receive_status">
-              <span class="gift_num">礼物已被领取</span>
-              <span class="receive_num">等待商家发货</span>
+              <span class="gift_num">{ opts.order.receivers[0].consignee }</span>
+              <span class="receive_num">已经领取了你的礼物</span>
             </div>
-            <div class="receiver_info">
-              <div><span>收礼人：</span><span>{ opts.order.receivers[0].consignee }</span></div>
-              <div><span>手机号：</span><span>{ opts.order.receivers[0].telephone }</span></div>
-              <div if="{ opts.order.receivers[0].address }">
-                <span class="addr">地 址：</span>
-                <span>{ opts.order.receivers[0].address }</span>
+            <div class="gift_inform">
+                <span>您已经成功购买1份{ opts.order.gift.info.name }；自己领取或转发送给好友。</span>
               </div>
-              <div if="{ opts.order.receivers[0].poi }">
-                <span>门店地址：</span>
-                <span>{ opts.order.receivers[0].poi.base_info.business_name +  order.receivers[0].poi.base_info.address }</span>
-              </div>
-            </div>
             <div class="btn_continue"> 
-              <a href="/gift/{ opts.order.gift.id }">继续送礼</a>
+              <a href="/">继续送礼</a>
             </div>
           </div>
         </div>

@@ -4,6 +4,8 @@ import route from 'riot-route'
 import $ from '../util'
 import invariant from './invariant'
 import Util from './util'
+import decorators from './decorators'
+
 /**
  * Riot router version 4.
  * updates v2:
@@ -50,17 +52,6 @@ class Hub {
             route.exec();
         });
         return this;
-    }
-
-    /**
-     * @param routes {Array}
-     * @param location {String}
-     * @returns cb {Function}
-     * query, params, components, history
-     */
-    matches({ routes, location }){
-        let req = this.parse(location);
-        return this.doRoute(req, routes);
     }
 
     /**
@@ -113,49 +104,14 @@ class Hub {
     }
 
     /**
-     * Route to the tag view with current context
-     * @param route {Object}
-     * @param ctx {Object}
-     * @param redirect {Boolean}
+     * @param routes {Array}
+     * @param location {String}
+     * @returns cb {Function}
+     * query, params, components, history
      */
-    routeTo(route, ctx, redirect = false, index, cb){
-        this.busy = false;
-        this.trigger('busy-resolve');
-
-        if (redirect) {
-            return route(route.path);
-        }
-        
-        if ((!route.tag.opts['show'] && !route.tag.opts['$show']) 
-            && Util.completePart(route.path) === this.location) {
-            return;
-        }
-
-        let $state = route.path;
-        let $location = route.location;
-
-        this.trigger('state-change', {$state, $location, ctx});
-
-        if (route.redirectTo) {
-            route(route.redirectTo);
-            return true;
-        }
-
-        let addons = {
-            hints: ctx.req.hints,
-            req: ctx.req,
-            route,
-            tag: route.tag,
-            $state,
-            $location,
-            index
-        }
-
-        if (route.resolve) {
-            return route.resolve.apply(route.tag, [(data) => {this.routeToDone(data, ctx, addons, cb)}, ctx]);
-        }
-
-        this.routeToDone(null, ctx, addons, cb);
+    matches({ routes, location }){
+        let req = this.parse(location);
+        return this.doRoute(req, routes);
     }
 
     /**
@@ -203,6 +159,32 @@ class Hub {
         }, {});
     }
 
+    doRoute(req, routes){
+        let me = this;
+        if (!req) {
+            return;
+        }
+        let addons = {
+            isFounded: false,
+            isBreak: false
+        }
+        this.busy = true;
+        this.trigger('busy-pending');
+        let context = { req };
+        let { ctx, components } = this.recurMatch(context, this.root || {}, this.refinedRoutes, []);
+        let lastComponent = components[components.length - 1];
+        // route to a abstract route, redirect to default route
+        if (lastComponent && lastComponent.route.abstract) {
+            invariant(`cannot transition to a abstract state(${lastComponent.route.path})`);
+            return this.routeToDefault()
+        }
+        // set currently state
+        this.currHints = components
+        this.resolveRoutes(ctx, this.currHints, this.prevHints, [], [], this.loopRouteTo.bind(this));
+        // set previously state
+        this.prevHints = components
+    }
+
     /**
      * Recursive collect route hints
      * @param context {Object}
@@ -244,38 +226,62 @@ class Hub {
         return this.recurMatch(ctx, node, routes, components, ++index)
     }
 
-    doRoute(req, routes){
-        let me = this;
-        if (!req) {
-            return;
+    /**
+     * Compare previously hints and currently ones.
+     * @param ctx {Object}
+     * @param remainCurrHints {Array}
+     * @param remainPrevHints {Array}
+     * @param enters {Array}
+     * @param leaves {Array}
+     * @param callback {Function}
+     * @param index {Number}
+     */
+     resolveRoutes(ctx, remainCurrHints, remainPrevHints, enters, leaves, callback, index = 0){
+        let currHint = remainCurrHints[0]
+        let prevHint = remainPrevHints[0]
+        // end of the curr hints ?
+        if (!remainCurrHints.length) {
+            if (remainPrevHints.length) {
+                leaves = leaves.concat(remainPrevHints);
+            }
+            return callback(enters, leaves);
         }
-        let addons = {
-            isFounded: false,
-            isBreak: false
+        if (!remainPrevHints.length) {
+            // enters only
+            enters = enters.concat(remainCurrHints);
+            return this.resolveRoutes(ctx, [], [], enters, leaves, callback, ++index)
+        } else {
+            // compare
+            // diff ?
+            if (
+                currHint.route.path != prevHint.route.path ||
+                !Util.isEqual(currHint.param, prevHint.param)
+            ) {
+                enters.push(currHint);
+                leaves = leaves.concat(remainPrevHints);
+                return this.resolveRoutes(ctx, remainCurrHints.slice(1), [], enters, leaves, callback, ++index)
+            }
+            return this.resolveRoutes(ctx, remainCurrHints.slice(1), remainPrevHints.slice(1), enters, leaves, callback, ++index)
         }
-        this.busy = true;
-        this.trigger('busy-pending');
-        let context = { req };
-        let { ctx, components } = this.recurMatch(context, this.root || {}, this.refinedRoutes, []);
-        let lastComponent = components[components.length - 1];
-        // route to a abstract route, redirect to default route
-        if (lastComponent && lastComponent.route.abstract) {
-            invariant(`cannot transition to a abstract state(${lastComponent.route.path})`);
-            return this.routeToDefault()
-        }
-        // set currently state
-        this.currHints = components
-        this.recurResolveRoutes(ctx, this.currHints, this.prevHints, [], [], this.loopRouteTo.bind(this));
-        // set previously state
-        this.prevHints = components
     }
 
-    routeToDefault(refresh) {
-        let defaultUri = this.refinedRoutes.filter(r => r.defaultRoute)[0].path;
-        if (refresh) {
-            return location.href = location.origin + defaultUri;
+    loopRouteTo(enters, leaves){
+        let lastEnter = enters[enters.length - 1];
+        let to = null;
+        if (lastEnter) {
+            to = lastEnter.route.tag;
         }
-        return route(defaultUri)
+
+        if (leaves && leaves.length) {
+            this.leaveTags(leaves, to);
+        }
+
+        if (!enters || !enters.length) {
+            //TODO route to default
+            return;
+        }
+
+        this.enterTags.apply(this, [enters, 0]);
     }
 
     leaveTags(leaves, to){
@@ -314,14 +320,14 @@ class Hub {
         }
     }
 
-    recurEnterTags(enters, index){
+    enterTags(enters, index){
         if (!enters || !enters.length) {
             return;
         }
         let enter = enters[0];
         // for path define inline like ('/foo/bar')
         if (!enter) {
-            return this.recurEnterTags(enters.slice(1), ++index)
+            return this.enterTags(enters.slice(1), ++index)
         }
         let { route, ctx } = enter;
         let { tag, path, component } = route;
@@ -365,69 +371,57 @@ class Hub {
 
                 if (tag) {
                     return this.routeTo(route, ctx, false, index, () => {
-                        this.recurEnterTags.apply(this, [enters.slice(1), ++index])
+                        this.enterTags.apply(this, [enters.slice(1), ++index])
                     });
                 }
             }
         }
     }
 
-    loopRouteTo(enters, leaves){
-        let lastEnter = enters[enters.length - 1];
-        let to = null;
-        if (lastEnter) {
-            to = lastEnter.route.tag;
-        }
+    /**
+     * Route to the tag view with current context
+     * @param route {Object}
+     * @param ctx {Object}
+     * @param redirect {Boolean}
+     */
+    routeTo(route, ctx, redirect = false, index, cb){
+        this.busy = false;
+        this.trigger('busy-resolve');
 
-        if (leaves && leaves.length) {
-            this.leaveTags(leaves, to);
+        if (redirect) {
+            return route(route.path);
         }
-
-        if (!enters || !enters.length) {
-            //TODO route to default
+        
+        if ((!route.tag.opts['show'] && !route.tag.opts['$show']) 
+            && Util.completePart(route.path) === this.location) {
             return;
         }
 
-        this.recurEnterTags.apply(this, [enters, 0]);
-    }
+        let $state = route.path;
+        let $location = route.location;
 
-    /**
-     * Compare previously hints and currently ones.
-     * @param ctx {Object}
-     * @param remainCurrHints {Array}
-     * @param remainPrevHints {Array}
-     * @param enters {Array}
-     * @param leaves {Array}
-     * @param callback {Function}
-     * @param index {Number}
-     */
-    recurResolveRoutes(ctx, remainCurrHints, remainPrevHints, enters, leaves, callback, index = 0){
-        let currHint = remainCurrHints[0]
-        let prevHint = remainPrevHints[0]
-        // end of the curr hints ?
-        if (!remainCurrHints.length) {
-            if (remainPrevHints.length) {
-                leaves = leaves.concat(remainPrevHints);
-            }
-            return callback(enters, leaves);
+        this.trigger('state-change', {$state, $location, ctx});
+
+        if (route.redirectTo) {
+            route(route.redirectTo);
+            return true;
         }
-        if (!remainPrevHints.length) {
-            // enters only
-            enters = enters.concat(remainCurrHints);
-            return this.recurResolveRoutes(ctx, [], [], enters, leaves, callback, ++index)
-        } else {
-            // compare
-            // diff ?
-            if (
-                currHint.route.path != prevHint.route.path ||
-                !Util.isEqual(currHint.param, prevHint.param)
-            ) {
-                enters.push(currHint);
-                leaves = leaves.concat(remainPrevHints);
-                return this.recurResolveRoutes(ctx, remainCurrHints.slice(1), [], enters, leaves, callback, ++index)
-            }
-            return this.recurResolveRoutes(ctx, remainCurrHints.slice(1), remainPrevHints.slice(1), enters, leaves, callback, ++index)
+
+        let addons = {
+            hints: ctx.req.hints,
+            req: ctx.req,
+            route,
+            tag: route.tag,
+            $state,
+            $location,
+            index
         }
+
+        if (route.resolve) {
+            return route.resolve.apply(route.tag, [(data) => {this.routeToDone(data, ctx, addons, cb)}, ctx]);
+        }
+
+        this.routeToDone(null, ctx, addons, cb);
     }
 
     /**
@@ -521,8 +515,15 @@ class Hub {
             me.prev = route;
             cb();
         }
-
         me.trigger('history-resolve', me.prev, route, ctx, hints, index, callback);
+    }
+
+    routeToDefault(refresh) {
+        let defaultUri = this.refinedRoutes.filter(r => r.defaultRoute)[0].path;
+        if (refresh) {
+            return location.href = location.origin + defaultUri;
+        }
+        return route(defaultUri)
     }
 
     setHandler(callback) {
@@ -672,44 +673,4 @@ export default {
   }
 };
 
-export function onUse(fnArray) {
-  return function(target, key, descriptor) {
-    let originOnCreate = descriptor.value;
-    if (!descriptor.$originOnCreate) {
-      descriptor.$originOnCreate = originOnCreate;
-    }
-    descriptor.value = function(opts) {
-      if (
-        descriptor.$originOnCreate &&
-        !descriptor.$originOnCreateInvocated
-      ) {
-        descriptor.$originOnCreate.apply(this, [opts])
-        descriptor.$originOnCreateInvocated = true;
-      }
-      if (!this.$mws || !this.$mws.length) {
-        this.mixin('router');
-      }
-      this.one('leave', () => {
-        descriptor.$originOnCreateInvocated = false;
-      })
-      this.one('unmount', () => {
-        descriptor.$originOnCreateInvocated = false;
-      })
-      if (!Array.isArray(fnArray)) {
-        fnArray = [fnArray]
-      }
-      fnArray.forEach(fn => {
-        this.$use((next, ctx) => {
-          if (typeof fn === 'string') {
-            fn = this.opts[fn];
-            if (!fnArray) {
-              invariant(`[onUse]: Error not such a ${fnArray} in opts`)
-            }
-          }
-          return fn.apply(this, [next, ctx, this])
-        });
-      })
-    }
-    return descriptor;
-  }
-}
+export const onUse = decorators.onUse

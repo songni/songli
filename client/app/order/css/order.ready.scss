@@ -35,7 +35,7 @@
       .btn_continue{
         padding-bottom: 50px;
         a{
-          @include btn(50%, #FFFFFF, $red-bg, $red-bg);
+          @include btn(50%, $red-bg, #FFFFFF, $red-bg);
           margin: 0 auto;
         }
       }

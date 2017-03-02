@@ -37,25 +37,31 @@ export default class BigpackRecord extends riot.Tag {
 	onCreate(opts) {}
 
 	async onSubmit(e) {
-		e.preventDefault()
-		let { dispatch, getState } = app.store;
-		let { bigpack, user } = getState();
-		this.opts.submit('bigpackRecordForm')
+		try {
+			e.preventDefault()
+			let { dispatch, getState } = app.store;
+			let { bigpack, user } = getState();
+			this.opts.submit('bigpackRecordForm')
 
-		if (this.opts.forms.bigpackRecordForm.$invalid) {
-			return;
+			if (this.opts.forms.bigpackRecordForm.$invalid) {
+				return;
+			}
+
+			let res = await Wechat.uploadVoice({
+				localId: bigpack.localId,
+				isShowProgressTips: 1
+			});
+			bigpack.serverId = res.serverId;
+			if (bigpack.capacity === 1) {
+				bigpack.name = this.refs['name'].value;
+			}
+			await $.post(`/gift/order/${ bigpack.id }/complete`, bigpack)
+			bigpack.sender = user;
+			dispatch({type: 'order/update', payload: bigpack})
+			let { order } = getState();
+			route(`/order/${ bigpack.id }/ready`);
+		} catch (e) {
+			widgets.Alert.add('danger', e.message, 2000);
 		}
-
-		let res = await Wechat.uploadVoice({
-			localId: bigpack.localId,
-			isShowProgressTips: 1
-		});
-		bigpack.serverId = res.serverId;
-		bigpack.name = this.refs['name'].value;
-		await $.post(`/gift/order/${ bigpack.id }/complete`, bigpack)
-		bigpack.sender = user;
-		dispatch({type: 'order/update', payload: bigpack})
-		let { order } = getState();
-		route(`/order/${ bigpack.id }/ready`);
 	}
 }

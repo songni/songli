@@ -18,9 +18,9 @@
         <div class="form_common">
           <label class="form_label fl">姓名</label>
           <input class="fr" type="text" ref="consignee" placeholder="收礼人姓名">
-          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.required }" class="help-block" >请填写收货人姓名</p>
-          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.maxlength }" class="help-block" >收货人姓名过长</p>
-          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.minlength }" class="help-block" >收货人字数过短</p>
+          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.required }" class="help-block" >* 请填写收货人姓名</p>
+          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.maxlength }" class="help-block" >* 收货人姓名过长</p>
+          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.minlength }" class="help-block" >* 收货人字数过短</p>
         </div>
         <div class="form_common">
           <label class="form_label fl">手机号</label>
@@ -35,7 +35,7 @@
           <span class="fl poi" if="{ opts.poiLoaded }">{ opts.poi ? opts.poi.base_info.business_name : '请选择门店' }</span>
           <input type="hidden" ref="poi">
           <span class="fr right"><img src="https://img.91pintuan.com/songli/client/poi-right.png" alt="" /></span>
-          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.poi.$invalid }" class="help-block">* 请选择门店</p>
+          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.poi.$error.required }" class="help-block">* 请选择门店</p>
         </div>
         
         <button type="submit" class="btn_next" onclick="{ onSubmit }" >下一步</button> 

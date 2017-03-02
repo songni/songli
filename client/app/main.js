@@ -55,14 +55,16 @@ app.start(async () => {
   * router interceptors.
   */
   app.hub.subscribe('history-pending', async (from, to, $location, { req }, next) => {
-    if (req.body.authenticate && !Cookies.get('token')) {
-      let query = req.query
-      let referer = location.pathname + location.search
-      referer = referer.startsWith('/') ? referer : '/' + referer
-      Cookies.set('referer', referer)
-      let link = await $.get(`/wechat/client?referer=${referer}`)
-      location.href = link.link
-      return
+    if (req.body.authenticate) {
+      if (!Cookies.get('token')) {
+        let query = req.query
+        let referer = location.pathname + location.search
+        referer = referer.startsWith('/') ? referer : '/' + referer
+        Cookies.set('referer', referer)
+        let link = await $.get(`/wechat/client?referer=${referer}`)
+        location.href = link.link
+        return
+      }
     }
     next && next()
   })

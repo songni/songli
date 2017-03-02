@@ -8,7 +8,8 @@ import actions from './gift.actions';
   state => ({
     order: state.order,
     pois: state.pois,
-    clientWidth: state.clientWidth
+    clientWidth: state.clientWidth,
+    poiLoaded: state.poi.loaded
   }),
   dispatch => ({
     getPois: () => dispatch(actions.getPois()),
@@ -27,6 +28,9 @@ export default class GiftPoiModal extends riot.Tag {
   
   onCreate(opts) {
     this.on('mount', this.onMount.bind(this));
+    this.on('mount', () => {
+      app.store.dispatch({type: 'poi/loaded', payload: true})  
+    })
   }
   
   selPoi(poi) {

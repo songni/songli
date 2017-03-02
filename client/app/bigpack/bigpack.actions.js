@@ -18,7 +18,7 @@ const enterBigpackRecord = async (next, ctx) => async (dispatch, getState) => {
 	if (bigpack.sender) {
 		if (bigpack.sender.id === user.id) {
 			return route(`/order/${bigpack.id}/ready`)
-		} 
+		}
 		widgets.Alert.add('danger', app.config.messages.GIFT_RECEIVED, 2000);
 		setTimeout(() => {
 			route(`/`);

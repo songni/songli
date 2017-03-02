@@ -98,7 +98,14 @@ class WechatJsApiProxy {
 		console.info('[wx:jssdk]: wx is ready.')
 	}
 
-	async config(apiList) {
+	async config () {
+		await this._config();
+		await new Promise((resolve, reject) => {
+			wx.ready(() => { resolve() })
+		})
+	}
+
+	async _config(apiList) {
 		let absUrl = location.href; 
 		let data = await $.get('/wechat/sign/jssdk?type=jsapi&url=' + encodeURIComponent(absUrl).replace('%3A', ':'));
 		if (!apiList) {
@@ -130,7 +137,7 @@ class WechatJsApiProxy {
 			if (UserAgent.isiOS) {
 				done();
 			} else {
-				this.config().then(done)
+				this._config().then(done)
 			}
 			function done () {
 				

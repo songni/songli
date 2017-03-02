@@ -3,7 +3,7 @@ import route from 'riot-route';
 import giftActions from '../gift/gift.actions';
 
 const enterOrderReceive = async (next, ctx) => async (dispatch, getState) => {
-  next();
+  next()
 }
 
 const enterOrderPay = async (next, ctx) => async (dispatch, getState) => {
@@ -11,20 +11,20 @@ const enterOrderPay = async (next, ctx) => async (dispatch, getState) => {
   if (!orderRaw) {
     widgets.Alert.add('warning', '当前订单已过期', 2000);
     setTimeout(() => {
-      route('/');
+      route('/')
     }, 2000)
-    return;
+    return
   }
   let order = JSON.parse(orderRaw);
   dispatch({type: 'order/update', payload: order })
-  dispatch(giftActions.getGiftById(order.gift));
-  next();
+  dispatch(giftActions.getGiftById(order.gift))
+  next()
 }
 
 const enterOrderSubscribe = async (next, ctx) => async (dispatch, getState) => {
   let qr = await $.get(`/gift/wx_qrcode?scene=giftSubToPushUnconsumedSuborder`)
-  dispatch({type: 'qrcode/subscribe/update', payload: qr.response.ticket});
-  next();
+  dispatch({type: 'qrcode/subscribe/update', payload: qr.response.ticket})
+  next()
 }
 
 const wxPay = async function (tag) {
@@ -76,10 +76,6 @@ const enterOrderRecord = async (next, ctx, tag) => async (dispatch, getState) =>
 }
 
 const enterOrderState = async (next, ctx) => async (dispatch, getState) => {
-  let { order, user } = getState();
-  if (order.sender.id === user.id) {
-    return route(`/order/${order.id}/ready`);
-  }
   next();
 }
 
@@ -127,12 +123,12 @@ const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
     link,
     imgUrl: iconLiImgUrl
   };
-  Wechat.onMenuShareTimeline(leanOptions);
-  Wechat.onMenuShareAppMessage(options);
-  Wechat.onMenuShareQQ(options);
-  Wechat.onMenuShareWeibo(options);
-  
   next();
+  await Wechat.config();
+  wx.onMenuShareTimeline(leanOptions);
+  wx.onMenuShareAppMessage(options);
+  wx.onMenuShareQQ(options);
+  wx.onMenuShareWeibo(options);
 }
 
 const enterOrderReadyOne2One = async () => async (dispatch, getState) => {
@@ -165,7 +161,7 @@ const shareOrder = () => {
 }
 
 const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
-  let { order, user } = getState();
+  let { order, user, suborder } = getState();
   if (address.poi) {
     address.scene = 'poi';
   }
@@ -174,9 +170,8 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
   }
   
   try {
-    let data = await $.post(`/gift/order/${ order.id }/address`, address);
-    if (!data.rc) console.error('saveAddr', app.config.errors.NO_RES_CODE.message);
-
+    let data = await $.post(`/gift/order/${ order.id }/address`, address)
+    if (!data.rc) console.error('saveAddr', app.config.errors.NO_RES_CODE.message)
     switch (data.rc) {
       case 1: 
         widgets.Alert.add('warning', app.config.messages.GIFT_SAVED, 2000);
@@ -188,12 +183,15 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
         widgets.Alert.add('warning', app.config.messages.INFO_INCOMPLETE, 2000);
         break;
       case 4:
+        let suborderOrigin = data.suborder
+        let suborderForUpdate = $.util.omit(suborderOrigin, 'updatedAt', 'order', 'gift', 'express')
+        dispatch({ type: 'order/suborders/add', payload: suborderForUpdate })
         if(address.scene === 'logistics'){
           return route(`/gift/${ order.gift.id }/share`)
         }
         if(address.scene === 'poi'){
           if(user.subscribe){
-            return location.reload();	
+            return route(`/order/${ order.id }/state`)
           }
           return route(`/order/${ order.id }/subscribe`)
         }

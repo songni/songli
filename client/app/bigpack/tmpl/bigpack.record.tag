@@ -5,6 +5,10 @@
         <span><img riot-src=" { opts.user.photo } "></span>
         <span>请开始录音</span>
       </div>
+      <div class="big_title_img">
+        <div if="{ opts.order.capacity === 1 }"><img src="https://img.91pintuan.com/songli/word_say_to.png" /></div>
+        <div if="{ opts.order.capacity > 1 }"><img src="https://img.91pintuan.com/songli/word-zhufu_newyear.png" /></div>
+      </div>
       <div if="{ opts.order.capacity === 1 }" class="one2one">
         <div class="name">
           <span><img src="https://img.91pintuan.com/songli/word_send_to.png" /></span>

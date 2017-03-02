@@ -4,10 +4,7 @@ const isNotSender = (next, ctx, tag) => {
   let { getState } = tag.store
 	let { order, user } = getState();
   if (order.sender.id === user.id) {
-    setTimeout(() => {
-      route(`/order/${order.id}/ready`);
-    }, 2000)
-    return;
+    return route(`/order/${order.id}/ready`);
   }
 	next();
 }

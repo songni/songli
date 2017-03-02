@@ -52,7 +52,7 @@ let properties = {
     },
     PAY_FAIL: {
       code: 504,
-      message: '支付错误'
+      message: '支付失败'
     },
     NETWORK_ERR: {
       code: 502,

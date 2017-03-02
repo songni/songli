@@ -7,7 +7,7 @@ import { Connect, Form, Component } from '../../framework/ninjiajs/src/index';
 @Form({
   consignee: {
     required: true,
-    minlength: 2,
+    minlength: 1,
     maxlength: 20
   },
   telephone: {
@@ -25,7 +25,10 @@ import { Connect, Form, Component } from '../../framework/ninjiajs/src/index';
 		clientWidth: state.clientWidth,
 		poi: state.suborder.poi,
 		poiLoaded: state.poi.loaded
-	})
+	}),
+  dispatch => ({
+    orderReceiveSubmit: o => dispatch(actions.orderReceiveSubmit(o))
+  })
 )
 export default class OrderReceivePoi extends riot.Tag {
   static originName = 'order-receive-poi'
@@ -49,15 +52,31 @@ export default class OrderReceivePoi extends riot.Tag {
     let address = this.address;
     let modalInstance = widgets.Modal.open({
       tag: 'gift-poi-modal',
-      size: 'lg'
+      props: {
+        poi: this.opts.poi
+      }
     })
+    modalInstance.one('dismiss', poi => {
+      this.refs['poi'].value = poi;
+      triggerDomEvent('change', this.refs['poi']);
+      function triggerDomEvent(eventName, root){
+        var e = document.createEvent('Event')
+        e.initEvent(eventName, true, true)
+        setTimeout(() => {
+          root.dispatchEvent(e);
+        }, 0)
+      }
+    })
+    if (this.opts.poi && this.opts.poi.id) {
+      this.refs['poi'].value = this.opts.poi.id;
+    }
   }
   
   
   async onSubmit(e) {
     e.preventDefault();
     let { dispatch, getState } = app.store;
-    let { suborder, order } = getState();
+    let { suborder, order, user } = getState();
     this.opts.submit('orderReceivePoiForm')
     
     if (this.opts.forms.orderReceivePoiForm.$invalid) {
@@ -67,14 +86,11 @@ export default class OrderReceivePoi extends riot.Tag {
     let address = {
       consignee: this.refs['consignee'].value,
       telephone: this.refs['telephone'].value,
-      poi: suborder.poi.id
+      poi: suborder.poi
     }
     
-    if(user.subscribe){       // 0未关注， 1 关注
-      return location.reload();	
-    }
-
-    route(`/order/${order.id}/subscribe`);
+    await this.opts.orderReceiveSubmit(address)
+    
   }
   
 }

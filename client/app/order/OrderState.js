@@ -2,6 +2,7 @@ import riot from 'riot';
 import route from 'riot-route';
 import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
+import interruptors from '../interruptors';
 
 const isReceived = (order, user) => {
 	if (
@@ -35,7 +36,7 @@ export default class OrderState extends riot.Tag {
 		`;
 	}
 
-	@onUse('enterOrderState')
+	@onUse([interruptors.isNotSender, 'enterOrderState'])
 	onCreate(opts) {}
 
 }

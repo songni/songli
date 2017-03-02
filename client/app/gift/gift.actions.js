@@ -35,12 +35,11 @@ const enterGiftList = async (next, ctx) => async (dispatch, getState) => {
 		link: location.href,
 		imgUrl: app.config.images.SHARE_DEF_COVER
 	};
-	
-	Wechat.onMenuShareTimeline(leanOptions);
-	Wechat.onMenuShareAppMessage(options);
-	Wechat.onMenuShareQQ(options);
-	Wechat.onMenuShareWeibo(options);
-
+	await Wechat.config();
+	wx.onMenuShareTimeline(leanOptions);
+	wx.onMenuShareAppMessage(options);
+	wx.onMenuShareQQ(options);
+	wx.onMenuShareWeibo(options);
 	next();
 }
 
@@ -77,10 +76,11 @@ const enterGiftDetail = async (next, ctx) => async (dispatch, getState) => {
 		desc: gift.info.name,
 		imgUrl: iconLiImgUrl 
 	};
-	Wechat.onMenuShareTimeline(leanOptions);
-	Wechat.onMenuShareAppMessage(options);
-	Wechat.onMenuShareQQ(options);
-	Wechat.onMenuShareWeibo(options);
+	await Wechat.config();
+	wx.onMenuShareTimeline(leanOptions);
+	wx.onMenuShareAppMessage(options);
+	wx.onMenuShareQQ(options);
+	wx.onMenuShareWeibo(options);
 	next();
 }
 
@@ -103,7 +103,7 @@ const getPois = async () => async (dispatch, getState) => {
 			tag: gift.poitag,
 			latitude: res.latitude || 0,
 			longitude: res.longitude || 0
-		}); 
+		});
 		let pois = await $.get('/wechat/poi?' + query);
 		dispatch({type: 'pois/update', payload: pois});
 		dispatch({type: 'poi/loaded', payload: true});
