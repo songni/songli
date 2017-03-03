@@ -38,7 +38,9 @@ export default class OrderReceiveLogistics extends riot.Tag {
   }
 
   get tmpl() {
-    return require(`./tmpl/order.receive.logistics.tag`);
+    //<!-- build:tmpl:begin -->
+    return require(`./tmpl/order-receive-logistics.tag`);
+		//<!-- endbuild -->
   }
 	
   onCreate(opts) {

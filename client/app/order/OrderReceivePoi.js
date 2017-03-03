@@ -38,7 +38,9 @@ export default class OrderReceivePoi extends riot.Tag {
   }
 
   get tmpl() {
-		return require(`./tmpl/order.receive.poi.tag`);
+    //<!-- build:tmpl:begin -->
+		return require(`./tmpl/order-receive-poi.tag`);
+		//<!-- endbuild -->
   }
 	
   onCreate(opts) {

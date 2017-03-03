@@ -1,0 +1,69 @@
+//commons style
+.suborder_img{
+  width: 55px;
+  height: 55px;
+  float: left;
+  img{width: 100%;}        
+}
+.suborder_info{
+  float: right;
+  .name{
+    span{
+      font-size: 14px;
+      &:first-child{
+        float: left;
+        color: #595757;
+      }
+      &:last-child{
+        float: right;
+        color: $pink-btn;
+      }
+    }
+  }
+  .time{
+    clear: both;
+    text-align: right;
+    color: #595757;
+    font-size: 14px;
+    margin-top: 35px;
+  }
+}
+
+// order.info.received
+.order_received{
+  background: $gray-bg;
+  @extend .init-page;
+  .received_list{
+    margin: 12px 12px 0 12px;
+    .received{
+      height: 55px;
+      background: #FFFFFF;
+      border-radius: 4px;
+      padding: 10px;
+      border-bottom: 1px solid #F2F2F2;
+    }
+  }
+} 
+
+.order_info{
+  padding: 10px;
+  border-top: 1px solid #f2f2f2;
+  .suborder_img{
+    margin-bottom: 10px;
+  }
+  .express{
+    clear: both;
+    border-top: 1px solid #f2f2f2;
+    padding: 10px 0;
+    span{
+      font-size: 14px;
+      &:first-child{
+        color: #B5B5B6;
+      }
+      &:last-child{
+        color: #2F2522;
+        float: right;
+      }
+    }
+  }
+}

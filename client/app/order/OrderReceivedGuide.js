@@ -18,7 +18,9 @@ export default class OrderReceivedGuide extends riot.Tag {
   }
 
   get tmpl() {
-    return require(`./tmpl/order.received.guide.tag`);
+    //<!-- build:tmpl:begin -->
+    return require(`./tmpl/order-received-guide.tag`);
+		//<!-- endbuild -->
   }
   
   onCreate(opts) {

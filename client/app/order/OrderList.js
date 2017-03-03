@@ -23,7 +23,9 @@ export default class OrderList extends riot.Tag {
   }
 
   get tmpl() {
-    return require('./tmpl/order.list.tag');
+    //<!-- build:tmpl:begin -->
+		return require('./tmpl/order-list.tag');
+		//<!-- endbuild -->
   }
 
   @onUse('enterOrderList')

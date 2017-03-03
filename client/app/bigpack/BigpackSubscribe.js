@@ -16,7 +16,9 @@ export default class BigpackSubscribe extends riot.Tag {
 		return 'bigpack-subscribe'
 	}
 	get tmpl() {
-		return require('./tmpl/bigpack.subscribe.tag');
+		//<!-- build:tmpl:begin -->
+		return require('./tmpl/bigpack-subscribe.tag');
+		//<!-- endbuild -->
 	}
 	onCreate(opts) {
 	}

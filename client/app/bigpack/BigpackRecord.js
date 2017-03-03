@@ -30,7 +30,9 @@ export default class BigpackRecord extends riot.Tag {
 	}
 
 	get tmpl() {
-		return require('./tmpl/bigpack.record.tag');
+		//<!-- build:tmpl:begin -->
+		return require('./tmpl/bigpack-record.tag');
+		//<!-- endbuild -->
 	}
 
 	@onUse('enterBigpackRecord')

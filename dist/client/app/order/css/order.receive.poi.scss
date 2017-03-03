@@ -1,0 +1,69 @@
+.receive_poi{
+  background: $red-bg;
+  @extend .init-page;
+  .receive_wrap{
+    margin: 12px 12px 0 12px;
+    border-radius: 4px;
+    .poi_cont{
+      background: #FFFFFF;
+      border-radius: 4px;
+      .form-recpoi{
+        font-size: 14px;
+        padding-bottom: 50px;
+        .form_common{
+          width: 90%;
+          min-height: 45px;
+          background: #f7f8f8;
+          margin-left: 5%;
+          margin-bottom: 10px;
+          line-height: 45px;
+          border: 0.5px solid #dcdddd;    
+          .help-block{
+            margin: 0;
+            padding-left: 3%;
+          }   
+        }
+        .form_label{
+          width: 19%;
+          height: 45px;
+          line-height: 45px;
+          margin-left: 3%;
+          float: left;
+          color: #898989;
+        }
+        input{
+          width: 70%;   
+          border: 0;
+          font-size: 14px;
+          background: #F7F7F7;
+          text-align: left; 
+          padding-top: 16px;
+        }
+        .form_poi{
+          .label_poi{
+            width: 23%;
+            margin-left: 3%;
+            color: #898989;
+          }
+          .poi{
+            display: block;
+            width: 62%;
+            height: 45px;
+            padding-left: 4%;
+          }
+          .right{
+            display: block;
+            width: 8%;
+            height: 45px;
+            img{width: 8px;vertical-align: middle;}
+          }
+        }
+        .btn_next{
+          @include btn(50%, #FFFFFF, $red_bg, $red_bg);
+          margin:  0 auto;
+          margin-top: 70px;
+        }
+      }
+    }
+  }
+}

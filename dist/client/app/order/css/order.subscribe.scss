@@ -1,0 +1,50 @@
+.subscribe{
+  background: $red-bg;
+  @extend .init-page;
+  .subscribe_wrap{
+    margin: 12px 12px 0 12px;
+    border-radius: 4px;
+    .subscribe_cont{
+      background: #FFFFFF;
+      border-radius: 4px;
+      .guidance{
+        text-align: center;
+        color: #B9BFCC;
+        font-size: 15px; 
+        span{
+          display: block;
+          &:first-child{
+            margin-bottom: 5px;
+          }
+          &:last-child{
+            margin-bottom: 20px;
+          }
+        }
+      }
+      .merchant_code{
+        position: relative;
+        margin: 0 auto; 
+        .code{
+          img{width: 100%;}
+        }
+        .radius{
+          img{width: 20px;position: absolute;}
+          img:nth-child(1){top: 0;left: 0;}
+          img:nth-child(2){top: 0; right: 0;}
+          img:nth-child(3){bottom: 0;right: 0;}
+          img:nth-child(4){bottom: 0;left: 0;}
+        } 
+      }
+      .past{
+        padding-bottom: 50px;
+        span{
+          display: block;
+          text-align: center;
+          color: #B9BFCC;
+          font-size: 15px;
+          margin-top: 30px;
+        }
+      }
+    }
+  }
+}

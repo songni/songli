@@ -21,7 +21,9 @@ export default class GiftDetail extends riot.Tag {
 	}
 
 	get tmpl() {
-		return require('./tmpl/gift.detail.tag');
+		//<!-- build:tmpl:begin -->
+		return require('./tmpl/gift-detail.tag');
+		//<!-- endbuild -->
 	}
 
 	@onUse('enterGiftDetail')

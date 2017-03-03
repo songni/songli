@@ -22,7 +22,9 @@ export default class OrderPay extends riot.Tag {
 	}
 
 	get tmpl() {
-		return require(`./tmpl/order.pay.tag`);
+		//<!-- build:tmpl:begin -->
+		return require(`./tmpl/order-pay.tag`);
+		//<!-- endbuild -->
 	}
 
 	@onUse('enterOrderPay')

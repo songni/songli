@@ -1,0 +1,60 @@
+.gift-list{
+  width: 100%;
+  background: $gray-bg;
+  .list_item{
+    background: $gray-bg;
+    padding-top: 8px;
+    &:nth-child(odd){
+      .list_img{
+        img{
+          margin-left: 8px;
+          object-fit: cover;
+        }
+      }
+      .gift_name,
+      .gift_price{
+        border-width: 0px 4px 0px 8px;
+      }
+    }
+    &:nth-child(even){
+      .list_img{
+        img{
+          margin-left: 4px;
+          object-fit: cover;
+        }
+      }
+      .gift_name,
+      .gift_price{
+        border-width: 0px 8px 0px 4px;
+      }
+    }
+    .gift_name{
+      @include font-hidden(3); 
+      background: $white-bg;
+      color: $black-font;
+      border-color: #f2f2f2;
+      border-style: solid;
+      height: 42.4px;
+      font-size: 12px;
+      line-height: 14px;
+      padding-top: 10px;
+      span{
+        display: block;
+        padding-left: 10px;
+        padding-right: 5px;
+      }
+    }
+    .gift_price{
+      background: $white-bg;
+      color: $red-font;
+      border-color: #f2f2f2;
+      border-style: solid;
+      padding-top: 30px;
+      padding-bottom: 15px;
+      font-size: 15px;
+      span{
+        padding-left: 8px;
+      }
+    }
+  }
+}

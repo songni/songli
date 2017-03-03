@@ -21,7 +21,9 @@ export default class BigpackDetail extends riot.Tag {
 		return 'bigpack-detail'
 	}
 	get tmpl() {
-		return require('./tmpl/bigpack.detail.tag');
+		//<!-- build:tmpl:begin -->
+		return require('./tmpl/bigpack-detail.tag');
+		//<!-- endbuild -->
 	}
 	@onUse('enterBigpackDetail')
 	onCreate(opts) {}

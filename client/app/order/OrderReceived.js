@@ -19,7 +19,9 @@ export default class OrderReceived extends riot.Tag {
 		return 'order-received'
 	}
 	get tmpl() {
-		return require(`./tmpl/order.received.tag`);
+		//<!-- build:tmpl:begin -->
+		return require(`./tmpl/order-received.tag`);
+		//<!-- endbuild -->
 	}
 	onCreate(opts) {
 		this.mixin('router');

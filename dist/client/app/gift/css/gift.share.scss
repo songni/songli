@@ -1,0 +1,85 @@
+.gift_share{
+  background: $red_bg;
+  .img_bg{
+    img{
+      width: 100%;
+      margin-left: 10px;
+    }
+  }
+  .share_box{
+    background: #FFFFFF;
+    border-radius: 4px;
+    margin: 0 10px;
+    .share_head{
+      @extend .middle;
+      .gift_img{
+        width: 170px;
+        height: 170px;
+        margin-top: -85px;
+        border: 2px solid #FFFFFF;
+        border-radius: 10px;
+        img{width: 100%;height: 100%;object-fit: cover;}
+      }
+    }
+    .share_gift_name{
+      display: block;
+      color: #B8B8B9;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 15px;
+      padding: 0 25px;
+    }
+    .share_main{
+      .main_top{
+        text-align: center;
+        margin: 15px 0;
+        span{
+          display: inline-block;
+          &:first-child{
+            width: 13px;
+            img{width: 100%;}
+          }
+          &:last-child{
+            color: $red_bg;
+            font-size: 14px;
+            vertical-align: 2px;
+          }
+        }
+      }
+      .main_bottom{
+        background: #F7F8F8;
+        margin: 0 20px;
+        .scroll_box{
+          padding-left:4px;
+          text-align:left;
+          margin-left:10px;
+          position: relative;
+          top: 0;
+          li{
+            line-height:40px;
+            padding-left: 10px;
+            img{
+              width:25px;
+              border-radius: 100%;
+              vertical-align:middle;
+            }
+            span{
+              font-size:14px;
+              margin-left:10px;
+              color:#7C7C7C;
+            }
+          }
+        }
+      }
+    }
+    .share_foot{
+      @extend .middle;
+      margin-top: 20px;
+      padding-bottom: 50px;
+      a{
+        @include btn(45%, #FFFFFF, $red_bg, $red_bg);
+        border-radius: 45px;
+      }
+    }
+  }
+}

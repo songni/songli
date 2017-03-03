@@ -1,0 +1,108 @@
+// 背景颜色
+$gray-bg: #F2F2F2;
+$red-bg: #F05B47;
+$white-bg: #FFFFFF;
+// 按钮颜色
+$red-btn: #F05B47;
+$pink-btn: #F89775;
+// 字体颜色
+$gray-font: #B5B5B6;
+$red-font: #F05B47;
+$pink-font: #F89775;
+$white-font: #FFFFFF;
+$black-font: #231815;
+// 清除默认样式
+input,textarea,button{
+  -webkit-appearance:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+a,a:hover{
+  text-decoration: none;
+}
+ul{
+  margin: 0;
+  padding: 0;
+  li{list-style: none;}
+}
+// 页面初始化
+body{
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: Helvetica !important;
+}
+.init-page{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: scroll;
+}
+// 垂直左右居中
+.middle{
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+// 保留指定行数的文字，超出隐藏
+@mixin font-hidden($line){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+// 显示方式
+.fl{float: left;}
+.fr{float: right;}
+.clear{clear: both;}
+// input虚线框
+@mixin input-style($style){
+  width: 100%;
+  height: 45px;
+  display: block;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 8px;
+  box-sizing: border-box;
+  border: $style;
+}
+// 表单验证错误信息
+.help-block{
+  clear: both;
+  font-size: 12px;
+  color: #F05B47;
+}
+// 按钮样式
+@mixin btn($width, $color, $bgcolor, $border_color){
+  width: $width;
+  color: $color;
+  background: $bgcolor;
+  border: 1px solid $border_color;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  font-size: 16px;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+// 右上角 "礼" 字
+.right_top_corner{
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  width: 34px;
+}
+// 底标
+.icon-href-container {
+  width: 100%;
+  height: 70px;
+  text-align: center;
+  margin-top: 70px;
+  img {width: 106px;}
+}
