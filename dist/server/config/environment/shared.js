@@ -10,6 +10,8 @@ apiUri['dalibao.com'] = 'http://api.dalibao.com';
 apiUri['dev.91songli.cc'] = 'http://apidev.91songli.cc';
 apiUri['dev.songni.cc'] = 'http://apidev.91songli.cc';
 apiUri['dev2.songni.cc'] = 'http://apidev.91songli.cc';
+//test
+apiUri['qa.songni.cc'] = 'http://apidev.91songli.cc';
 
 exports = module.exports = {
   development: { //开发版
@@ -24,6 +26,16 @@ exports = module.exports = {
   },
   production: { //产品版本
     uri: 'http://api.91songli.cc',
+    imgUri: 'img.91pintuan.com',
+    phtUri: 'photo.91pintuan.com',
+    phtUriExotic: 'http://photo.91pintuan.com',
+    component: '5581117b5f225e4c401c9259',
+    apiUri: apiUri,
+    debug: false,
+    from: 'client'
+  },
+  test: { //产品版本
+    uri: 'http://apidev.91songli.cc',
     imgUri: 'img.91pintuan.com',
     phtUri: 'photo.91pintuan.com',
     phtUriExotic: 'http://photo.91pintuan.com',

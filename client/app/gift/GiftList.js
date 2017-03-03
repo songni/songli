@@ -23,8 +23,4 @@ export default class GiftList extends riot.Tag {
 	@onUse('enterGiftList')
 	onCreate(opts) {
 	}
-
-	async onLink(e) {
-		route('/gift/' + e.item.gift.id);
-	}
 }

@@ -1,10 +1,10 @@
 import { bindActionCreators } from 'redux';
-import riot from 'riot';
 import warning from '../util/warning';
 import invariant from '../util/invariant';
 import isPlainObject from '../util/isPlainObject';
 import shallowEqual from '../util/shallowEqual';
 import { getProvider } from './provider';
+import _ from '../../util';
 
 const defaultMapStateToOpts = state => ({});
 const defaultMapDispatchToOpts = dispatch => ({ dispatch });
@@ -14,7 +14,9 @@ const defaultMergeOpts = (stateOpts, dispatchOpts, parentOpts) => ({
     ...dispatchOpts
 });
 
-const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
+const getDisplayName = WrappedComponent => {
+    return WrappedComponent.displayName || _.lineToCamel(WrappedComponent.originName) || 'Component';
+}
 
 let errorObject = { value: null };
 function tryCatch(fn , ctx) {

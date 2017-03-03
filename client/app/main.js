@@ -16,8 +16,6 @@ if(process.env.NODE_ENV === 'development'){
   require('./main.scss')
 }
 
-console.warn('v2.0')
-
 window.libs = {
   riot,
   wx
@@ -51,7 +49,9 @@ app.start(async () => {
   * export app to global.
   */
   window.app = app
+
   let origin = location.host.replace(location.host.split('.')[0], '').slice(1)
+
   await bootstrap(app, {origin})
   /**
   * router interceptors.

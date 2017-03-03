@@ -1,5 +1,5 @@
 "use strict";
-import riot from 'riot'
+import observable from 'riot-observable'
 import route from 'riot-route'
 import $ from '../util'
 import invariant from './invariant'
@@ -441,17 +441,15 @@ class Hub {
         let callbackInvokeCount = 0;
         let callback = () => {
             callbackInvokeCount++;
-            let listeners = 
-                this.evtListeners
-                    .filter(({evt, fn}) => {
-                        if (evt === 'history-pending') {
-                            return fn.toString()
-                                .match(/\(.*?\)/)[0]
-                                .replace('(', '').replace(')', '')
-                                .split(',')
-                                .filter(p => p === 'next').length === 1;
-                        }
-                    })
+            let listeners = this.evtListeners
+                .filter(({evt, fn}) => {
+                    if (evt === 'history-pending') {
+                        return fn.toString()
+                            .match(/\(.*?\)/)[0]
+                            .replace('(', '').replace(')', '')
+                            .split(',').length === 5
+                    }
+                })
             let concernsCount = listeners.length;
             if (concernsCount === callbackInvokeCount) {
                 done();
@@ -484,17 +482,15 @@ class Hub {
         let callbackInvokeCount = 0;
         let callback = () => {
             callbackInvokeCount++;
-            let listeners = 
-                this.evtListeners
-                    .filter(({evt, fn}) => {
-                        if (evt === 'history-resolve') {
-                            return fn.toString()
-                                .match(/\(.*?\)/)[0]
-                                .replace('(', '').replace(')', '')
-                                .split(',')
-                                .filter(p => p === 'next').length === 1;
-                        }
-                    })
+            let listeners = this.evtListeners
+                .filter(({evt, fn}) => {
+                    if (evt === 'history-resolve') {
+                        return fn.toString()
+                            .match(/\(.*?\)/)[0]
+                            .replace('(', '').replace(')', '')
+                            .split(',').length === 6
+                    }
+                })
             let concernsCount = listeners.length;
             if (concernsCount === callbackInvokeCount) {
                 done();
@@ -663,7 +659,7 @@ class Hub {
     }
 }
 
-var hub = new Hub(riot.observable());
+var hub = new Hub(observable());
 
 export default { 
   hub: hub,

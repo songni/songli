@@ -1,6 +1,5 @@
 <div class="voice-box">
 	<div class="voice-process">
-	  <!--{JSON.stringify(opts)}-->
 		<div if="{ opts.order.type === 'one2one' }"><img src="https://img.91pintuan.com/songli/word_say_to.png" /></div>
 		<div if="{ opts.order.type === 'one2many' }"><img src="https://img.91pintuan.com/songli/word-zhufu_newyear.png" /></div>
 		<order-record-timer interval="1000" countdown="60" autostart="false">
@@ -9,7 +8,7 @@
 	<!-- 开始录音 -->
 	<div class="record-before" if="{ opts.recordState.stop }">
 		<img src="https://img.91pintuan.com/songli/record.png" onclick="{ record }" />
-		<span class="hint">点击开始录音</span>
+		<span class="hint">点击开始录音1</span>
 	</div>
 	<!-- 结束录音 -->
 	<div class="record-before" if="{ opts.recordState.start }">

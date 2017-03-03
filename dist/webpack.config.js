@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let env = process.env.NODE_ENV === 'production' ? 'production': 'development';
+let env = process.env.NODE_ENV;
 
 let baseConfig = {
 	plugins: [
@@ -51,6 +51,45 @@ let baseConfig = {
 		fs: 'empty'
 	}
 };
+
+let testConfig = {
+	module: {
+		loaders: [
+			{ 
+				test: /\.scss$/i, 
+				loader: ExtractTextPlugin.extract(['css','sass'])
+			}
+		]
+	},
+	entry: [
+		'babel-regenerator-runtime',
+		'whatwg-fetch', 
+		'./client/app/main.js',
+		'./client/app/main.scss'
+	],
+	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: JSON.stringify('test'),
+				CLIENT_SIDE: true
+			}
+		}),
+		new ExtractTextPlugin("style.css"),
+		new webpack.optimize.DedupePlugin(),
+		new webpack.optimize.OccurrenceOrderPlugin(),
+		new webpack.optimize.UglifyJsPlugin({
+			compress: { warnings: false },
+			comments: false,
+			sourceMap: false,
+			mangle: true,
+			minimize: true
+		}),
+	],
+	output: {
+		path: path.resolve(__dirname, './dist/client/app/'),
+		filename: 'bundle.js'
+	}
+}
 
 let proConfig = {
 	module: {
@@ -132,7 +171,13 @@ let devConfig = {
 	}
 }
 
-module.exports = merge(baseConfig, env === 'production' ? proConfig : devConfig);
+let envMap = {
+	production: proConfig,
+	development: devConfig,
+	test: testConfig
+}
+
+module.exports = merge(baseConfig, envMap[env]);
 /**
  * Helper functions
  */

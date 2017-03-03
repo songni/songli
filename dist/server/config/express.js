@@ -27,14 +27,14 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  if ('production' === env) {
+  if ('production' === env || 'test' === env) {
     app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', config.root + '/client');
     app.use(morgan('dev'));
   }
 
-  if ('development' === env || 'test' === env) {
+  if ('development' === env) {
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', 'client');

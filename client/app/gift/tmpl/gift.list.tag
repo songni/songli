@@ -4,9 +4,9 @@
   infinite-scroll-distance='{ 100 }'
   >
   <div class="gift-list">
-    <div class="list_item fl" 
+    <a class="list_item fl" 
       each="{ gift in parent.opts.gifts.items }" 
-      onclick="{ parent.parent.onLink }"
+      href="/gift/{ gift.id }"
       style="width: { parent.parent.opts.clientWidth/2}px;"
       >
       <div class="list_img" style="width: { parent.parent.opts.clientWidth/2}px; height: { parent.parent.opts.clientWidth/2  -12 }px;" >
@@ -22,6 +22,6 @@
       <div class="gift_price" style="width: { parent.parent.opts.clientWidth/2 -12 }px;">
         <span>{ $.util.filter.currency(gift.info.price) }</span>
       </div>
-    </div>
+    </a>
   </div>
 </on-scroll>

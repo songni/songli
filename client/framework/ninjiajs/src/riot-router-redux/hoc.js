@@ -48,7 +48,7 @@ function hoistStatics(targetComponent, sourceComponent, customStatics) {
     return targetComponent;
 }
 
-const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
+const getDisplayName = WrappedComponent => WrappedComponent.displayName || _.lineToCamel(WrappedComponent.originName) || 'Component';
 
 export default function View(WrappedComponent) {
 		const connectDisplayName = `View(${getDisplayName(WrappedComponent)})`;

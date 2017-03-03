@@ -85,11 +85,22 @@ let config = {
     apiUri: apiUriPro,
     debug:false,
     from:'client'
+  },
+  test: {
+    uri: 'https://apidev.91pintuan.com',
+    imgUri:'https://img.91pintuan.com',
+    phtUri:'https://photo.91pintuan.com',
+    phtUriExotic:'http://photo.91pintuan.com',
+    component: '5581117b5f225e4c401c9259',
+    apiUri: apiUriPro,
+    debug:false,
+    from:'client'
   }
 };
 
 mixin(config.development, properties);
 mixin(config.production, properties);
+mixin(config.test, properties);
 
 function mixin(t, s){
   for(var p in s){

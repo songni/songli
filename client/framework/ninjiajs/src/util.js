@@ -116,6 +116,17 @@ const deepEqual = (x, y) => {
       }, true) : (x === y);
 }
 
+const lineToCamel = str => {
+    if (!str || typeof str !== 'string') {
+        throw new Error(`[util-line to camel]: expected a string`);
+    }
+    return str.split('-').reduce((acc, curr) => {
+        let first = curr.slice(0, 1);
+        let last = curr.slice(1);
+        return `${acc}${first.toUpperCase()}${last}`
+    }, '');
+}
+
 const camelToLine = str => {
     let res = "";
     for (let i=0, len=str.length; i<len; i++) {
@@ -195,6 +206,7 @@ export default {
     omit,
     pick,
     camelToLine,
+    lineToCamel,
     exclude,
     extractField,
     hasClass,

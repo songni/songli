@@ -83,6 +83,7 @@ class WechatJsApiProxy {
 
 	async init () {
 		await this.waitForWxJsApi(1000);
+		console.warn('init wait for ok')
 		wx.error(function(res){
 			// alert(JSON.stringify(res));
 			// this.config();
@@ -103,6 +104,7 @@ class WechatJsApiProxy {
 		await new Promise((resolve, reject) => {
 			wx.ready(() => { resolve() })
 		})
+		console.warn('config ok')
 	}
 
 	async _config(apiList) {

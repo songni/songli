@@ -23,14 +23,8 @@
 	<!-- endbuild -->
 
 	<!-- build:js(dist/client) app/bundle.js -->
-    <script>
-			var body = document.getElementsByTagName('body')[0];
-			var script = document.createElement('script');
-			var domain = location.port ? location.origin.replace(/\:\d{4}/ig, '') + ':8090' : location.origin + ':8090'
-			script.src = domain + '/client/app/bundle.js';
-			body.appendChild(script);
-		</script>
-	<!-- endbuild -->
+    <script>var body = document.getElementsByTagName('body')[0];var script = document.createElement('script');script.src = window.location.origin + ':8090' + '/client/app/bundle.js';body.appendChild(script);</script>
+    <!-- endbuild -->
 </body>
 
 </html>

@@ -12,7 +12,6 @@ function extractPrototypes(s) {
 }
 
 export default function Component(WrappedComponent) {
-
 	if (!WrappedComponent.originName) {
 		throw new Error(`register decorator expected a origin name.`)
 	}
@@ -20,7 +19,6 @@ export default function Component(WrappedComponent) {
 	if (!WrappedComponent.prototype.tmpl) {
 		throw new Error(`register decorator expected a template.`)
 	}
-
 	riot.tag(
 		WrappedComponent.originName,
 		WrappedComponent.prototype.tmpl,

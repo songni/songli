@@ -1,4 +1,4 @@
-import * as riot from 'riot';
+// import * as riot from 'riot';
 function post(url, json, opts){
     var headers = {
         'Accept': 'application/json',
@@ -113,7 +113,7 @@ const invocationCreator = function(path, props){
     return invocation;
 };
 
-var resEmitter = riot.observable({});
+// var resEmitter = riot.observable({});
 
 var errorInterceptor = null;
 

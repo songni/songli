@@ -8,6 +8,7 @@ import { Connect } from '../../framework/ninjiajs/src/index';
 	setClientWidth: () => dispatch(actions.setClientWidth())
 }))
 export default class App extends riot.Tag {
+	static originName = 'app'
 	get name() {
 		return 'app'
 	}
