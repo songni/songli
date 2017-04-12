@@ -103,8 +103,8 @@ let proConfig = {
 	entry: [
 		'babel-regenerator-runtime',
 		'whatwg-fetch', 
-		'./client/app/main.js',
-		'./client/app/main.scss'
+		'./dist/client/app/main.js',
+		'./dist/client/app/main.scss'
 	],
 	plugins: [
 		new webpack.DefinePlugin({

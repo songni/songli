@@ -28,7 +28,8 @@
         border-width: 0px 8px 0px 4px;
       }
     }
-    &:last-child{
+    &:last-child,
+    &:nth-last-child(2){
       border-bottom: 10px solid $gray-bg;
     }
     .gift_name{

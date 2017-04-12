@@ -29,8 +29,7 @@ export default class GiftList extends riot.Tag {
       >
       <div class="list_img" style="width: { parent.parent.opts.clientWidth/2}px; height: { parent.parent.opts.clientWidth/2  -12 }px;" >
         <img 
-          if="{ gift.info.cover }" 
-          riot-src="{ gift.info.cover ? 'http://' + config.phtUri + gift.info.cover + app.config.phtStlList : app.config.images.GIFT_DEF_COVER }" 
+          riot-src="{ gift.info.cover ? app.config.phtUri + gift.info.cover + app.config.phtStlList : app.config.images.GIFT_DEF_COVER }" 
           style="width: { parent.parent.opts.clientWidth/2 -12 }px; height: { parent.parent.opts.clientWidth/2  -12 }px;"
         >
       </div>
