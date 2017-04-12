@@ -12,9 +12,10 @@
         padding: 0 20px;
         padding-bottom: 50px;
         a{
-          @include btn(100%, #FFFFFF, $red-bg, $red-bg)
+          @include btn(100%, #FFFFFF, $red-bg, $red-bg);
+          width: 170px;
+          margin: 0 auto;
         }
-        .btn_null{background: $pink-btn;}
       }
     }
   }
@@ -60,7 +61,11 @@
         margin: 0 20px;
         .form_name,
         .form_tel{
-          @include input_style(1px solid #E5E6E6)
+          @include input_style(1px solid #E5E6E6);
+          &::-webkit-input-placeholder{
+            text-align: left;
+            padding-left: 6px;
+          }
         }
         .form_addr{
           .form_textarea{
@@ -76,10 +81,11 @@
           }
         }
         .btn_group{
-          padding-bottom: 50px;
+          padding-bottom: 20px;
           .btn_done{
-            @include btn(100%, $red-bg, #FFFFFF, $red-bg);
-            margin-top: 12px;
+            @include btn(250px, #FFFFFF, $red-bg, $red-bg);
+            margin: 0 auto;
+            margin-top: 25px;
           }
           .btn_share{
             @include btn(100%, #FFFFFF, $red-bg, $red-bg);

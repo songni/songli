@@ -10,16 +10,14 @@ apiUriPro['91pintuan.com']    = 'https://api.91pintuan.com';
 apiUriPro['99.91pintuan.com'] = 'https://api99.91pintuan.com'; 
 
 let properties = {
-  phtStlList: '@1e_1c_0o_0l_300h_430w_100q.src',
-  phtStlList2: '@1e_1c_0o_0l_100sh_240h_360w_90q.src',
-  phtStlList3: '@1e_1c_0o_0l_100sh_125h_180w_90q.src', 
-  phtStlList4: '@1e_1c_0o_0l_100sh_85h_120w_90q.src',  
-  phtStlComm: '@1e_1c_0o_0l_600h_860w_100q.src',
-  phtStlSmll: '@1e_1c_0o_1l_399sh_84h_120w_100q.src',
-  phtStl120: '@1e_1c_0o_0l_100sh_120h_120w_90q.src',
-  phtStl500: '@0o_1l_500w_90q.src',
+  phtStlList: '@1e_1c_0o_0l_100sh_150h_150w_90q.src',
+  phtStlList2: '@1e_1c_0o_0l_100sh_300h_300w_90q.src',
+  phtStlList3: '@1e_1c_0o_0l_100sh_60h_60w_90q.src',
+  phtStlList4: '@1e_1c_0o_0l_100sh_50h_50w_90q.src',
+  phtStlList5: '@1e_1c_0o_0l_100sh_150h_300w_90q.src',
+  phtWbQrcode: '@1e_1c_0o_0l_100sh_400h_300w_30q.src',
   images: {
-    SHARE_DEF_COVER: 'https://img.91pintuan.com/songli/icon-herf/default-img.png',
+    SHARE_DEF_COVER: 'http://91pt.oss-cn-beijing.aliyuncs.com/songli/icon-herf/default-img.png',
     GIFTSHRAE_DEF_COVER: 'https://img.91pintuan.com/songli/icon-herf/present_sent_demo.png',
     GIFT_DEF_COVER: 'https://img.91pintuan.com/songli/rose_demo.png'
   },
@@ -27,11 +25,13 @@ let properties = {
     GIFT_SAVED: '该礼物已被领取',
     NO_GIFT_LEFT: '手慢了，没有礼物了',
     INFO_INCOMPLETE: '信息不全',
-    SHARE_INFO: '送给你一份礼物，快快收礼吧～',
+    SHARE_INFO: '送你一份礼物，请点击领取。',
     SHARE_TITLE: '会说话的礼物',
+    SHARE_DETAIL_CARE: '微信轻送礼，就用91送礼',
     SHARE_DESC: '的礼物货架',
-    GIFT_REDUCE: '礼物份数至少是2份',
-    GIFT_RECEIVED: '礼物已被他人领取'
+    GIFT_REDUCE: '礼物份数至少是1份',
+    GIFT_RECEIVED: '礼物已被他人领取',
+    UPLOAD_IMAGE_FAILED: '请上传图片'
   },
   errors: {
     NORIGHT_OPEN_PAGE: {
@@ -61,6 +61,10 @@ let properties = {
     LOCATION_NOAUTH: {
       code: 801,
       message: '您拒绝授权获取地理位置'
+    },
+    VOICE_EXPECTED: {
+      code: 505,
+      message: '请录制祝福语'
     }
   }
 }

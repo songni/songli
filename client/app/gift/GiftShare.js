@@ -18,9 +18,7 @@ export default class GiftShare extends riot.Tag {
 		return 'gift-share'
 	}
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/gift-share.tag');
-		//<!-- endbuild -->
 	}
 
 	@onUse('enterGiftShare')

@@ -23,9 +23,7 @@ export default class GiftPoiModal extends riot.Tag {
   }
   
   get tmpl() {
-    //<!-- build:tmpl:begin -->
 		return require('./tmpl/gift-poi-modal.tag');
-		//<!-- endbuild -->
   }
   
   onCreate(opts) {

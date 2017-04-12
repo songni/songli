@@ -27,7 +27,7 @@
         width: 100%;
         height: 320px;
         text-align: center;
-        border-bottom: 1px solid #CACBCB;
+        border-bottom: 1px solid #EFEFEF;
         span{display: block}
         span:nth-child(1){
           width: 202px;
@@ -52,7 +52,7 @@
           margin: 0;
           li{
             height: 65px;
-            border-bottom: 1px solid #C9CACA;
+            border-bottom: 1px solid #EFEFEF;
             .rec-l{
               width: 80%;
               span{display: block}
@@ -93,7 +93,83 @@
           li:last-child{border: none;}
         }
       }
-      
+      .received_wb{
+        .wb_title{
+          background: #f7f8f8;
+          border-radius: 4px 4px 0 0;
+          display: block;
+          height: 95px;
+          width: 100%;
+          span{
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            -webkit-align-items: center;
+            float: left;
+            &:first-child{
+              justify-content: flex-end;
+              -webkit-justify-content: flex-end;
+              height: 95px;
+              width: 55px;
+              img{
+                width: 37px;
+                height: 37px;
+              }
+            }
+            &:nth-child(2){
+              @include font-hidden(2);
+              color: #231815;
+              height: 34px;
+              margin-top: 31px;
+              margin-left: 15px;
+              width: calc(100% - 130px);
+              
+            }
+            &:last-child{
+              justify-content: center;
+              -webkit-justify-content: center;
+              width: 60px;
+              height: 95px;
+              img{
+                height: 11px;
+                width: 7px;
+              }
+            }
+          }
+        }
+        .wb_note{
+          span{
+            color: #898989;
+            display: block;
+            font-size: 14px;
+            text-align: center;
+            &:first-child{
+              color: $pink-font;
+              font-size: 18px;
+              padding-top: 35px;
+              padding-bottom: 20px;
+            }
+            &:last-child{
+              padding-bottom: 15px;
+            }
+          }
+        }
+        .wb_img{
+          background: #f7f8f8;
+          border-radius:0 0 4px 4px;
+          padding: 20px 0;
+          .img{
+            border: 1px solid #231815;
+            border-radius: 4px;
+            margin: 0 auto;
+            img{
+              object-fit: cover;
+              width: 100%;
+              border-radius: 4px;
+            }
+          }
+        }
+      }
     }
   }
 }

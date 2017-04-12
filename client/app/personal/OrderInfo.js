@@ -91,9 +91,7 @@ export default class PersonalOrderInfo extends riot.Tag {
 	}
 
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/order-info.tag');
-		//<!-- endbuild -->
 	}
 
 	@onUse([interruptors.isSender, 'enterPersonalOrderInfo'])

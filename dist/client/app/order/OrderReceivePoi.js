@@ -7,13 +7,10 @@ import { Connect, Form, Component } from '../../framework/ninjiajs/src/index';
 @Form({
   consignee: {
     required: true,
-    minlength: 1,
     maxlength: 20
   },
   telephone: {
     required: true,
-    minlength: 6,
-    maxlength: 11
   },
   poi: {
     required: true,
@@ -37,17 +34,14 @@ export default class OrderReceivePoi extends riot.Tag {
     return 'order-receive-poi'
   }
 
-  get tmpl() {
-    //<!-- build:tmpl:begin -->
-		return `<div class="receive_poi">
+  get tmpl() { return `<div class="receive_poi">
   <div class="receive_wrap">
     <div class="poi_cont">
       <div class="gift_info">
         <div class="info">
           <div class="title">
             <span><img riot-src="{ app.config.phtUri + opts.order.gift.info.cover }"></span>
-            <span>礼品</span>
-            <span style=" width: { (opts.clientWidth-24)*0.85 - 80 }px;" >{ opts.order.gift.info.name }</span>
+            <span style=" width: { (opts.clientWidth-24)*0.85 - 60 }px;" >{ opts.order.gift.info.name }</span>
           </div>
         </div>
         <div class="step">
@@ -61,13 +55,11 @@ export default class OrderReceivePoi extends riot.Tag {
           <input class="fr" type="text" ref="consignee" placeholder="收礼人姓名">
           <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.required }" class="help-block" >* 请填写收货人姓名</p>
           <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.maxlength }" class="help-block" >* 收货人姓名过长</p>
-          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.consignee.$error.minlength }" class="help-block" >* 收货人字数过短</p>
         </div>
         <div class="form_common">
           <label class="form_label fl">手机号</label>
           <input class="fr" type="tel" ref="telephone" placeholder="手机号码">
           <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.telephone.$error.required" class="help-block">* 请填写手机号码.</p>
-          <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.telephone.$error.minlength" class="help-block">* 手机号码最少六位.</p>
         </div>
         <!--门店自提-->
         <div class="form_common form_poi" onclick="{ selPoi }">
@@ -84,9 +76,7 @@ export default class OrderReceivePoi extends riot.Tag {
     </div>
   </div>
   <icon-href theme="{ white }"></icon-href>
-</div> `
-		//<!-- endbuild -->
-  }
+</div> ` }
 	
   onCreate(opts) {
     this.on('mount', () => {

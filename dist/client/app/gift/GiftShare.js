@@ -17,9 +17,7 @@ export default class GiftShare extends riot.Tag {
 	get name() {
 		return 'gift-share'
 	}
-	get tmpl() {
-		//<!-- build:tmpl:begin -->
-		return `<div class="gift_share">
+	get tmpl() { return `<div class="gift_share">
   <div class="img_bg" style="width: { opts.clientWidth - 20 }px;">
     <img src="https://img.91pintuan.com/songli/icon-herf/img-share-bg.png" />
   </div>
@@ -58,9 +56,7 @@ export default class GiftShare extends riot.Tag {
   
   <icon-href theme="white"></icon-href>
 </div>
- `
-		//<!-- endbuild -->
-	}
+ ` }
 
 	@onUse('enterGiftShare')
 	onCreate(opts) {}

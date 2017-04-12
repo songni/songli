@@ -22,17 +22,9 @@ export default class OrderPay extends riot.Tag {
 	}
 
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require(`./tmpl/order-pay.tag`);
-		//<!-- endbuild -->
 	}
 
 	@onUse('enterOrderPay')
-	onCreate(opts) {
-		this.on('mount', () => {
-			setTimeout(() => {
-				
-			}, 3000)
-		})
-	}
+	onCreate(opts) {}
 }

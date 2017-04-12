@@ -41,6 +41,7 @@
     "redux": "^3.6.0",
     "redux-actions": "^1.2.0",
     "request": "^2.79.0",
+    "reselect": "^2.5.4",
     "riot": "^3.0.7",
     "riot-mixin-pack": "^0.2.0",
     "riot-route": "^3.0.2",

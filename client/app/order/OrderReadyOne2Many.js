@@ -6,10 +6,12 @@ import actions from './order.actions';
 @Component
 @Connect(
   state => ({
-	  order: state.order
+	  order: state.order,
+	  clientWidth: state.clientWidth
   }),
   dispatch => ({
-    share: actions.shareOrder
+    share: actions.shareOrder,
+    detail: actions.giftDetail
   })
 )
 export default class OrderReadyOne2Many extends riot.Tag {
@@ -35,16 +37,13 @@ export default class OrderReadyOne2Many extends riot.Tag {
                 <span class="receive_num">开始送礼吧</span>
               </div>
               <div if="{ opts.order.receivers && opts.order.receivers.length && opts.order.receivers.length != opts.order.capacity }">
-                <span class="gift_num">还有{ opts.order.capacity - opts.order.receivers.length }份</span><br/>
+                <span class="gift_num">还有{ opts.order.capacity - opts.order.receivers.length }份</span>
                 <span class="receive_num">{ opts.order.receivers.length }人已领取</span>
               </div>
               <div if="{ opts.order.receivers && opts.order.receivers.length && opts.order.receivers.length === opts.order.capacity }">
-                <span class="gift_num">礼物已被抢完</span><br />
+                <span class="gift_num">礼物已被抢完</span>
                 <span class="receive_num">{ opts.order.receivers.length }人已领取</span>
               </div>
-            </div>
-            <div class="gift_inform">
-              <span>您已成功购买{ opts.order.capacity }份{ opts.order.gift.info.name },发至到微信好友/微信群或朋友圈,开始送礼吧！</span>
             </div>
             <div class="btn_receive">
               <!--礼物领取中-->
@@ -60,6 +59,22 @@ export default class OrderReadyOne2Many extends riot.Tag {
                 if="{ opts.order.receivers && opts.order.receivers.length && opts.order.receivers.length === opts.order.capacity }">继续送礼
               </a>
             </div>
+            <div class="gift_cover">
+              <div class="cover_cont">
+                <div class="img_cover" style="height: {(opts.clientWidth - 50)/2}px">
+                  <img riot-src="{ opts.order.gift.info.cover ? 'http://' + config.phtUri + opts.order.gift.info.cover + app.config.phtStlList5 : app.config.images.GIFT_DEF_COVER }">
+                </div>
+                <div class="title">
+                  <span>{ opts.order.gift.info.name }</span>
+                  <span onclick="{ opts.detail }">详情</span>
+                </div>
+              </div>
+            </div>
+            <!--
+            <div class="gift_inform">
+              <span>您已成功购买{ opts.order.capacity }份{ opts.order.gift.info.name },发至到微信好友/微信群或朋友圈,开始送礼吧！</span>
+            </div>
+            -->
           </div>
           <!--receive gifts interact information-->
           <order-interact></order-interact>
@@ -72,4 +87,6 @@ export default class OrderReadyOne2Many extends riot.Tag {
 
   onCreate(opts) {
   }
+ 
+  
 }

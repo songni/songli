@@ -30,8 +30,8 @@ const enterGiftList = async (next, ctx) => async (dispatch, getState) => {
 		imgUrl: app.config.images.SHARE_DEF_COVER
 	};
 	let options = {
-		title: app.config.messages.SHARE_TITLE,
-		desc: merchant.info.name + app.config.messages.SHARE_DESC,
+		title: merchant.info.name + app.config.messages.SHARE_DESC,
+		desc: app.config.messages.SHARE_DETAIL_CARE,
 		link: location.href,
 		imgUrl: app.config.images.SHARE_DEF_COVER
 	};
@@ -63,25 +63,26 @@ const nextPage = async () => async (dispatch, getState) => {
 }
 
 const enterGiftDetail = async (next, ctx) => async (dispatch, getState) => {
-	let id = ctx.req.params.id;
-	await dispatch(getGiftById(id));
-	let { gift } = getState();
-	let iconLiImgUrl = gift.info.cover ? app.config.phtUri + gift.info.cover : app.config.images.SHARE_DEF_COVER;
+	let id = ctx.req.params.id
+	await dispatch({ type: 'order/init' })
+	await dispatch(getGiftById(id))
+	let { gift } = getState()
+	let iconLiImgUrl = gift.info.cover ? app.config.phtUri + gift.info.cover : app.config.images.SHARE_DEF_COVER
 	let leanOptions = {
 		title: gift.info.name,
 		imgUrl: iconLiImgUrl 
-	};
+	}
 	let options = {
-		title: app.config.messages.SHARE_TITLE,
-		desc: gift.info.name,
+		title: gift.info.name,
+		desc: app.config.messages.SHARE_DETAIL_CARE,
 		imgUrl: iconLiImgUrl 
-	};
-	await Wechat.config();
-	wx.onMenuShareTimeline(leanOptions);
-	wx.onMenuShareAppMessage(options);
-	wx.onMenuShareQQ(options);
-	wx.onMenuShareWeibo(options);
-	next();
+	}
+	await Wechat.config()
+	wx.onMenuShareTimeline(leanOptions)
+	wx.onMenuShareAppMessage(options)
+	wx.onMenuShareQQ(options)
+	wx.onMenuShareWeibo(options)
+	next()
 }
 
 const getGiftById = async id => async (dispatch, getState) => {

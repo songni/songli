@@ -7,13 +7,10 @@ import { Connect, Component, Form } from '../../framework/ninjiajs/src/index';
 @Form({
   consignee: {
     required: true,
-    minlength: 2,
     maxlength: 20
   },
   telephone: {
     required: true,
-    minlength: 6,
-    maxlength: 11
   },
   address: {
     required: true,
@@ -38,9 +35,7 @@ export default class OrderReceiveLogistics extends riot.Tag {
   }
 
   get tmpl() {
-    //<!-- build:tmpl:begin -->
     return require(`./tmpl/order-receive-logistics.tag`);
-		//<!-- endbuild -->
   }
 	
   onCreate(opts) {

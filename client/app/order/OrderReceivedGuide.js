@@ -8,6 +8,10 @@ import { Connect, Component} from '../../framework/ninjiajs/src/index';
 @Connect(
   state => ({
     order: state.order,
+    clientWidth: state.clientWidth,
+  }),
+  dispatch => ({
+    detail: actions.giftDetail
   })
 )
 export default class OrderReceivedGuide extends riot.Tag {
@@ -18,11 +22,11 @@ export default class OrderReceivedGuide extends riot.Tag {
   }
 
   get tmpl() {
-    //<!-- build:tmpl:begin -->
     return require(`./tmpl/order-received-guide.tag`);
-		//<!-- endbuild -->
   }
   
   onCreate(opts) {
   }
+  
+  
 }

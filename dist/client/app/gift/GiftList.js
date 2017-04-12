@@ -16,9 +16,7 @@ export default class GiftList extends riot.Tag {
 	get name() {
 		return 'gift-list'
 	}
-	get tmpl() {
-		//<!-- build:tmpl:begin -->
-		return `<on-scroll 
+	get tmpl() { return `<on-scroll 
   infinite-scroll='{ opts.nextPage }' 
   infinite-scroll-disabled='{ opts.gifts.busy }' 
   infinite-scroll-distance='{ 100 }'
@@ -31,8 +29,8 @@ export default class GiftList extends riot.Tag {
       >
       <div class="list_img" style="width: { parent.parent.opts.clientWidth/2}px; height: { parent.parent.opts.clientWidth/2  -12 }px;" >
         <img 
-          riot-src="{ gift.info.cover ? 'http://' + config.phtUri + gift.info.cover : app.config.images.GIFT_DEF_COVER }" 
           if="{ gift.info.cover }" 
+          riot-src="{ gift.info.cover ? 'http://' + config.phtUri + gift.info.cover + app.config.phtStlList : app.config.images.GIFT_DEF_COVER }" 
           style="width: { parent.parent.opts.clientWidth/2 -12 }px; height: { parent.parent.opts.clientWidth/2  -12 }px;"
         >
       </div>
@@ -45,9 +43,7 @@ export default class GiftList extends riot.Tag {
     </a>
   </div>
 </on-scroll>
- `
-		//<!-- endbuild -->
-	}
+ ` }
 
 	@onUse('enterGiftList')
 	onCreate(opts) {

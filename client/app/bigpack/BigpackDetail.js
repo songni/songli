@@ -17,14 +17,25 @@ import actions from './bigpack.actions';
 )
 export default class BigpackDetail extends riot.Tag {
 	static originName = 'bigpack-detail'
+
 	get name() {
 		return 'bigpack-detail'
 	}
+
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/bigpack-detail.tag');
-		//<!-- endbuild -->
 	}
+
 	@onUse('enterBigpackDetail')
 	onCreate(opts) {}
+
+	async onSubmit(){
+		let { getState } = app.store
+		let { bigpack, user } = getState()
+		let status = bigpack.gift.status
+		if (status.wb) {
+			return route(`/bigpack/${bigpack.id}/shoot`);
+		}
+		return route(`/bigpack/${bigpack.id}/record`);
+	}
 }

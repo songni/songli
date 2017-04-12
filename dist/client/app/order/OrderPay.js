@@ -21,9 +21,7 @@ export default class OrderPay extends riot.Tag {
 		return 'order-pay'
 	}
 
-	get tmpl() {
-		//<!-- build:tmpl:begin -->
-		return `<div class="order_pay">
+	get tmpl() { return `<div class="order_pay">
   <div class="payment">
     <div class="pay_info">
       <div class="pay_nl">
@@ -44,16 +42,8 @@ export default class OrderPay extends riot.Tag {
       <a class="pay_btn" onclick="{ opts.wxPay.bind(this) }" disabled="{ submiting }">{ submiting ? '支付中...' : '支付' }</a>
     </div>
   </div>
-</div> `
-		//<!-- endbuild -->
-	}
+</div> ` }
 
 	@onUse('enterOrderPay')
-	onCreate(opts) {
-		this.on('mount', () => {
-			setTimeout(() => {
-				
-			}, 3000)
-		})
-	}
+	onCreate(opts) {}
 }

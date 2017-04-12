@@ -20,12 +20,16 @@ const receivedCount = order => {
 @Connect(
 	state => ({
 		order: state.order,
+		clientWidth: state.clientWidth,
     type: state.order.capacity > 1 ? 'one2many' : 'one2one',
     availableCount: state.order.capacity - receivedCount(state.order),
     receivedCount: receivedCount(state.order),
     isInteract: true,
     isAvailable: isAvailable(state.order)
-	})
+	}),
+	dispatch => ({
+    detail: actions.giftDetail
+  })
 )
 export default class OrderPreReceive extends riot.Tag {
   static originName = 'order-pre-receive'
@@ -35,11 +39,19 @@ export default class OrderPreReceive extends riot.Tag {
   }
 
   get tmpl() {
-    //<!-- build:tmpl:begin -->
 		return require(`./tmpl/order-pre-receive.tag`);
-		//<!-- endbuild -->
   }
 	
   onCreate(opts) {}
   
+  async onSubmit(){
+    let { getState, dispatch } = app.store
+    let order = getState().order
+    if (order.gift && order.gift.scene === 'wb') {
+      await dispatch(actions.orderReceiveSubmit())
+      return 
+    } else {
+      route(`/order/${ order.id }/receive`)
+    }
+  }
 }

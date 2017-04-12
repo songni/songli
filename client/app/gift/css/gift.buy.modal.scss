@@ -1,0 +1,126 @@
+.gift_buy{
+  @extend .init-page;
+  .buy_cont{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-height: 200px;
+    background: #FFFFFF;
+    padding: 18px 0;
+    .line_style{
+      min-height: 60px;
+      line-height: 60px;
+      margin: 0 15px; 
+      border-bottom: 1px solid #EFEFEF;
+    }
+    .first_span{
+      color: $gray-font;
+      font-size: 14px;
+      padding-right: 10px;
+    }
+    .title{
+      margin: 0 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #EFEFEF;
+      img{
+        width: 60px;
+        height: 60px;
+      }
+      span{
+        @include font-hidden(3);
+        color: $gray-font;
+        float: right;
+        height: 48px;
+        font-size: 14px;
+        line-height: 16px;
+        vertical-align: top;
+      }
+    }
+    .price{
+      @extend .line_style;
+      span{
+        &:first-child{
+          @extend .first_span;
+        }
+        &:last-child{
+          font-size: 18px; 
+          color: $black-font;
+        }
+      }
+    }
+    .num{
+      @extend .line_style;
+      span{
+        &:first-child{
+          @extend .first_span;
+        }
+      }
+      .input_group{
+        button{
+          width: 28px;
+          height: 28px;
+          color: $red-font;
+          font-size: 22px;
+          line-height: 22px;
+          text-align: center;
+          vertical-align: middle;
+          border: 1px solid #DCDDDD;
+          background: #FFFFFF;
+          padding: 0;
+          &:first-child{
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+            margin-right: -5px;
+            em{
+              width: 40%;
+              height: 3px;
+              display: block;
+              margin-left: 30%;
+              background: $red-font;
+            }
+          }
+          &:last-child{
+            border-radius: 0 4px 4px 0; 
+            margin-left: -6px;
+            em{
+              font-style: normal;
+              display: block;
+              padding-bottom: 5px;
+              font-weight: bolder;
+            }
+          } 
+        }
+        input{
+          width: 60px;
+          height: 26px;
+          line-height: 26px;
+          text-align: center;
+          font-size: 16px;
+          color: $black-font;
+          padding: 0;
+          border: 1px solid #DCDDDD;
+          vertical-align: middle;
+          border-radius: 0;
+        }
+      }
+      .help-block{
+        line-height: 0;
+        padding-bottom: 10px;
+      }
+      b{
+        font-weight: normal;
+        font-size: 14px;
+        margin-left: 5px;
+      }
+    }
+    .next{
+      padding-top: 15px;      
+      @extend .middle;
+      button{
+        @include btn(90%, #FFFFFF, $red_bg, $red_bg);
+      }
+    }
+  }
+}

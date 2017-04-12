@@ -28,6 +28,9 @@
         border-width: 0px 8px 0px 4px;
       }
     }
+    &:last-child{
+      border-bottom: 10px solid $gray-bg;
+    }
     .gift_name{
       @include font-hidden(3); 
       background: $white-bg;
@@ -49,8 +52,8 @@
       color: $red-font;
       border-color: #f2f2f2;
       border-style: solid;
-      padding-top: 30px;
-      padding-bottom: 15px;
+      padding-top: 15px;
+      padding-bottom: 10px;
       font-size: 15px;
       span{
         padding-left: 8px;

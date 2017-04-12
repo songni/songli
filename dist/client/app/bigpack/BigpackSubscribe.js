@@ -1,6 +1,7 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View, Connect } from '../../framework/ninjiajs/src/index';
+import actions from '../order/order.actions'
+import { View, Connect, onUse } from '../../framework/ninjiajs/src/index';
 
 @View
 @Connect(
@@ -12,12 +13,12 @@ import { View, Connect } from '../../framework/ninjiajs/src/index';
 )
 export default class BigpackSubscribe extends riot.Tag {
 	static originName = 'bigpack-subscribe'
+
 	get name() {
 		return 'bigpack-subscribe'
 	}
-	get tmpl() {
-		//<!-- build:tmpl:begin -->
-		return `<div class="bigpack_subscribe">
+
+	get tmpl() { return `<div class="bigpack_subscribe">
   <div class="subscribe_wrap">
     <div class="subscribe_cont">
       <div class="pack_title" style="width: { opts.clientWidth - 24 }px;">
@@ -45,9 +46,8 @@ export default class BigpackSubscribe extends riot.Tag {
     </div>
   </div>
   <icon-href theme="white"></icon-href>
-</div> `
-		//<!-- endbuild -->
-	}
+</div> ` }
+
 	onCreate(opts) {
 	}
 }

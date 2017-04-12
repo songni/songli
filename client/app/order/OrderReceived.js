@@ -11,6 +11,9 @@ import actions from './order.actions';
     suborder: state.suborder,
     merchant: state.merchant,
     clientWidth: state.clientWidth,
+  }),
+  dispatch => ({
+    detail: actions.giftDetail
   })
 )
 export default class OrderReceived extends riot.Tag {
@@ -19,9 +22,7 @@ export default class OrderReceived extends riot.Tag {
 		return 'order-received'
 	}
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require(`./tmpl/order-received.tag`);
-		//<!-- endbuild -->
 	}
 	onCreate(opts) {
 		this.mixin('router');

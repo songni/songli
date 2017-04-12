@@ -21,11 +21,16 @@ export default class GiftDetail extends riot.Tag {
 	}
 
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/gift-detail.tag');
-		//<!-- endbuild -->
 	}
 
 	@onUse('enterGiftDetail')
 	onCreate(opts) {}
+	
+	buy() {
+    widgets.Modal.open({
+      tag: 'gift-buy-modal',
+    })
+  }
+	
 }

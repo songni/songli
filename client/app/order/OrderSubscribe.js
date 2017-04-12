@@ -22,9 +22,7 @@ export default class OrderSubscribe extends riot.Tag {
 	}
 
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/order-subscribe.tag');
-		//<!-- endbuild -->
 	}
 
 	@onUse('enterOrderSubscribe')

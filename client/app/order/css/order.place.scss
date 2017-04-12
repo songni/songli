@@ -1,0 +1,96 @@
+.order_place{
+  @extend .init-page;
+  position: fixed;
+  .order_voice{
+    background: $red-bg;
+    .title{
+      display: block;
+      color: #f8b3aa;
+      font-size: 16px;
+      margin-left: 20px;
+      padding-top: 20px;
+    }
+    .voice-box{
+      padding: 0;
+      padding-top: 50px;
+      .voice-process{
+        margin-bottom: 30px;
+      }
+    }
+  }
+  .order_wepay{
+    background: #FFFFFF;
+    margin: 20px 20px 0 20px;
+    .info{
+      height: 70px;
+      border-bottom: 1px solid #EFEFEF;
+      img{
+        float: left;
+        margin-left: 5px;
+        width: 55px;
+        height: 55px;
+      }
+      .info_right{
+        width: calc(100% - 80px); 
+        min-height: 50px;
+        float: right;
+        margin-right: 10px;
+        span{
+          display: block;
+          &:first-child{
+            @include font-hidden(2);
+            height: 33px;
+            font-size: 14px;
+            line-height: 17px;
+            color: $gray-font;
+          }
+          &:last-child{
+            margin-top: 5px;
+            font-size: 14px;
+            em{
+              color: #595757;
+              font-style: normal;
+              &:first-child{
+                
+              }
+              &:last-child{
+                float: right;
+              }
+            }
+          }
+        }
+      }
+    }
+    .wepay{
+      height: 65px;
+      line-height: 65px;
+      padding: 0 10px 0 5px;
+      border-bottom: 1px solid #EFEFEF;
+      span{
+        &:first-child{
+          color: $gray-font;
+        }
+        &:last-child{
+          float: right;
+          color: $black-font;
+          font-size: 20px;
+        }
+      }
+    }
+    .btn_pay{
+      @extend .middle;
+      padding-top: 15px;
+      input{
+        @include btn(90%, #FFFFFF, $red-bg, $red-bg);
+      }
+    }
+    .btn_disabled{
+      @extend .middle;
+      padding-top: 15px;
+      padding-bottom: 10px;
+      input{
+        @include btn(90%, #FFFFFF, #B5B5B6, #B5B5B6);
+      }
+    }
+  }
+}

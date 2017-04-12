@@ -7,13 +7,10 @@ import { Connect, Form, Component } from '../../framework/ninjiajs/src/index';
 @Form({
   consignee: {
     required: true,
-    minlength: 1,
     maxlength: 20
   },
   telephone: {
     required: true,
-    minlength: 6,
-    maxlength: 11
   },
   poi: {
     required: true,
@@ -38,9 +35,7 @@ export default class OrderReceivePoi extends riot.Tag {
   }
 
   get tmpl() {
-    //<!-- build:tmpl:begin -->
 		return require(`./tmpl/order-receive-poi.tag`);
-		//<!-- endbuild -->
   }
 	
   onCreate(opts) {

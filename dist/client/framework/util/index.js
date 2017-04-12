@@ -144,6 +144,13 @@ const filter = {
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
         return fmt;
     },
+    toDouble: function(n){
+      if(n<10){
+        return '00:0'+n;
+      }else{
+        return '00:'+n;
+      }
+    },
     htmlSafe: htmlStr => htmlStr
         .replace(/<!--[\s\S]*?-->/g, '')
         .replace(/<style.*\/style>/g, '')

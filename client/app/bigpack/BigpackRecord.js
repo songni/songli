@@ -16,7 +16,8 @@ import actions from './bigpack.actions';
 		merchant: state.merchant,
 		order: state.bigpack,
 		user: state.user,
-		recordState: state.record
+		recordState: state.record,
+		clientHeight: state.clientHeight
 	}),
 	dispatch => ({
 		enterBigpackRecord: (next, ctx) => dispatch(actions.enterBigpackRecord(next, ctx))
@@ -30,9 +31,7 @@ export default class BigpackRecord extends riot.Tag {
 	}
 
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/bigpack-record.tag');
-		//<!-- endbuild -->
 	}
 
 	@onUse('enterBigpackRecord')

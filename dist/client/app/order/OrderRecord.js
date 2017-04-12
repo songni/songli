@@ -32,9 +32,7 @@ export default class OrderRecord extends riot.Tag {
 	get name() {
 		return 'order-record'
 	}
-	get tmpl() {
-		//<!-- build:tmpl:begin -->
-		return `<form class="record" ref="orderRecordForm" novalidate>
+	get tmpl() { return `<form class="record" ref="orderRecordForm" novalidate>
   <div class="sound-record">
     <!--大礼包-->
     <div if="{ opts.order.status.bigpack }" class="bigpack_recoding">
@@ -89,9 +87,7 @@ export default class OrderRecord extends riot.Tag {
     </div>
   </div>
 </form>
- `
-		//<!-- endbuild -->
-	}
+ ` }
 	
 	@onUse('enterOrderRecord')
 	onCreate(opts) {}

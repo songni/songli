@@ -6,7 +6,7 @@ import {} from '../framework/jquery'
 import Cookies from '../framework/cookie'
 import bootstrap from './bootstrap'
 import config from './constant'
-import { Ninjia, router, Connect, provider } from '../framework/ninjiajs/src/index'
+import { Ninjia } from '../framework/ninjiajs/src/index'
 import reducer from './registerReducers'
 import middlewares from './middlewares'
 import routes from './routes'
@@ -23,9 +23,7 @@ window.libs = {
 window.riot = riot
 window.wx = wx
 
-/**
- * configure application.
- */
+// configure application.
 let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
 
 app.config = config
@@ -34,28 +32,20 @@ app.set('env', process.env.NODE_ENV ? process.env.NODE_ENV : 'development')
 
 app.set('mode', 'browser')
 
-app.set('context', { store: app.store, hub: router.hub, tags: {}, util: {promisify, promisifyAll}})
+app.set('context', {util: {promisify, promisifyAll}})
 
-router.hub.routes = routes
+app.set('routes', routes)
 
-app.router(router)
-
-riot.util.tmpl.errorHandler = e => {}
-/**
- * application ready callback.
- */
+// application ready callback.
 app.start(async () => {
-  /**
-  * export app to global.
-  */
+  // export app to global.
   window.app = app
 
   let origin = location.host.replace(location.host.split('.')[0], '').slice(1)
 
   await bootstrap(app, {origin})
-  /**
-  * router interceptors.
-  */
+
+  // router interceptors.
   app.hub.subscribe('history-pending', async (from, to, $location, { req }, next) => {
     if (req.body.authenticate) {
       if (!Cookies.get('token')) {
@@ -74,9 +64,7 @@ app.start(async () => {
   app.hub.on('history-resolve', (from, to, ctx, hints, index) => {
   })
 
-  /**
-   * import all required tags. (previously tag, compile needed)
-  */
+  // import all required tags. (previously tag, compile needed)
   require('./commons/on-scroll.html')
   require('./commons/modal.html')
   require('./commons/alert.html')
@@ -95,8 +83,11 @@ app.start(async () => {
 
   require('./gift/GiftShareModal.js')
   require('./gift/GiftPoiModal.js')
+  require('./gift/GiftBuyModal.js')
   require('./order/MerchantInfo.js')
+  require('./order/OrderGiftDetail.js')
 
+  require('./order/OrderPlace.js')
   require('./order/OrderRecordTimer.js')
   require('./order/OrderRecordVoice.js')
   require('./order/OrderList.js')
@@ -105,14 +96,13 @@ app.start(async () => {
   require('./order/OrderReadyOne2Many.js')
   require('./order/OrderReceive.js')
   require('./order/OrderReceivePoi.js')
+  require('./order/OrderReceiveWb.js')
   require('./order/OrderReceiveLogistics.js')
   require('./order/OrderReceivedGuide.js')
   require('./order/OrderPreReceive.js')
     
 
-  /**
-   * register widgets.
-  */
+  // register widgets.
   app.registerWidget({
     name: 'alert',
     methods: ['add']
@@ -122,20 +112,10 @@ app.start(async () => {
     name: 'modal',
     methods: ['open']
   })
-    
+
   window.widgets.Alert = app.context.tags['alert']
   window.widgets.Modal = app.context.tags['modal']
-  /**
-   * set entry for the application.
-  */
-  let entry = new App(document.getElementById('app'), {store: app.store})
-
-  app.hub.root = entry
-
-  app.set('entry', entry)
-
-  /**
-   * set provider for redux.
-  */
-  provider(app.store)(app.entry)
+ 
+  // set entry for the application.
+  app.set('entry', new App(document.getElementById('app'), {store: app.store}))
 })

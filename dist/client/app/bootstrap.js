@@ -8,7 +8,7 @@ const bootstrap = async (app, {origin}) => {
 		let config = originConfig[env];
 		let dispatch = store.dispatch;
 		Object.assign($, $.ajax.base(`${config.apiUri[origin]}/api`));
-		
+	
 		window.config = config;
 
 		$.setErrorInterceptor((e, chain) => {
@@ -55,14 +55,20 @@ const bootstrap = async (app, {origin}) => {
 		if(token) {
 			headers.Authorization = token;
 			Object.assign($, $.withProps({headers}));
-			let user = await $.get('/wechat/userinfo');
+			let user = null;
+			try {
+				user = await $.get('/wechat/userinfo');
+			} catch (e) {
+				alert(JSON.stringify(e))
+			}
+			
 			dispatch({type: 'user', payload: user});
 		}
 		
 		
 		let merchant = await $.get('/merchant');
 		
-		app.store.dispatch({type: 'merchant', payload: merchant})
+		dispatch({type: 'merchant', payload: merchant})
 		
 		let configList = [
 			'onMenuShareTimeline',

@@ -22,9 +22,7 @@ export default class OrderList extends riot.Tag {
     return 'order-list'
   }
 
-  get tmpl() {
-    //<!-- build:tmpl:begin -->
-		return `<on-scroll 
+  get tmpl() { return `<on-scroll 
   infinite-scroll='{ opts.nextPageCreator(opts.force) }' 
   infinite-scroll-disabled='{ opts.orders.busy }' 
   infinite-scroll-distance='{ 100 }'
@@ -66,9 +64,7 @@ export default class OrderList extends riot.Tag {
     </a>
   </div>
 </on-scroll>
- `
-		//<!-- endbuild -->
-  }
+ ` }
 
   @onUse('enterOrderList')
   onCreate(opts) {}

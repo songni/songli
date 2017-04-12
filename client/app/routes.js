@@ -5,6 +5,7 @@ import GiftDetail from './gift/GiftDetail';
 import GiftShare from './gift/GiftShare';
 import Order from './order/Order';
 import OrderRecord from './order/OrderRecord';
+import OrderPlace from './order/OrderPlace';
 import OrderPay from './order/OrderPay';
 import OrderDetail from './order/OrderDetail';
 import Personal from './personal/Personal';
@@ -18,10 +19,12 @@ import OrderState from './order/OrderState';
 import OrderReceive from './order/OrderReceive';
 import OrderSubscribe from './order/OrderSubscribe';
 import OrderReceived from './order/OrderReceived';
+import OrderGiftDetail from './order/OrderGiftDetail';
 import Bigpack from './bigpack/Bigpack';
 import BigpackDetail from './bigpack/BigpackDetail';
 import BigpackSubscribe from './bigpack/BigpackSubscribe';
 import BigpackRecord from './bigpack/BigpackRecord';
+import BigpackShoot from './bigpack/BigpackShoot';
 
 export default {
 	component: App,
@@ -34,7 +37,8 @@ export default {
 		},
 		{
 			path: '/wepay/',
-			components: { OrderPay }
+			authenticate: true,
+			components: { OrderPay, OrderPlace }
 		},
 		{
 			path: '/gift',
@@ -64,6 +68,11 @@ export default {
 									component: OrderRecord,
 									authenticate: true
 								},
+								{
+									path: '/place',
+									component: OrderPlace,
+									authenticate: true
+								}
 							]
 						},
 						{
@@ -103,7 +112,11 @@ export default {
 						{
 							path: '/received',
 							component: OrderReceived
-						}
+						},
+						{
+              path: '/detail',
+              component: OrderGiftDetail
+            }
 					]
 				}
 			]
@@ -166,6 +179,10 @@ export default {
 						{
 							path: '/record',
 							component: BigpackRecord
+						},
+						{
+							path: '/shoot',
+							component: BigpackShoot
 						}
 					]
 				}

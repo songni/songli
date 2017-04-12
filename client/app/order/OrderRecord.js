@@ -33,9 +33,7 @@ export default class OrderRecord extends riot.Tag {
 		return 'order-record'
 	}
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require(`./tmpl/order-record.tag`);
-		//<!-- endbuild -->
 	}
 	
 	@onUse('enterOrderRecord')

@@ -10,11 +10,13 @@ export default class OrderRecordTimer extends riot.Tag {
 	}
 	get tmpl() {
 		return `
+		  <!--
 			<div class="progress">
 				<div class="progress-active" id="pro" aria-valuenow="{ countdown }" aria-valuemin="0" aria-valuemax="60" style="width: { progress ? progress : 0 }%;">
 				</div>
 			<div>
-			<span class="progress-time" id="second">{ countdown === 60 ? '&nbsp;' : (60 - countdown) + 'S' }</span>
+			-->
+			<span class="progress-time" id="second">{ countdown === 60 ? '00:00' : $.util.filter.toDouble(60 - countdown) }</span>
 		`;
 	}
 	onInit() {
@@ -66,6 +68,10 @@ export default class OrderRecordTimer extends riot.Tag {
 			this.startTime = 0;
 			this.endTime = 0;
 		})
+		
+		this.on('timer:pause', () => {
+      clearInterval(this.interval);
+    })
 
 		this.on('timer:play', () => {
 			this.reset();

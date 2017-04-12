@@ -22,9 +22,7 @@ export default class GiftPoiModal extends riot.Tag {
     return 'gift-poi-modal'
   }
   
-  get tmpl() {
-    //<!-- build:tmpl:begin -->
-		return `<div class="poi-address"  if="{ opts.pois.length }">
+  get tmpl() { return `<div class="poi-address"  if="{ opts.pois.length }">
   <div class="list-group address_list">
     <a href="javascript:void(0)" class="list-group-item poiList"
         each="{ poi in opts.pois }"
@@ -53,9 +51,7 @@ export default class GiftPoiModal extends riot.Tag {
     <span>:( 您当前位置距离该商家门店过远</span><br />
     <button class="bey_back"  onclick="{ dismiss }">返回</button>
   </div>
-</div> `
-		//<!-- endbuild -->
-  }
+</div> ` }
   
   onCreate(opts) {
     this.on('mount', this.onMount.bind(this));

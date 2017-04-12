@@ -90,9 +90,7 @@ export default class PersonalOrderInfo extends riot.Tag {
 		return 'personal-order-info'
 	}
 
-	get tmpl() {
-		//<!-- build:tmpl:begin -->
-		return `<router-outlet>
+	get tmpl() { return `<router-outlet>
   <div class="order_detail">
     <div class="order_wrap">
       <div class="order_cont">
@@ -198,9 +196,7 @@ export default class PersonalOrderInfo extends riot.Tag {
     </div>
   </div>
 </router-outlet>
- `
-		//<!-- endbuild -->
-	}
+ ` }
 
 	@onUse([interruptors.isSender, 'enterPersonalOrderInfo'])
 	onCreate(opts) {}

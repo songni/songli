@@ -6,6 +6,16 @@ const enterOrderReceive = async (next, ctx) => async (dispatch, getState) => {
   next()
 }
 
+const enterOrderPlace = async (next, ctx) => async (dispatch, getState) => {
+  let { gift } = getState()
+  dispatch({ type: 'record/reset' })
+  let orderStr = localStorage.getItem("order:capacity")
+  let order = JSON.parse(orderStr)
+  await dispatch(giftActions.getGiftById(order.gift))
+  dispatch({type: 'order/update', payload: order })
+  next()
+}
+
 const enterOrderPay = async (next, ctx) => async (dispatch, getState) => {
   let orderRaw = localStorage.getItem("order:recorded");
   if (!orderRaw) {
@@ -25,6 +35,25 @@ const enterOrderSubscribe = async (next, ctx) => async (dispatch, getState) => {
   let qr = await $.get(`/gift/wx_qrcode?scene=giftSubToPushUnconsumedSuborder`)
   dispatch({type: 'qrcode/subscribe/update', payload: qr.response.ticket})
   next()
+}
+
+const place = async function (tag) {
+  let me = this;
+  return async (dispatch, getState) => {
+    let { order } = getState()
+    if (!order.localId) {
+      widgets.Alert.add('warning', app.config.errors.VOICE_EXPECTED.message, 2000)
+      return
+    }
+    let res = await Wechat.uploadVoice({
+			localId: order.localId,
+			isShowProgressTips: 1
+		})
+		order.serverId = res.serverId
+//  order.capacity === 1 && (order.name = 'anonymous')
+		dispatch({type: 'order/update', payload: order})
+    await dispatch(wxPay.apply(me, [tag]))
+  }
 }
 
 const wxPay = async function (tag) {
@@ -96,16 +125,16 @@ const nextPage = async my => async (dispatch, getState) => {
 
 	Object.assign(params, {limit: orders.limit, page: orders.page});
 	let data = await $.get(`/gift/order/list/s?${$.util.querystring.stringify(params)}`);
-	let count = data[0];
-	var items = data[1];
-	dispatch({type: 'orders/count', payload: count});
-	dispatch({type: 'orders/add', payload: items});
-	dispatch({type: 'orders/page/increase'});
+	let count = data[0]
+	var items = data[1]
+	dispatch({type: 'orders/count', payload: count})
+	dispatch({type: 'orders/add', payload: items})
+	dispatch({type: 'orders/page/increase'})
 	if((getState().gifts.items.length + items.length) >= count){
-			dispatch({type: 'orders/busy', payload: true});
-			return;
+			dispatch({type: 'orders/busy', payload: true})
+			return
 	}
-	dispatch({type: 'orders/unbusy', payload: true});
+	dispatch({type: 'orders/unbusy', payload: true})
 }
 
 const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
@@ -159,9 +188,18 @@ const shareOrder = () => {
 		size: 'lg'
 	})
 }
+const giftDetail = () => {
+  widgets.Modal.open({
+    tag: 'order-gift-detail',
+  })
+}
 
 const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
   let { order, user, suborder } = getState();
+  if (!address) {
+    address = {}
+    address.scene = 'wb';
+  }
   if (address.poi) {
     address.scene = 'poi';
   }
@@ -195,6 +233,9 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
           }
           return route(`/order/${ order.id }/subscribe`)
         }
+        if(address.scene === 'wb'){
+          return route(`/order/${ order.id }/received`)
+        }
         break;
       default:
         widgets.Alert.add('warning', app.config.errors.SERVER_ERROR.message, 2000);
@@ -212,6 +253,7 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
 export default {
   enterOrderReceive,
   enterOrderPay,
+  enterOrderPlace,
   enterOrderRecord,
   enterOrderSubscribe,
   enterOrderReady,
@@ -222,6 +264,8 @@ export default {
   nextPage,
 	getOrderById,
 	shareOrder,
+	giftDetail,
   orderReceiveSubmit,
-  wxPay
+  wxPay,
+  place
 }

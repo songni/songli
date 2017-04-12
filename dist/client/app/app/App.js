@@ -3,9 +3,11 @@ import actions from './app.actions';
 import { Connect } from '../../framework/ninjiajs/src/index';
 
 @Connect(state => ({
-	clientWidth: state.clientWidth
+	clientWidth: state.clientWidth,
+	clientHeight: state.clientHeight
 }), dispatch => ({
-	setClientWidth: () => dispatch(actions.setClientWidth())
+	setClientWidth: () => dispatch(actions.setClientWidth()),
+	setClientHeight: () => dispatch(actions.setClientHeight())
 }))
 export default class App extends riot.Tag {
 	static originName = 'app'
@@ -21,6 +23,7 @@ export default class App extends riot.Tag {
 		window.addEventListener('resize', () => {
 			$.util.throttle(() => {
 				this.opts.setClientWidth()
+				this.opts.setClientHeight()
 			}, 50)
 		}, true)
 	}

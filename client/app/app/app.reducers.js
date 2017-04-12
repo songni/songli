@@ -18,6 +18,13 @@ const clientWidth = (clientWidth = document.body.clientWidth, action) => {
     return clientWidth;
 }
 
+const clientHeight = (clientHeight = screen.height, action) => {
+    if (action.type === 'body/clientHeight') {
+        return clientHeight = action.payload
+    }
+    return clientHeight;
+}
+
 const title = (title = '91拼团', action) => {
     if(action.type=== 'changeTitle'){
         return title = action.payload
@@ -72,4 +79,4 @@ const scroll = (scroll = {pos: 0, direction: 'down'}, action) => {
     }
     return scroll;
 }
-export default {clientWidth, mask, merchant, user, title, showBar, scroll, lastAction}
+export default {clientWidth, clientHeight, mask, merchant, user, title, showBar, scroll, lastAction}

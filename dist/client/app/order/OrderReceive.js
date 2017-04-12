@@ -10,6 +10,8 @@ const getScene = (gift, receive) => {
 			return 'poi';
 		case 'logistics':
 			return 'logistics';
+		case 'wb':
+			return 'wb';
 		case 'multi':
 			if (receive.scene === 'poi') {
 				return 'poi';
@@ -45,6 +47,7 @@ export default class OrderReceive extends riot.Tag {
     return `
 			<order-receive-poi if="{ opts.scene === 'poi' }"></order-receive-poi>
 			<order-receive-logistics if="{ opts.scene === 'logistics' }"></order-receive-logistics>
+			<order-receive-wb if="{ opts.scene === 'wb' }"></order-receive-wb>
 		`;
   }
 	

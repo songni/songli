@@ -17,9 +17,7 @@ export default class GiftList extends riot.Tag {
 		return 'gift-list'
 	}
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/gift-list.tag');
-		//<!-- endbuild -->
 	}
 
 	@onUse('enterGiftList')

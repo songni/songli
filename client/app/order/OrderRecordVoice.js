@@ -7,7 +7,8 @@ import Wechat from '../../framework/wechat/index';
 @Connect(
 	state => ({
 		recordState: state.record,
-		order: state.order
+		order: state.order,
+		bigpack: state.bigpack
 	})
 )
 export default class OrderRecordVoice extends riot.Tag {
@@ -16,9 +17,7 @@ export default class OrderRecordVoice extends riot.Tag {
 		return 'order-record-voice'
 	}
 	get tmpl() {
-		//<!-- build:tmpl:begin -->
 		return require('./tmpl/order-record-voice.tag')
-		//<!-- endbuild -->
 	}
 	onCreate(opts) {
 		if (!opts.storeField) {
@@ -37,7 +36,9 @@ export default class OrderRecordVoice extends riot.Tag {
 		dispatch({type: 'record/update', payload: {
 			start: true,
 			stop: false,
-			record: false
+			record: false,
+			playVoice: true,
+			stopVoice: false
 		}})
 	}
 
@@ -47,7 +48,13 @@ export default class OrderRecordVoice extends riot.Tag {
 		let res = await Wechat.stopRecord();
 		me.tags['order-record-timer'].trigger('timer:stop');
 		dispatch({type: `${ this.opts.storeField }/update`, payload: { localId: res.localId }})
-		dispatch({type: 'record/update', payload: { start: false, record: true }})
+    dispatch({type: 'record/update', payload: {
+      start: false,
+      stop: false,
+      record: true,
+      playVoice: true,
+      stopVoice: false
+    }})
 	}
 
 	rerecord() {
@@ -57,8 +64,17 @@ export default class OrderRecordVoice extends riot.Tag {
 	}
 
 	playVoice() {
+	  let { dispatch } = app.store
 		let order = app.store.getState().order;
 		this.tags['order-record-timer'].trigger('timer:play');
 		Wechat.playVoice({ localId: order.localId});
+		dispatch({ type: 'record/update', payload: {stopVoice: true, playVoice: false} });
+	}
+	
+	suspend() {
+	  let order = app.store.getState().order;
+	  let { dispatch } = app.store;
+    this.tags['order-record-timer'].trigger('timer:pause');
+    dispatch({ type: 'record/update', payload: {stopVoice: false, playVoice: true} });
 	}
 }
