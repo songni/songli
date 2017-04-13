@@ -359,7 +359,7 @@ class Hub {
                         }
                     } else {
                         outletEl = outlet.parent.root.querySelector(`div[data-tag-name="${component.displayName}"]`);
-                        tag = new route.component(outletEl, {parent: outlet.parent});
+                        tag = new route.component(outletEl, {parent: outlet.parent}).mount();
                     }
                     
                     if (tag) {

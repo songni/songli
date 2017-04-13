@@ -137,6 +137,16 @@ const nextPage = async my => async (dispatch, getState) => {
 	dispatch({type: 'orders/unbusy', payload: true})
 }
 
+const enterOrderReceived = async (next, ctx) => async (dispatch, getState) => {
+  let { order, user } = getState();
+  let suborder = order.receivers.filter(r => r.userOpenId === user.openid)[0];
+  if (!suborder) {
+    return route(`/`);
+  }
+  dispatch(({type: 'suborder/update', payload: suborder}));
+  next();
+}
+
 const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
   let { order, user } = getState(); 
   let iconLiImgUrl = order.gift.info.cover ? app.config.phtUri + order.gift.info.cover : app.config.images.SHARE_DEF_COVER;
@@ -257,6 +267,7 @@ export default {
   enterOrderRecord,
   enterOrderSubscribe,
   enterOrderReady,
+  enterOrderReceived,
 	enterOrderReadyOne2One,
   enterOrderState,
   enterOrderList,

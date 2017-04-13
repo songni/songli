@@ -1,6 +1,6 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { Connect, View } from '../../framework/ninjiajs/src/index';
+import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
 import Wechat from '../../framework/wechat/index';
 import actions from './order.actions';
 
@@ -13,7 +13,8 @@ import actions from './order.actions';
     clientWidth: state.clientWidth,
   }),
   dispatch => ({
-    detail: actions.giftDetail
+    detail: actions.giftDetail,
+		enterOrderReceived: (next, ctx) => dispatch(actions.enterOrderReceived(next, ctx))
   })
 )
 export default class OrderReceived extends riot.Tag {
@@ -24,10 +25,9 @@ export default class OrderReceived extends riot.Tag {
 	get tmpl() {
 		return require(`./tmpl/order-received.tag`);
 	}
-	onCreate(opts) {
-		this.mixin('router');
-		this.$use(this.onUse);
-	}
+
+	@onUse(['enterOrderReceived'])
+	onCreate(opts) {}
 	
 	openMerchant (){
 	  widgets.Modal.open({
@@ -58,16 +58,4 @@ export default class OrderReceived extends riot.Tag {
 		} 
 
   }
-	
-	onUse(next) {
-	  let { dispatch, getState } = app.store;
-    let { order, user } = getState();
-		let suborder = order.receivers.filter(r => r.userOpenId === user.openid)[0];
-		if (!suborder) {
-			return route(`/`);
-		}
-    dispatch(({type: 'suborder/update', payload: suborder}));
-    next();
-  }
-
 }

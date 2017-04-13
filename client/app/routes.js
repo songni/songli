@@ -20,6 +20,7 @@ import OrderReceive from './order/OrderReceive';
 import OrderSubscribe from './order/OrderSubscribe';
 import OrderReceived from './order/OrderReceived';
 import OrderGiftDetail from './order/OrderGiftDetail';
+import OrderMock from './order/OrderMock';
 import Bigpack from './bigpack/Bigpack';
 import BigpackDetail from './bigpack/BigpackDetail';
 import BigpackSubscribe from './bigpack/BigpackSubscribe';
@@ -100,6 +101,10 @@ export default {
 						{
 							path: '/state',
 							component: OrderState
+						},
+						{
+							path: '/fillin',
+							component: OrderMock
 						},
 						{
 							path: '/receive',
