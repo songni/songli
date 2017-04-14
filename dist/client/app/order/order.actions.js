@@ -254,7 +254,26 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
   } catch (e) {
     widgets.Alert.add('warning', app.config.errors.SERVER_ERROR.message, 2000);
   }
-  
+}
+
+const suborderInteractNextPage = fn => async (dispatch, getState) => {
+  let { order, suborderInteracts } = getState()
+  let originSuborders = fn(order);
+  if(suborderInteracts.busy) return;
+  // let mockSuborder = {
+  //   consignee:"91拼团",
+  //   fillinDate:"2017-04-13T06:30:46.109Z",
+  //   headimgurl:"http://wx.qlogo.cn/mmopen/EUwx3WvXKRGicQOWd7jCkfP01k55UztoxkF1A0iaVqXLlGg27CFTPshYzAexhkBu15vECs0Rax9R8gR0xjsIYXbtkbg9nG0FQa/0",
+  //   id:0,
+  //   telephone:"13511112222"
+  // }
+  // let originSuborders = [];
+  // for (let i=0, len=100; i<len; i++) {
+  //   originSuborders.push(Object.assign(mockSuborder, {id: mockSuborder.id++}))
+  // }
+  dispatch({type: 'suborderInteracts/busy'})
+  dispatch({type: 'suborderInteracts/nextPage', payload: { originSuborders }})
+  setTimeout(() => dispatch({type: 'suborderInteracts/unbusy'}), 100)
 }
 
 
@@ -277,6 +296,7 @@ export default {
 	shareOrder,
 	giftDetail,
   orderReceiveSubmit,
+  suborderInteractNextPage,
   wxPay,
   place
 }

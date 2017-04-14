@@ -151,6 +151,9 @@ class Ninjia {
 	get mode(){
 		return this._mode;
 	}
+	get util(){
+		return _;
+	}
 	get entry(){
 		return this._entry;
 	}

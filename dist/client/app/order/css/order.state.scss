@@ -1,8 +1,9 @@
 .received_guide{
   background: $red-bg;
-  @extend .init-page;
+  padding-top: 10px;
   .guide_wrap{
     @extend .red_wrap;
+    margin-top: 0;
     .received_cont{
       background: #FFFFFF;
       border-radius: 4px;

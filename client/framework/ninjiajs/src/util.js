@@ -2,6 +2,10 @@ const values = (o) => {
     return Object.keys(o).map(k=>o[k])
 }
 
+const nextTick = fn => {
+    setTimeout(fn, 0)
+}
+
 const mixin = (...args) => {
     return Object.assign(...args)
 }
@@ -212,5 +216,6 @@ export default {
     hasClass,
     addClass,
     removeClass,
-    intersect
+    intersect,
+    nextTick
 }
