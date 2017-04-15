@@ -257,8 +257,9 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
 }
 
 const suborderInteractNextPage = fn => async (dispatch, getState) => {
-  let { order, suborderInteracts } = getState()
-  let originSuborders = fn(order);
+  let state = getState()
+  let { order, suborderInteracts } = state;
+  let originSuborders = fn(state);
   if(suborderInteracts.busy) return;
   // let mockSuborder = {
   //   consignee:"91拼团",

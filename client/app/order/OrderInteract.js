@@ -2,57 +2,72 @@ import riot from 'riot';
 import route from 'riot-route';
 import { Connect, Component } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
+import { createSelector } from 'reselect';
 
-const receivedNum = order => {
-  if ( order.gift.scene != 'wb' && 
-       order.receivers && 
-       order.receivers.length) {
-    return order.receivers.filter(r => r.telephone).length
-  }
-  if ( order.gift.scene === 'wb' && 
-       order.receivers && 
-       order.receivers.length) {
-    return order.receivers.length
-  }
-  return 0;
-}
-
-const getRemainCount = order => {
-	return order.capacity - (order.receivers && order.receivers.length || 0)
-}
-const getSubordersSortedById = order => {
-	return order.receivers && order.receivers.sort((a, b) => {
-		return a.id - b.id
-	}) || []
-}
-
-const isInteract = order => {
-  if (order.gift.scene != 'wb' && 
-      order.receivers &&
-      order.receivers.length && 
-      order.receivers.filter(r => r.telephone).length > 0){
-    return true;
-  }
-  if (order.gift.scene === 'wb' && 
+const orderSelector = state => state.order;
+const receivedNumSelector = createSelector(
+  orderSelector,
+  order => {
+    if ( order.gift.scene != 'wb' && 
       order.receivers && 
-      order.receivers.length &&
-      order.receivers.length > 0){
-    return true;
+      order.receivers.length) {
+      return order.receivers.filter(r => r.telephone).length
+    }
+    if ( order.gift.scene === 'wb' && 
+      order.receivers && 
+      order.receivers.length) {
+      return order.receivers.length
+    }
+    return 0;
   }
-  return false;
-}
+)
+
+const getRemainCountSelector = createSelector(
+  orderSelector,
+  order => {
+    return order.capacity - (order.receivers && order.receivers.length || 0)
+  }
+)
+
+const getSubordersSortedByIdSelector = createSelector(
+  orderSelector,
+  order => {
+    return order.receivers && order.receivers.sort((a, b) => {
+      return a.id - b.id
+    }) || []
+  }
+)
+
+const isInteractSelector = createSelector(
+  orderSelector,
+  order => {
+    if (order.gift.scene != 'wb' && 
+        order.receivers &&
+        order.receivers.length && 
+        order.receivers.filter(r => r.telephone).length > 0){
+      return true;
+    }
+    if (order.gift.scene === 'wb' && 
+        order.receivers && 
+        order.receivers.length &&
+        order.receivers.length > 0){
+      return true;
+    }
+    return false;
+  }
+)
 
 @Component
 @Connect(
   state => ({
     order: state.order,
-    remainCount: getRemainCount(state.order),
-    isInteract: isInteract(state.order),
-    receivedNum: receivedNum(state.order),
+    remainCount: getRemainCountSelector(state),
+    isInteract: isInteractSelector(state),
+    receivedNum: receivedNumSelector(state),
     suborderInteracts: state.suborderInteracts
   }),
   dispatch => ({
-    suborderInteractNextPage: () => dispatch(actions.suborderInteractNextPage(getSubordersSortedById))
+    suborderInteractNextPage: () => dispatch(actions.suborderInteractNextPage(getSubordersSortedByIdSelector))
   })
 )
 export default class OrderInteract extends riot.Tag {
@@ -87,6 +102,6 @@ export default class OrderInteract extends riot.Tag {
   onCreate(opts) {
     let { dispatch } = app.store
     dispatch({type: 'suborderInteracts/reset'})
-    dispatch(actions.suborderInteractNextPage(getSubordersSortedById))
+    dispatch(actions.suborderInteractNextPage(getSubordersSortedByIdSelector))
   }
 }
