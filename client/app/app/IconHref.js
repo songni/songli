@@ -13,7 +13,7 @@ export default class IconHref extends riot.Tag {
 		return `
 			<div class="icon-href-container" >
 				<a href="http://www.91songli.com/">
-					<img riot-src="{'https://img.91pintuan.com/songli/icon-herf/' + theme + '_news.png' }">
+					<img riot-src="{'//img.91pintuan.com/songli/icon-herf/' + theme + '_news.png' }">
 				</a>
 			</div>
 		`;

@@ -32,7 +32,7 @@ export default class GiftShareModal extends riot.Tag {
 		`;
 	}
 	onCreate(opts) {
-    this.shareSrc = 'https://img.91pintuan.com/songli/gift_shared.png';
+    this.shareSrc = '//img.91pintuan.com/songli/gift_shared.png';
 	}
 
   dismiss() {

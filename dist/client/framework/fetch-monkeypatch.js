@@ -8,6 +8,7 @@ function post(url, json, opts){
     return fetch(url, {
         method: 'post',
         headers: headers,
+        mode: 'cors',
         body: JSON.stringify(json)
     })
         .then(res=>checkStatus(res))
@@ -16,7 +17,7 @@ function post(url, json, opts){
 }
 
 function get(url, n={}, opts){
-    var meta = {method: 'get', headers: {}};
+    var meta = {method: 'get', headers: {}, mode: 'cors'};
     opts && opts.headers && Object.assign(meta.headers, opts.headers);
     return fetch(url, meta)
         .then(res=>checkStatus(res))
@@ -33,6 +34,7 @@ function put(url, json, opts){
     return fetch(url, {
         method: 'put',
         headers: headers,
+        mode: 'cors',
         body: JSON.stringify(json)
     })
         .then(res=>checkStatus(res))
@@ -41,7 +43,7 @@ function put(url, json, opts){
 }
 
 function del(url, n={}, opts){
-    var meta = {method: 'del', headers: {}};
+    var meta = {method: 'del', headers: {}, mode: 'cors'};
     opts && opts.headers && Object.assign(meta.headers, opts.headers);
     return fetch(url, meta)
         .then(res=>checkStatus(res))

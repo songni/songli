@@ -37,7 +37,7 @@ export default class OrderReceiveLogistics extends riot.Tag {
   get tmpl() { return `<div class="ready_single">
   <div class="single_wrap">
     <div class="receive_logistics">
-      <img class="right_top_corner" src="https://img.91pintuan.com/songli/i.png">
+      <img class="right_top_corner" src="//img.91pintuan.com/songli/i.png">
       <div class="head_portrait">
         <img riot-src="{ opts.order.sender.info.headimgurl }" />
       </div>

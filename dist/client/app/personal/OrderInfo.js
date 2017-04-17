@@ -146,11 +146,11 @@ export default class PersonalOrderInfo extends riot.Tag {
               <span>{ parent.opts.suborder && parent.opts.order.time.pay ? $.util.filter.date(parent.opts.order.time.pay) + '下单' : '' }</span>
               <a if="{ parent.opts.suborder && parent.opts.suborder.telephone }" ui-sref="order.detail.one2one-address({id: order.id})">
                 <em>礼物已被领取</em>
-                <em><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></em>
+                <em><img src="//img.91pintuan.com/songli/client/poi-right.png"/></em>
               </a>
               <a if="{ !parent.opts.suborder || !parent.opts.suborder.telephone }" ui-sref="order.detail.one2one-address({id: order.id})">
                 <em>1份礼物未被领取</em>
-                <em><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></em>
+                <em><img src="//img.91pintuan.com/songli/client/poi-right.png"/></em>
               </a>
             </li>
           </ul>
@@ -165,28 +165,28 @@ export default class PersonalOrderInfo extends riot.Tag {
               <span>{ $.util.filter.date(parent.opts.readTime) }</span>
               <span onclick="{ parent.listened.bind(parent) }">
                 <em>已收货 { parent.opts.listenedNum }</em>
-                <em><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></em>
+                <em><img src="//img.91pintuan.com/songli/client/poi-right.png"/></em>
               </span>
             </li>
             <li if="{ parent.opts.shippedNum != 0 }">
               <span>{ $.util.filter.date(parent.opts.shippedTime) }</span>
               <span onclick="{ parent.shipped.bind(parent) }">
                 <em>已发货 { parent.opts.shippedNum }</em>
-                <em><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></span></em>
+                <em><img src="//img.91pintuan.com/songli/client/poi-right.png"/></span></em>
               </span>
             </li>
             <li if="{ parent.opts.receivedNum != 0 }">
               <span>{ $.util.filter.date(parent.opts.receivedTime) }</span>
               <span onclick="{ parent.received.bind(parent) }">
                 <em>已领取 { parent.opts.receivedNum }</em>
-                <em><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></em>
+                <em><img src="//img.91pintuan.com/songli/client/poi-right.png"/></em>
               </span>
             </li>
             <li>
               <span>{ $.util.filter.date(parent.opts.order.time.pay) }</span>
               <span onclick="{ parent.jumpToAddressCard.bind(parent) }">
                 <em>{ parent.opts.order.capacity - parent.opts.receivedNum === 0 ? '礼物已被领完' : parent.opts.order.capacity - parent.opts.receivedNum + '份礼物未领取' }</em>
-                <em><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></em>
+                <em><img src="//img.91pintuan.com/songli/client/poi-right.png"/></em>
               </span>
             </li>
           </ul>

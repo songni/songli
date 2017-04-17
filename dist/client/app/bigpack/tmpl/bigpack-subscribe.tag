@@ -16,10 +16,10 @@
         <div class="merchant_code" style="width: { opts.clientWidth/2 + 50 }px; height: { opts.clientWidth / 2 + 50 }px;">
           <img riot-src="{ opts.order.qrcode.bigpack_sub_src }" alt="" />
           <div class="radius">
-            <img src="https://img.91pintuan.com/songli/client/icon/top.png"/>
-            <img src="https://img.91pintuan.com/songli/client/icon/right.png"/>
-            <img src="https://img.91pintuan.com/songli/client/icon/bottom.png"/>
-            <img src="https://img.91pintuan.com/songli/client/icon/left.png"/>
+            <img src="//img.91pintuan.com/songli/client/icon/top.png"/>
+            <img src="//img.91pintuan.com/songli/client/icon/right.png"/>
+            <img src="//img.91pintuan.com/songli/client/icon/bottom.png"/>
+            <img src="//img.91pintuan.com/songli/client/icon/left.png"/>
           </div>
         </div>
       </div>

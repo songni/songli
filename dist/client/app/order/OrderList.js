@@ -58,7 +58,7 @@ export default class OrderList extends riot.Tag {
         </div>
         <div class="order_foot">
           <span>订单号 { order.serial }</span>
-          <span><img src="https://img.91pintuan.com/songli/client/poi-right.png"/></span>
+          <span><img src="//img.91pintuan.com/songli/client/poi-right.png"/></span>
         </div>
       </div>
     </a>

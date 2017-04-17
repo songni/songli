@@ -3,7 +3,7 @@
 		<div class="detail_cont">
 			<div class="gift_img">
 				<img 
-				  riot-src="{ parent.opts.gift.info.cover ? 'http://' + config.phtUri + parent.opts.gift.info.cover + app.config.phtStlList2 : app.config.images.GIFT_DEF_COVER }"
+				  riot-src="{ parent.opts.gift.info.cover ? app.config.phtUri + parent.opts.gift.info.cover + app.config.phtStlList2 : app.config.images.GIFT_DEF_COVER }"
 				  style=" width: { parent.opts.clientWidth - 28 }px; height: { parent.opts.clientWidth - 28 }px "
 				>
 			</div>
@@ -12,7 +12,7 @@
 				<p class="lead">{ parent.opts.gift.info.lead }</p>
 				<div class="receivers">
 					<div class="used" if="{ parent.opts.gift.num.pay > 0 }">
-						<span><img riot-src="{ 'https://img.91pintuan.com/songli/icon-herf/gift-box.png'} "/></span>
+						<span><img riot-src="{ '//img.91pintuan.com/songli/icon-herf/gift-box.png'} "/></span>
 						<span>{ ( parent.opts.gift.info && parent.opts.gift.info.benedictory && parent.opts.gift.info.benedictory.title) ? 
 								parent.opts.gift.info.benedictory.title.replace('{NUM}', (parent.opts.gift.num.receivers || 0)) : '已有' + (parent.opts.gift.num.receivers || 0) + '人收到了礼物' }
 						</span>

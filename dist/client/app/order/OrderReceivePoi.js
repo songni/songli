@@ -45,7 +45,7 @@ export default class OrderReceivePoi extends riot.Tag {
           </div>
         </div>
         <div class="step">
-          <img src="https://img.91pintuan.com/songli/client/receive-step-1.png" alt="" />
+          <img src="//img.91pintuan.com/songli/client/receive-step-1.png" alt="" />
         </div>
       </div>
       <!--form表单-->
@@ -67,7 +67,7 @@ export default class OrderReceivePoi extends riot.Tag {
           <span class="fl poi" if="{ !opts.poiLoaded }">门店加载中</span>
           <span class="fl poi" if="{ opts.poiLoaded }">{ opts.poi ? opts.poi.base_info.business_name : '请选择门店' }</span>
           <input type="hidden" ref="poi">
-          <span class="fr right"><img src="https://img.91pintuan.com/songli/client/poi-right.png" alt="" /></span>
+          <span class="fr right"><img src="//img.91pintuan.com/songli/client/poi-right.png" alt="" /></span>
           <p if="{ opts.forms.orderReceivePoiForm.$submitted && opts.forms.orderReceivePoiForm.poi.$error.required }" class="help-block">* 请选择门店</p>
         </div>
         

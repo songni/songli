@@ -13,7 +13,7 @@
     </div>
     <div class="share_main">
       <div class="main_top">
-        <span><img src="https://img.91pintuan.com/songli/icon-herf/gift-box.png" /></span>
+        <span><img src="//img.91pintuan.com/songli/icon-herf/gift-box.png" /></span>
         <span>{ (opts.gift.info && opts.gift.info.benedictory && opts.gift.info.benedictory.title) ? 
           opts.gift.info.benedictory.title.replace('{NUM}', opts.receivedCount) : '已有' + opts.receivedCount + '人收到了礼物' }
         </span>

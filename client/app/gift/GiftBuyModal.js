@@ -32,7 +32,7 @@ export default class GiftBuyModal extends riot.Tag {
        <div class="gift_buy">
         <div class="buy_cont">
           <div class="title">
-            <img riot-src="{ opts.gift.info.cover ? 'http://' + config.phtUri + opts.gift.info.cover + app.config.phtStlList3 : app.config.images.GIFT_DEF_COVER }">
+            <img riot-src="{ opts.gift.info.cover ? app.config.phtUri + opts.gift.info.cover + app.config.phtStlList3 : app.config.images.GIFT_DEF_COVER }">
             <span style="width: {opts.clientWidth - 105 }px">{ opts.gift.info.name }</span>
           </div>
           <div class="price">

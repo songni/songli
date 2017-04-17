@@ -68,7 +68,7 @@
         </div>
         <div class="wb_img">
           <div class="img" style=" width:{ opts.clientWidth * 0.85 }px; height:{ (opts.clientWidth * 0.85)*4/3 }px;" >
-            <img riot-src="{ 'http://' + config.phtUri + opts.order.media.info.path + app.config.phtWbQrcode }">
+            <img riot-src="{ '//' + config.phtUri + opts.order.media.info.path + app.config.phtWbQrcode }">
           </div>          
         </div>
       </div>

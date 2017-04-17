@@ -24,7 +24,7 @@ export default class OrderReceivedGuide extends riot.Tag {
   get tmpl() { return `<div if="{ opts.order.gift.scene === 'logistics' }" class="received_guide">
   <div class="guide_wrap">
     <div class="received_cont">
-      <img class="right_top_corner" src="https://img.91pintuan.com/songli/i.png">
+      <img class="right_top_corner" src="//img.91pintuan.com/songli/i.png">
       <div class="head_portrait">
         <img riot-src="{ opts.order.sender.info.headimgurl }" />
       </div>
@@ -57,11 +57,11 @@ export default class OrderReceivedGuide extends riot.Tag {
         <div class="gift_cover">
           <div class="cover_cont">
             <div class="img_cover" style="height: {(opts.clientWidth - 50)/2}px">
-              <img riot-src="{ opts.order.gift.info.cover ? 'http://' + config.phtUri + opts.order.gift.info.cover + app.config.phtStlList5 : app.config.images.GIFT_DEF_COVER }">
+              <img riot-src="{ opts.order.gift.info.cover ? app.config.phtUri + opts.order.gift.info.cover + app.config.phtStlList5 : app.config.images.GIFT_DEF_COVER }">
             </div>
             <div class="title">
               <span>{ opts.order.gift.info.name }</span>
-              <a href="/order/{ opts.order.id }/detail"><img src="https://img.91pintuan.com/songli/client2/white_right.png"></a>
+              <a href="/order/{ opts.order.id }/detail"><img src="//img.91pintuan.com/songli/client2/white_right.png"></a>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default class OrderReceivedGuide extends riot.Tag {
 <div if="{ opts.order.gift.scene === 'poi' }" class="received_guide">
   <div class="guide_wrap">
     <div class="received_cont">
-      <img class="right_top_corner" src="https://img.91pintuan.com/songli/i.png" />
+      <img class="right_top_corner" src="//img.91pintuan.com/songli/i.png" />
       <div class="head_portrait">
         <img riot-src="{ opts.order.sender.info.headimgurl }" />
       </div>
@@ -91,7 +91,7 @@ export default class OrderReceivedGuide extends riot.Tag {
         <span>已领取礼物使用凭证，使用时请到所选门店，点击立即使用按钮将二维码凭证出示给商家即可。</span>
       </div>
       <div class="user_intr">
-        <span><img src="https://img.91pintuan.com/songli/client/vcode-icon.png"></span>
+        <span><img src="//img.91pintuan.com/songli/client/vcode-icon.png"></span>
         <span>到店使用时请向商家出示二维码</span>
       </div>
       <div class="btn_group">
@@ -108,7 +108,7 @@ export default class OrderReceivedGuide extends riot.Tag {
 <div if="{ opts.order.gift.scene === 'wb' }" class="received_guide">
   <div class="guide_wrap">
     <div class="received_cont">
-      <img class="right_top_corner" src="https://img.91pintuan.com/songli/i.png" />
+      <img class="right_top_corner" src="//img.91pintuan.com/songli/i.png" />
       <div class="head_portrait">
         <img riot-src="{ opts.order.sender.info.headimgurl }" />
       </div>
@@ -123,11 +123,11 @@ export default class OrderReceivedGuide extends riot.Tag {
     <div class="gift_cover">
       <div class="cover_cont">
         <div class="img_cover" style="height: {(opts.clientWidth - 50)/2}px">
-          <img riot-src="{ opts.order.gift.info.cover ? 'http://' + config.phtUri + opts.order.gift.info.cover + app.config.phtStlList5 : app.config.images.GIFT_DEF_COVER }">
+          <img riot-src="{ opts.order.gift.info.cover ? app.config.phtUri + opts.order.gift.info.cover + app.config.phtStlList5 : app.config.images.GIFT_DEF_COVER }">
         </div>
         <div class="title">
           <span>{ opts.order.gift.info.name }</span>
-          <a href="/order/{ opts.order.id }/detail"><img src="https://img.91pintuan.com/songli/client2/white_right.png"></a>
+          <a href="/order/{ opts.order.id }/detail"><img src="//img.91pintuan.com/songli/client2/white_right.png"></a>
         </div>
       </div>
     </div>

@@ -43,7 +43,7 @@ export default class OrderRecord extends riot.Tag {
     </div>
     <!--送单人-->
     <div if="{ opts.order.type === 'one2one' }"  class="single">
-      <img src="https://img.91pintuan.com/songli/word_send_to.png" />
+      <img src="//img.91pintuan.com/songli/word_send_to.png" />
       <input type="text" ref="name" placeholder="Ta的名字"  />
       <p if="{ opts.forms.orderRecordForm.$submitted && opts.forms.orderRecordForm.name.$error.required }" class="help-block" >昵称未填写</p>
       <p if="{ opts.forms.orderRecordForm.$submitted && opts.forms.orderRecordForm.name.$error.maxlength }" class="help-block" >收货人昵称过长</p>
@@ -51,7 +51,7 @@ export default class OrderRecord extends riot.Tag {
     </div>
     <!--送多人-->
     <div if="{ opts.order.type === 'one2many' }" class="multiple">
-      <img src="https://img.91pintuan.com/songli/gift_copies-more.png" />
+      <img src="//img.91pintuan.com/songli/gift_copies-more.png" />
       <div class="input-group">
         <span class="input-left">
           <button type="button" onclick="{ reduCapacity }" class="input-lr" >

@@ -2,14 +2,14 @@
 
 var apiUri = {};
 //pro
-apiUri['91songli.cc'] = 'http://api.91songli.cc';
-apiUri['91songli.com'] = 'http://api.91songli.com';
-apiUri['wx.songni.cc'] = 'http://api.91songli.cc';
-apiUri['dalibao.com'] = 'http://api.dalibao.com';
+apiUri['91songli.cc'] = '//api.91songli.com';
+apiUri['91songli.com'] = '//api.91songli.com';
+apiUri['wx.songni.cc'] = '//api.91songli.com';
+apiUri['dalibao.com'] = '//api.dalibao.com';
 //dev
 apiUri['dev.91songli.cc'] = 'http://apidev.91songli.cc';
 apiUri['dev.songni.cc'] = 'http://apidev.91songli.cc';
-apiUri['dev2.songni.cc'] = 'http://apidev.91songli.cc';
+apiUri['dev2.songni.cc'] = '//apidev.91songli.cc';
 //test
 apiUri['qa.songni.cc'] = 'http://apidev.91songli.cc';
 

@@ -12,7 +12,7 @@
         <span>路径：微信—我—个人信息—我的二维码</span>
       </div>
       <div class="img" style=" width:{ opts.clientWidth * 0.8 }px; height:{ (opts.clientWidth * 0.8)*4/3 }px; ">
-        <img onclick="{ opts.uploadImage }" riot-src="{ opts.order.localId ? opts.order.localId : 'https://img.91pintuan.com/songli/client2/def_img.jpg' }" />
+        <img onclick="{ opts.uploadImage }" riot-src="{ opts.order.localId ? opts.order.localId : '//img.91pintuan.com/songli/client2/def_img.jpg' }" />
       </div>
       <div class="button">
         <input type="button" value="下一步" onclick="{ opts.onSubmit.bind(this) }"/>
