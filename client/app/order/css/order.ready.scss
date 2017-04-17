@@ -1,9 +1,11 @@
 // orderReadyOne2Many.js 
 .ready_multi{
   background: $red-bg;
-  @extend .init-page;
+  padding-top: 10px;
+//@extend .init-page;
   .multi_wrap{
     @extend .red_wrap;
+    margin-top: 0;
     .multi_cont{
       background: #FFFFFF;
       border-radius: 4px;

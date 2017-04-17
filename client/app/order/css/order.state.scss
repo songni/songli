@@ -54,9 +54,10 @@
 
 .pre_receive{
   background: $red-bg;
-  @extend .init-page;
+  padding-top: 10px;
   .pre_wrap{
     @extend .red_wrap;
+    margin-top: 0;
     .pre_cont{
       background: #FFFFFF;
       border-radius: 4px;
