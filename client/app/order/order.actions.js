@@ -1,6 +1,7 @@
 import Wechat from '../../framework/wechat/index';
 import route from 'riot-route';
 import giftActions from '../gift/gift.actions';
+import api from './order.api';
 
 const enterOrderReceive = async (next, ctx) => async (dispatch, getState) => {
   next()
@@ -105,7 +106,14 @@ const enterOrderRecord = async (next, ctx, tag) => async (dispatch, getState) =>
 }
 
 const enterOrderState = async (next, ctx) => async (dispatch, getState) => {
-  next();
+  await dispatch(configWechatShare())
+  let { order, user } = getState();
+  let isUserReceived = await api.isUserReceived(order.id, user.openid);
+  dispatch({ type: 'order/update', payload: { isUserReceived } });
+  let receivedCount = await api.receivedCount(order.id);
+  dispatch({ type: 'order/update', payload: { receivedCount } });
+  
+  next && next();
 }
 
 const enterOrderList = async (next, ctx, my) => async (dispatch, getState) => {
@@ -138,8 +146,8 @@ const nextPage = async my => async (dispatch, getState) => {
 }
 
 const enterOrderReceived = async (next, ctx) => async (dispatch, getState) => {
-  let { order, user } = getState();
-  let suborder = order.receivers.filter(r => r.userOpenId === user.openid)[0];
+  let { suborderInteracts, user } = getState();
+  let suborder = suborderInteracts.suborders.filter(r => r.userOpenId === user.openid)[0];
   if (!suborder) {
     return route(`/`);
   }
@@ -147,7 +155,7 @@ const enterOrderReceived = async (next, ctx) => async (dispatch, getState) => {
   next();
 }
 
-const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
+const configWechatShare = async () => async (dispatch, getState) => {
   let { order, user } = getState(); 
   let iconLiImgUrl = order.gift.info.cover ? app.config.phtUri + order.gift.info.cover : app.config.images.SHARE_DEF_COVER;
   let link = location.origin + `/order/${ order.id }/state`
@@ -162,13 +170,21 @@ const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
     link,
     imgUrl: iconLiImgUrl
   };
-  next();
   await Wechat.config();
   wx.onMenuShareTimeline(leanOptions);
   wx.onMenuShareAppMessage(options);
   wx.onMenuShareQQ(options);
   wx.onMenuShareWeibo(options);
 }
+
+const enterOrderReady = async (next, ctx) => async (dispatch, getState) => {
+  await dispatch(configWechatShare());
+  let { order } = getState();
+  let receivedCount = await api.receivedCount(order.id);
+  dispatch({ type: 'order/update', payload: { receivedCount } });
+  next && next();
+}
+
 
 const enterOrderReadyOne2One = async () => async (dispatch, getState) => {
 	let { order, user } = getState();
@@ -252,30 +268,31 @@ const orderReceiveSubmit = async (address) => async (dispatch, getState) => {
         break;
     }
   } catch (e) {
+    console.error(e);
     widgets.Alert.add('warning', app.config.errors.SERVER_ERROR.message, 2000);
   }
 }
 
-const suborderInteractNextPage = fn => async (dispatch, getState) => {
-  let state = getState()
-  let { order, suborderInteracts } = state;
-  let originSuborders = fn(state);
-  if(suborderInteracts.busy) return;
-  // let mockSuborder = {
-  //   consignee:"91拼团",
-  //   fillinDate:"2017-04-13T06:30:46.109Z",
-  //   headimgurl:"http://wx.qlogo.cn/mmopen/EUwx3WvXKRGicQOWd7jCkfP01k55UztoxkF1A0iaVqXLlGg27CFTPshYzAexhkBu15vECs0Rax9R8gR0xjsIYXbtkbg9nG0FQa/0",
-  //   id:0,
-  //   telephone:"13511112222"
-  // }
-  // let originSuborders = [];
-  // for (let i=0, len=100; i<len; i++) {
-  //   originSuborders.push(Object.assign(mockSuborder, {id: mockSuborder.id++}))
-  // }
-  dispatch({type: 'suborderInteracts/busy'})
-  dispatch({type: 'suborderInteracts/nextPage', payload: { originSuborders }})
-  setTimeout(() => dispatch({type: 'suborderInteracts/unbusy'}), 100)
-}
+// const suborderInteractNextPage = fn => async (dispatch, getState) => {
+//   let state = getState()
+//   let { order, suborderInteracts } = state;
+//   let originSuborders = fn(state);
+//   if(suborderInteracts.busy) return;
+//   // let mockSuborder = {
+//   //   consignee:"91拼团",
+//   //   fillinDate:"2017-04-13T06:30:46.109Z",
+//   //   headimgurl:"http://wx.qlogo.cn/mmopen/EUwx3WvXKRGicQOWd7jCkfP01k55UztoxkF1A0iaVqXLlGg27CFTPshYzAexhkBu15vECs0Rax9R8gR0xjsIYXbtkbg9nG0FQa/0",
+//   //   id:0,
+//   //   telephone:"13511112222"
+//   // }
+//   // let originSuborders = [];
+//   // for (let i=0, len=100; i<len; i++) {
+//   //   originSuborders.push(Object.assign(mockSuborder, {id: mockSuborder.id++}))
+//   // }
+//   dispatch({type: 'suborderInteracts/busy'})
+//   dispatch({type: 'suborderInteracts/nextPage', payload: { originSuborders }})
+//   setTimeout(() => dispatch({type: 'suborderInteracts/unbusy'}), 100)
+// }
 
 
 
@@ -297,7 +314,6 @@ export default {
 	shareOrder,
 	giftDetail,
   orderReceiveSubmit,
-  suborderInteractNextPage,
   wxPay,
   place
 }

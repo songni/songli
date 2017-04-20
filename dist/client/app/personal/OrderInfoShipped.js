@@ -1,16 +1,18 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View, Connect } from '../../framework/ninjiajs/src/index';
-
-const getSuborders = receivers => receivers && receivers.filter(r => r.status && r.status.shipping) || []
+import { View, Connect, onUse } from '../../framework/ninjiajs/src/index';
+import actions from './personal.actions';
 
 @View
 @Connect(
 	state => ({
 		order: state.order,
-		suborders: getSuborders(state.order.receivers),
+		suborders: state.suborderInteracts.suborders,
 		clientWidth: state.clientWidth
-	})
+	}),
+	dispatch => ({
+    enterPersonalOrderInfoShipped: (next, ctx) => dispatch(actions.enterPersonalOrderInfoShipped(next, ctx)),
+  })
 )
 export default class PersonalOrderInfoShipped extends riot.Tag {
 	static originName = 'personal-order-info-shipped'
@@ -33,12 +35,15 @@ export default class PersonalOrderInfoShipped extends riot.Tag {
           </div>
         </div>
         <div class="express">
-          <span>快递单号</span>
-          <span>{ suborder.express.company.name } { suborder.express.no }</span>
+          <div if="{ suborder.scene === 'logistics' }">
+            <span>快递单号</span>
+            <span>{ suborder.express.company.name } { suborder.express.no }</span>
+          </div>
         </div>
       </div>
     `;
 	}
-
+  
+  @onUse('enterPersonalOrderInfoShipped')
 	onCreate(opts) {}
 }

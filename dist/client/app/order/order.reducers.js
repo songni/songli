@@ -52,7 +52,9 @@ const initOrder = {
 	capacity: null,
 	type: null,
 	gift: null,
-	receivers: []
+	receivers: [],
+	receivedCount: 0,
+	isUserReceived: false
 }
 const order = (order = initOrder, action) => {
 	switch (action.type) {

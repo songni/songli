@@ -5,14 +5,7 @@ import actions from './order.actions';
 import interruptors from '../interruptors';
 
 const isReceived = (order, user) => {
-	if (
-		order.receivers && 
-		order.receivers.length &&
-		order.receivers.filter(r => r.userOpenId === user.openid)[0]
-	) {
-		return true;
-	}
-	return false;
+	return order.isUserReceived
 }
 
 @View

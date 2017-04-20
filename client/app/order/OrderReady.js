@@ -2,8 +2,10 @@ import riot from 'riot';
 import route from 'riot-route';
 import actions from './order.actions';
 import { Connect, View, onUse } from '../../framework/ninjiajs/src/index';
+import { createSelector } from 'reselect';
 import interruptors from '../interruptors';
 
+/*
 const isUnReceived = order => {
   if ( order.gift.scene === 'wb' && 
       (!order.receivers ||
@@ -17,6 +19,7 @@ const isUnReceived = order => {
     return true
   }
   return false
+  
 }
 
 const isUnAllReceived = order => {
@@ -38,16 +41,16 @@ const isUnAllReceived = order => {
 
 const isAllReceived = order => {
   if(order.gift.scene === 'wb' &&
-     order.receivers &&
-     order.receivers.length &&
-     order.receivers.length === order.capacity){
-    return true
+       order.receivers &&
+       order.receivers.length &&
+       order.receivers.length === order.capacity){
+      return true
   }
   if (order.gift.scene != 'wb' &&
-      order.receivers &&
-      order.receivers.length && 
-      order.receivers.filter(r => r.telephone).length === order.capacity) {
-    return true
+        order.receivers &&
+        order.receivers.length && 
+        order.receivers.filter(r => r.telephone).length === order.capacity) {
+      return true
   }
   return false
 }
@@ -60,16 +63,47 @@ const isReceivers = order => {
   }
   return false
 }
+*/
+
+const orderSelector = state => state.order;
+const isUnReceived = createSelector(
+  orderSelector,
+  order => {
+    return order.receivedCount === 0;
+  }
+)
+
+const isUnAllReceived = createSelector(
+  orderSelector,
+  order => {
+    let receivedCount = order.receivedCount;
+    return receivedCount > 0 && receivedCount < order.capacity
+  }
+)
+
+const isAllReceived = createSelector(
+  orderSelector,
+  order => {
+    return order.capacity === order.receivedCount;
+  }
+)
+
+const isReceivers = createSelector(
+  orderSelector,
+  order => {
+    return order.receivedCount > 0;
+  }
+)
 
 @View
 @Connect(
   state => ({ 
 	  order: state.order,
 	  clientWidth: state.clientWidth,
-	  receivers: isReceivers(state.order),
-	  isUnReceived: isUnReceived(state.order),
-	  isUnAllReceived: isUnAllReceived(state.order),
-	  isAllReceived: isAllReceived(state.order)
+	  receivers: isReceivers(state),
+	  isUnReceived: isUnReceived(state),
+	  isUnAllReceived: isUnAllReceived(state),
+	  isAllReceived: isAllReceived(state),
   }),
   dispatch => ({
     enterOrderReady: (next, ctx) => dispatch(actions.enterOrderReady(next, ctx)),
@@ -101,12 +135,12 @@ export default class Ready extends riot.Tag {
                 <span class="receive_num">开始送礼吧</span>
               </div>
               <div if="{ opts.isUnAllReceived }">
-                <span class="gift_num">还有{ opts.order.capacity - opts.order.receivers.length }份</span>
-                <span class="receive_num">{ opts.order.receivers.length }人已领取</span>
+                <span class="gift_num">还有{ opts.order.capacity - opts.order.receivedCount }份</span>
+                <span class="receive_num">{ opts.order.receivedCount }人已领取</span>
               </div>
               <div if="{ opts.isAllReceived }"> 
                 <span class="gift_num">礼物已全部被领完</span>
-                <span class="receive_num">{ opts.order.receivers.length }人已领取</span>
+                <span class="receive_num">{ opts.order.receivedCount }人已领取</span>
               </div>
             </div>
             <div class="btn_receive"> 

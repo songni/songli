@@ -2,30 +2,21 @@ import riot from 'riot';
 import route from 'riot-route';
 import { Connect, Component } from '../../framework/ninjiajs/src/index';
 import actions from './order.actions';
+import suborderActions from '../suborder/suborder.actions';
 import { createSelector } from 'reselect';
 
 const orderSelector = state => state.order;
 const receivedNumSelector = createSelector(
   orderSelector,
   order => {
-    if ( order.gift.scene != 'wb' && 
-      order.receivers && 
-      order.receivers.length) {
-      return order.receivers.filter(r => r.telephone).length
-    }
-    if ( order.gift.scene === 'wb' && 
-      order.receivers && 
-      order.receivers.length) {
-      return order.receivers.length
-    }
-    return 0;
+    return  order.receivedCount;
   }
 )
 
 const getRemainCountSelector = createSelector(
   orderSelector,
   order => {
-    return order.capacity - (order.receivers && order.receivers.length || 0)
+    return order.capacity - order.receivedCount;
   }
 )
 
@@ -41,19 +32,7 @@ const getSubordersSortedByIdSelector = createSelector(
 const isInteractSelector = createSelector(
   orderSelector,
   order => {
-    if (order.gift.scene != 'wb' && 
-        order.receivers &&
-        order.receivers.length && 
-        order.receivers.filter(r => r.telephone).length > 0){
-      return true;
-    }
-    if (order.gift.scene === 'wb' && 
-        order.receivers && 
-        order.receivers.length &&
-        order.receivers.length > 0){
-      return true;
-    }
-    return false;
+    return order.receivedCount > 0;
   }
 )
 
@@ -67,7 +46,7 @@ const isInteractSelector = createSelector(
     suborderInteracts: state.suborderInteracts
   }),
   dispatch => ({
-    suborderInteractNextPage: () => dispatch(actions.suborderInteractNextPage(getSubordersSortedByIdSelector))
+    nextPage: () => dispatch(suborderActions.nextPage())
   })
 )
 export default class OrderInteract extends riot.Tag {
@@ -82,7 +61,7 @@ export default class OrderInteract extends riot.Tag {
 			<div if="{ opts.isInteract }" class="interact">
 				<p>{ opts.receivedNum }人已领取 ，<span if="{ opts.remainCount === 0 }">礼物已经被领完</span><span if="{ opts.remainCount !== 0 }">还有{ opts.remainCount }份</span></p>
         <on-scroll 
-        infinite-scroll='{ opts.suborderInteractNextPage }' 
+        infinite-scroll='{ opts.nextPage }' 
         infinite-scroll-disabled='{ opts.suborderInteracts.busy }' 
         infinite-scroll-distance='{ 100 }'
         >
@@ -102,6 +81,6 @@ export default class OrderInteract extends riot.Tag {
   onCreate(opts) {
     let { dispatch } = app.store
     dispatch({type: 'suborderInteracts/reset'})
-    dispatch(actions.suborderInteractNextPage(getSubordersSortedByIdSelector))
+    dispatch(suborderActions.nextPage())
   }
 }

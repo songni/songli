@@ -16,42 +16,72 @@ const suborder = (suborder = initSuborder, action) => {
 }
 
 const initSuborderInteracts = {
-  page: 0,
-  limit: 10,
   suborders: [],
-  busy: false
+  busy: false,
+  page: 1,
+  limit: 10,
+  params: {},
+  count: 0,
 }
 const suborderInteracts = (suborderInteracts = initSuborderInteracts, { type, payload }) => {
   switch (type) {
-    case 'suborderInteracts/nextPage':
-      let { originSuborders } = payload
-      let { page, limit, suborders } = suborderInteracts
-      let max = originSuborders.length
-      let wants = (page + 1) * limit
-      let counts = limit
-      if (wants > max) {
-        counts = max > limit ? limit: max
-      }
-      return Object.assign({}, suborderInteracts, {
-        suborders: 
-          [
-            ...suborders,
-            ...originSuborders.slice(page * limit, (page + 1) * counts),
-          ],
-        page: page + 1
-      })
-    case 'suborderInteracts/busy':
-      return Object.assign({}, suborderInteracts, { busy: true })
-    case 'suborderInteracts/unbusy':
-      return Object.assign({}, suborderInteracts, { busy: false })
-    case 'suborderInteracts/reset':
-      return suborderInteracts;
-    default:
-      return suborderInteracts;
+		case 'suborderInteracts/init': 
+			return Object.assign({}, suborderInteracts, payload);
+		case 'suborderInteracts/params/update':
+			return Object.assign({}, suborderInteracts, {params: payload});
+		case 'suborderInteracts/page/increase':
+			return Object.assign({}, suborderInteracts, {page: suborderInteracts.page + 1});
+		case 'suborderInteracts/busy':
+			return Object.assign({}, suborderInteracts, {busy: true});
+		case 'suborderInteracts/unbusy':
+			return Object.assign({}, suborderInteracts, {busy: false});
+		case 'suborderInteracts/count':
+			return Object.assign({}, suborderInteracts, {count: payload});
+		case 'suborderInteracts/add':
+			return Object.assign({}, suborderInteracts, {suborders: [...suborderInteracts.suborders, ...payload]});
+		default: 
+			return suborderInteracts;
+	}
+}
+
+const initSuborderCount = {
+  receivedCount: 0,
+  readCount: 0,
+  shippedCount: 0,
+}
+
+const suborderCount = (suborderCount = initSuborderCount, { type, payload }) => {
+  switch (type) {
+    case 'suborderCount/init': 
+      return Object.assign({}, suborderCount, payload);
+    case 'suborderCount/update':
+      return Object.assign({}, suborderCount, payload);
+    default: 
+      return suborderCount;
   }
 }
 
+const initSuborderLatestTime = {
+  receivedTime: null,
+  shippedTime: null,
+  readTime: null
+}
+
+const suborderLatestTime = (suborderLatestTime = initSuborderLatestTime, { type, payload }) => {
+  switch (type) {
+    case 'suborderLatestTime/init': 
+      return Object.assign({}, suborderLatestTime, payload);
+    case 'suborderLatestTime/update':
+      return Object.assign({}, suborderLatestTime, payload);
+    default: 
+      return suborderLatestTime;
+  }
+}
+
+
 export default {
   suborder,
-  suborderInteracts
+  suborderInteracts,
+  suborderCount,
+  suborderLatestTime
 }

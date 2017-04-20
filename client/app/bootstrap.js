@@ -63,6 +63,7 @@ const bootstrap = async (app, {origin}) => {
 			}
 			
 			dispatch({type: 'user', payload: user});
+
 		}
 		
 		

@@ -2,30 +2,35 @@ import riot from 'riot';
 import route from 'riot-route';
 import actions from './order.actions';
 import { Connect, Component } from '../../framework/ninjiajs/src/index';
+import { createSelector } from 'reselect';
 
-const isAvailable = order => {
-  if (order.receivers && order.receivers.length) {
-    return order.capacity - receivedCount(order) > 0
+const orderSelector = state => state.order;
+const isAvailable = createSelector(
+  orderSelector,
+  order => {
+    return (order.capacity - order.receivedCount) > 0 ;
   }
-  return true;
-}
-const receivedCount = order => {
-  if (order.receivers && order.receivers.length) {
-    return order.receivers.filter(r => r.telephone).length
+)
+
+const receivedCount = createSelector(
+  orderSelector,
+  order => {
+    return order.receivedCount ;
   }
-  return 0;
-}
+)
+
 
 @Component
 @Connect(
 	state => ({
 		order: state.order,
+		suborders: state.suborderInteracts.suborders,
 		clientWidth: state.clientWidth,
     type: state.order.capacity > 1 ? 'one2many' : 'one2one',
-    availableCount: state.order.capacity - receivedCount(state.order),
-    receivedCount: receivedCount(state.order),
+    availableCount: state.order.capacity - receivedCount(state),
+    receivedCount: receivedCount(state),
     isInteract: true,
-    isAvailable: isAvailable(state.order)
+    isAvailable: isAvailable(state)
 	}),
 	dispatch => ({
     detail: actions.giftDetail

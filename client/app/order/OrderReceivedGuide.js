@@ -8,6 +8,7 @@ import { Connect, Component} from '../../framework/ninjiajs/src/index';
 @Connect(
   state => ({
     order: state.order,
+    suborders: state.suborderInteracts.suborders,
     clientWidth: state.clientWidth,
   }),
   dispatch => ({

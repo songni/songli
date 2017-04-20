@@ -23,7 +23,7 @@
         <div if="{ !opts.isAvailable }">
           <div if="{ opts.type === 'one2one' }">
             <span class="gift_num">礼物已被抢完</span>
-            <span class="receive_num">{ opts.order.receivers[0].name }</span>
+            <span class="receive_num">{ opts.suborders[0].name }</span>
           </div>
           <div if="{ opts.type === 'one2many' }">
             <span class="gift_num">礼物已被抢完</span> <br />

@@ -1,16 +1,18 @@
 import riot from 'riot';
 import route from 'riot-route';
-import { View, Connect } from '../../framework/ninjiajs/src/index';
-
-const getSuborders = receivers => receivers && receivers.filter(r => r.telephone) || []
+import { View, Connect, onUse } from '../../framework/ninjiajs/src/index';
+import actions from './personal.actions';
 
 @View
 @Connect(
 	state => ({
 		order: state.order,
-		suborders: getSuborders(state.order.receivers),
+		suborders: state.suborderInteracts.suborders,
 		clientWidth: state.clientWidth
-	})
+	}),
+  dispatch => ({
+    enterPersonalOrderInfoReceived: (next, ctx) => dispatch(actions.enterPersonalOrderInfoReceived(next, ctx)),
+  })
 )
 export default class PersonalOrderInfoReceived extends riot.Tag {
 	static originName = 'personal-order-info-received'
@@ -40,5 +42,6 @@ export default class PersonalOrderInfoReceived extends riot.Tag {
     `;
 	}
 
+  @onUse('enterPersonalOrderInfoReceived')
 	onCreate(opts) {}
 }

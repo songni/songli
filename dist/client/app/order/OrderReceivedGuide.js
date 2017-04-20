@@ -8,6 +8,7 @@ import { Connect, Component} from '../../framework/ninjiajs/src/index';
 @Connect(
   state => ({
     order: state.order,
+    suborders: state.suborderInteracts.suborders,
     clientWidth: state.clientWidth,
   }),
   dispatch => ({
@@ -37,9 +38,9 @@ export default class OrderReceivedGuide extends riot.Tag {
           <span class="receive_num">等待商家发货</span>
         </div>
         <div class="receiver_info">
-          <div><span>收礼人：</span><span>{ opts.order.receivers[0].consignee }</span></div>
-          <div><span>手机号：</span><span>{ opts.order.receivers[0].telephone }</span></div>
-          <div><span>地&nbsp;&nbsp;&nbsp;&nbsp;址：</span><span>{ opts.order.receivers[0].address }</span></div>
+          <div><span>收礼人：</span><span>{ opts.suborders[0].consignee }</span></div>
+          <div><span>手机号：</span><span>{ opts.suborders[0].telephone }</span></div>
+          <div><span>地&nbsp;&nbsp;&nbsp;&nbsp;址：</span><span>{ opts.suborders[0].address }</span></div>
         </div>
         <div class="btn_continue"> 
           <a href="/gift/{ opts.order.gift.id }">我也要送礼</a>
@@ -48,8 +49,8 @@ export default class OrderReceivedGuide extends riot.Tag {
       <div if="{ opts.order.capacity > 1 }">
         <div class="receive_status">
           <span class="gift_num">你已领取礼物</span> 
-          <span class="receive_num" if="{ opts.order.capacity - opts.order.receivers.length > 0 }">还有{ opts.order.capacity - opts.order.receivers.length }份</span>
-          <span class="receive_num" if="{ opts.order.capacity - opts.order.receivers.length === 0 }">礼物已全部被领完</span>
+          <span class="receive_num" if="{ opts.order.capacity - opts.order.receivedCount > 0 }">还有{ opts.order.capacity - opts.order.receivers.length }份</span>
+          <span class="receive_num" if="{ opts.order.capacity - opts.order.receivedCount === 0 }">礼物已全部被领完</span>
         </div>
         <div class="btn_continue"> 
           <a href="/gift/{ opts.order.gift.id }">我也要送礼</a>
