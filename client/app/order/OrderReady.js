@@ -147,7 +147,7 @@ export default class Ready extends riot.Tag {
               <!--gift receive-->
               <a href="javascript:void(0)" if="{ opts.isUnReceived }" onclick="{ opts.share }" class="btn-fill">开始送礼</a>
               <!--gift received-->
-              <a href="/gift/list" if="{ opts.isAllReceived || opts.isUnAllReceived }" class="btn_continue">继续送礼</a>
+              <a href="javascript:void(0)" if="{ opts.isAllReceived || opts.isUnAllReceived }" onclick="{ opts.share }" class="btn_continue">继续送礼</a>
             </div>
             <div class="gift_cover">
               <div class="cover_cont">

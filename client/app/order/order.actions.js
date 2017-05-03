@@ -2,6 +2,7 @@ import Wechat from '../../framework/wechat/index';
 import route from 'riot-route';
 import giftActions from '../gift/gift.actions';
 import api from './order.api';
+import suborderActions from '../suborder/suborder.actions';
 
 const enterOrderReceive = async (next, ctx) => async (dispatch, getState) => {
   next()
@@ -146,10 +147,12 @@ const nextPage = async my => async (dispatch, getState) => {
 }
 
 const enterOrderReceived = async (next, ctx) => async (dispatch, getState) => {
+  await dispatch(suborderActions.nextPage() );
+  
   let { suborderInteracts, user } = getState();
   let suborder = suborderInteracts.suborders.filter(r => r.userOpenId === user.openid)[0];
   if (!suborder) {
-    return route(`/`);
+    location.reload();
   }
   dispatch(({type: 'suborder/update', payload: suborder}));
   next();
