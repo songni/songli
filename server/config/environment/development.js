@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  port: 3050,
+  port: 9158,
   api: {
     uri: 'http://slapidev.91pintuan.com/api',
     component:'57a1c27a60c9c4a909f916a7',

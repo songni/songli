@@ -133,7 +133,7 @@ let proConfig = {
 let devConfig = {
 	entry: [
 		'babel-regenerator-runtime',
-		'webpack-dev-server/client?http://0.0.0.0:8090',
+		'webpack-dev-server/client?http://0.0.0.0:9159',
 		'whatwg-fetch', 
 		'./client/app/main.js'
 	],
@@ -157,11 +157,11 @@ let devConfig = {
 	output: {
 		path: path.resolve(__dirname, './public/js'),
 		filename: 'bundle.js',
-		publicPath: 'http://0.0.0.0:8090/client/app/'
+		publicPath: 'http://0.0.0.0:9159/client/app/'
 	},
 	devServer: {
 		host: '0.0.0.0',
-		port: 8090,
+		port: 9159,
 		historyApiFallback: true,
 		contentBase: './client',
 		hot: false,
